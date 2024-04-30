@@ -1,5 +1,7 @@
 package com.razielo.boutscoring
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -39,6 +41,9 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.startActivity
+import com.razielo.boutscoring.data.models.Bout
+import com.razielo.boutscoring.data.models.Fighter
 import com.razielo.boutscoring.ui.theme.BoutScoringTheme
 import kotlinx.coroutines.launch
 
@@ -48,14 +53,14 @@ class AddBoutActivity : ComponentActivity() {
 
         setContent {
             BoutScoringTheme {
-                ScaffoldComponent { finish() }
+                ScaffoldComponent(this) { finish() }
             }
         }
     }
 }
 
 @Composable
-fun ScaffoldComponent(topBarOnCLick: () -> Unit) {
+private fun ScaffoldComponent(context: Context, topBarOnCLick: () -> Unit) {
     val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(topBar = { TopBar(topBarOnCLick) }, snackbarHost = {
@@ -67,14 +72,14 @@ fun ScaffoldComponent(topBarOnCLick: () -> Unit) {
                 .fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            Content(snackbarHostState)
+            Content(snackbarHostState, context,topBarOnCLick)
         }
     })
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(onClick: () -> Unit) {
+private fun TopBar(onClick: () -> Unit) {
     TopAppBar(colors = topAppBarColors(
         containerColor = MaterialTheme.colorScheme.primaryContainer,
         titleContentColor = MaterialTheme.colorScheme.primary,
@@ -89,7 +94,7 @@ fun TopBar(onClick: () -> Unit) {
     })
 }
 
-fun updateCornerValues(values: List<String>, index: Int, newValue: String): List<String> {
+private fun updateCornerValues(values: List<String>, index: Int, newValue: String): List<String> {
     return values.toMutableList().apply {
         if (index == 1) {
             set(1, newValue.uppercase())
@@ -112,7 +117,7 @@ fun updateCornerValues(values: List<String>, index: Int, newValue: String): List
 }
 
 @Composable
-fun Content(snackbarHostState: SnackbarHostState) {
+private fun Content(snackbarHostState: SnackbarHostState, context: Context, finish:()-> Unit) {
     var redCornerValues by remember { mutableStateOf(List(2) { "" }) }
     var blueCornerValues by remember { mutableStateOf(List(2) { "" }) }
     var selectedButtonIndex by remember { mutableIntStateOf(-1) }
@@ -149,12 +154,20 @@ fun Content(snackbarHostState: SnackbarHostState) {
 
         ButtonGroup(rounds, { index -> selectedButtonIndex = index }, selectedButtonIndex)
 
-        ContinueButton(snackbarHostState, redCornerValues, blueCornerValues, selectedButtonIndex)
+        ContinueButton(
+            snackbarHostState,
+            redCornerValues,
+            blueCornerValues,
+            selectedButtonIndex,
+            rounds,
+            context,
+            finish
+        )
     }
 }
 
 @Composable
-fun InputFieldGroup(
+private fun InputFieldGroup(
     values: List<String>, corner: String, onValueChange: (Int, String) -> Unit
 ) {
     val labels: List<String> = listOf(
@@ -169,7 +182,7 @@ fun InputFieldGroup(
 }
 
 @Composable
-fun InputField(
+private fun InputField(
     value: String, labelText: String, onValueChange: (String) -> Unit
 ) {
     OutlinedTextField(
@@ -182,7 +195,7 @@ fun InputField(
 }
 
 @Composable
-fun RoundButton(
+private fun RoundButton(
     shape: Shape,
     modifier: Modifier,
     enabled: Boolean,
@@ -202,7 +215,7 @@ fun RoundButton(
 }
 
 @Composable
-fun ButtonGroup(values: List<Int>, onClick: (Int) -> Unit, selectedIndex: Int) {
+private fun ButtonGroup(values: List<Int>, onClick: (Int) -> Unit, selectedIndex: Int) {
     Row(modifier = Modifier.padding(bottom = 16.dp)) {
         values.forEachIndexed { index, value ->
             RoundButton(
@@ -220,11 +233,14 @@ fun ButtonGroup(values: List<Int>, onClick: (Int) -> Unit, selectedIndex: Int) {
 }
 
 @Composable
-fun ContinueButton(
+private fun ContinueButton(
     snackbarHostState: SnackbarHostState,
     redCornerValues: List<String>,
     blueCornerValues: List<String>,
-    selectedButtonIndex: Int,
+    roundsIndex: Int,
+    roundsValues: List<Int>,
+    context: Context,
+    finish: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
 
@@ -238,10 +254,24 @@ fun ContinueButton(
                 scope.launch {
                     snackbarHostState.showSnackbar("Fill the blue corner info first")
                 }
-            } else if (selectedButtonIndex == -1) {
+            } else if (roundsIndex == -1) {
                 scope.launch {
                     snackbarHostState.showSnackbar("Select the number of rounds first")
                 }
+            } else {
+                finish()
+                val rounds = roundsValues[roundsIndex]
+                val scores: Map<Int, Pair<Int, Int>> = (1..rounds).associateWith { Pair(0, 0) }
+                val redCorner =
+                    Fighter(redCornerValues[0].trim(), redCornerValues[1].trim())
+                val blueCorner: Fighter =
+                    Fighter(blueCornerValues[0].trim(), blueCornerValues[1].trim())
+                val bout: Bout = Bout(rounds, scores, redCorner, blueCorner)
+
+                val intent = Intent(context, BoutScoreActivity::class.java)
+                intent.putExtra("bout", bout)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                startActivity(context, intent, null)
             }
         },
         modifier = Modifier.fillMaxWidth(),

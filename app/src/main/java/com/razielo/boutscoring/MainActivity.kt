@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -19,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat.startActivity
+import com.razielo.boutscoring.ui.components.common.TopBar
 import com.razielo.boutscoring.ui.theme.BoutScoringTheme
 
 class MainActivity : ComponentActivity() {
@@ -26,23 +28,31 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             BoutScoringTheme {
-                Scaffold(
-                    topBar = {},
-                    floatingActionButton = { FloatingButton(this) },
-                    content = {
-                        Surface(
-                            modifier = Modifier
-                                .padding(it)
-                                .fillMaxSize(),
-                            color = MaterialTheme.colorScheme.background
-                        ) {
-                            Greeting("Android")
-                        }
-                    }
-                )
+                MainScaffold(this)
             }
         }
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun MainScaffold(context: Context) {
+    Scaffold(
+        topBar = {
+            TopBar(titleText = "My Bouts", goBack = false)
+        },
+        floatingActionButton = { FloatingButton(context) },
+        content = {
+            Surface(
+                modifier = Modifier
+                    .padding(it)
+                    .fillMaxSize(),
+                color = MaterialTheme.colorScheme.background
+            ) {
+                Greeting("Android")
+            }
+        }
+    )
 }
 
 @Composable

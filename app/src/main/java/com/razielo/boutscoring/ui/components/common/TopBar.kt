@@ -1,5 +1,6 @@
-package com.razielo.boutscoring.ui.components.addbout
+package com.razielo.boutscoring.ui.components.common
 
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -13,19 +14,30 @@ import androidx.compose.runtime.Composable
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddBoutTopBar(onClick: () -> Unit) {
+fun TopBar(
+    titleText: String,
+    goBack: Boolean,
+    onBack: () -> Unit = {},
+    actions: @Composable() (RowScope.() -> Unit) = {}
+) {
     val colors = TopAppBarDefaults.topAppBarColors(
         containerColor = MaterialTheme.colorScheme.primaryContainer,
         titleContentColor = MaterialTheme.colorScheme.primary,
     )
 
-    TopAppBar(colors = colors, title = {
-        Text("Add new bout")
-    }, navigationIcon = {
-        IconButton(onClick = onClick) {
-            Icon(
-                imageVector = Icons.Filled.ArrowBack, contentDescription = "Go Back"
-            )
-        }
-    })
+    TopAppBar(
+        colors = colors,
+        title = { Text(titleText) },
+        navigationIcon = { if (goBack) GoBackButton(onBack) },
+        actions = actions
+    )
+}
+
+@Composable
+private fun GoBackButton(onClick: () -> Unit) {
+    IconButton(onClick) {
+        Icon(
+            imageVector = Icons.Filled.ArrowBack, contentDescription = "Go Back"
+        )
+    }
 }

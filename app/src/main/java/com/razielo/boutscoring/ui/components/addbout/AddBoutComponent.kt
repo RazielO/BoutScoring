@@ -11,6 +11,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import com.razielo.boutscoring.ui.components.common.TopBar
 import com.razielo.boutscoring.ui.theme.BoutScoringTheme
 
 @Composable
@@ -24,16 +25,19 @@ fun AddBoutComponent(context: Context, topBarOnCLick: () -> Unit) {
 private fun ScaffoldComponent(context: Context, topBarOnCLick: () -> Unit) {
     val snackbarHostState = remember { SnackbarHostState() }
 
-    Scaffold(topBar = { AddBoutTopBar(topBarOnCLick) }, snackbarHost = {
-        SnackbarHost(hostState = snackbarHostState)
-    }, content = {
-        Surface(
-            modifier = Modifier
-                .padding(it)
-                .fillMaxSize(),
-            color = MaterialTheme.colorScheme.background
-        ) {
-            AddBoutContent(snackbarHostState, context, topBarOnCLick)
-        }
-    })
+    Scaffold(
+        topBar = { TopBar(titleText = "Add new bout", goBack = true, topBarOnCLick) },
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        },
+        content = {
+            Surface(
+                modifier = Modifier
+                    .padding(it)
+                    .fillMaxSize(),
+                color = MaterialTheme.colorScheme.background
+            ) {
+                AddBoutContent(snackbarHostState, context, topBarOnCLick)
+            }
+        })
 }

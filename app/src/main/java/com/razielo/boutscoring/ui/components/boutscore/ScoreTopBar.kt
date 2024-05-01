@@ -10,21 +10,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,9 +34,9 @@ import com.razielo.boutscoring.data.models.DrawMethod
 import com.razielo.boutscoring.data.models.NoResultMethod
 import com.razielo.boutscoring.data.models.WinMethod
 import com.razielo.boutscoring.data.models.Winner
+import com.razielo.boutscoring.ui.components.common.TopBar
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScoreTopBar(
     snackbarHostState: SnackbarHostState,
@@ -65,8 +59,9 @@ fun ScoreTopBar(
 
                     when (winner) {
                         Winner.BLUE_CORNER, Winner.RED_CORNER -> winMethod = method as WinMethod?
-                        Winner.DRAW -> drawMethod = method as DrawMethod?
-                        Winner.NO_RESULT -> noResultMethod = method as NoResultMethod?
+                        Winner.DRAW                           -> drawMethod = method as DrawMethod?
+                        Winner.NO_RESULT                      -> noResultMethod =
+                            method as NoResultMethod?
                     }
 
                     updateBoutResult(winner, winMethod, drawMethod, noResultMethod)
@@ -74,24 +69,10 @@ fun ScoreTopBar(
         }
     }
 
-    val topAppBarColors = TopAppBarDefaults.topAppBarColors(
-        containerColor = MaterialTheme.colorScheme.primaryContainer,
-        titleContentColor = MaterialTheme.colorScheme.primary,
-    )
-
-    TopAppBar(colors = topAppBarColors,
-        title = { Text("Score bout") },
-        navigationIcon = { GoBackButton(goBackAction) },
+    TopBar(titleText = "Score bout",
+        goBack = true,
+        onBack = goBackAction,
         actions = { ResultAction { openAlertDialog.value = true } })
-}
-
-@Composable
-private fun GoBackButton(onClick: () -> Unit) {
-    IconButton(onClick) {
-        Icon(
-            imageVector = Icons.Filled.ArrowBack, contentDescription = "Go Back",
-        )
-    }
 }
 
 @Composable
@@ -103,9 +84,9 @@ private fun ResultAction(onClick: () -> Unit) {
 
 private fun updateMethodSelected(bout: Bout): String? = when (bout.winner) {
     Winner.BLUE_CORNER, Winner.RED_CORNER -> bout.winMethod?.displayName
-    Winner.DRAW -> bout.drawMethod?.displayName
-    Winner.NO_RESULT -> bout.noResultMethod?.displayName
-    null -> null
+    Winner.DRAW                           -> bout.drawMethod?.displayName
+    Winner.NO_RESULT                      -> bout.noResultMethod?.displayName
+    null                                  -> null
 }
 
 @Composable
@@ -134,8 +115,8 @@ private fun ResultDialog(
     when {
         winner != null -> methodOptions = when (winner!!) {
             Winner.RED_CORNER, Winner.BLUE_CORNER -> WinMethod.entries.map { it.displayName }
-            Winner.DRAW -> DrawMethod.entries.map { it.displayName }
-            Winner.NO_RESULT -> NoResultMethod.entries.map { it.displayName }
+            Winner.DRAW                           -> DrawMethod.entries.map { it.displayName }
+            Winner.NO_RESULT                      -> NoResultMethod.entries.map { it.displayName }
         }
     }
 
@@ -144,8 +125,9 @@ private fun ResultDialog(
         if (winner != null) {
             when (winner!!) {
                 Winner.BLUE_CORNER, Winner.RED_CORNER -> winMethod = WinMethod.from(selected)
-                Winner.DRAW -> drawMethod = DrawMethod.from(selected)
-                Winner.NO_RESULT -> noResultMethod = NoResultMethod.from(selected)
+                Winner.DRAW                           -> drawMethod = DrawMethod.from(selected)
+                Winner.NO_RESULT                      -> noResultMethod =
+                    NoResultMethod.from(selected)
             }
         }
         methodSelected = updateMethodSelected(bout)
@@ -185,8 +167,8 @@ private fun ResultDialog(
                             val winnerValue = winner!!
                             val method: Any? = when (winnerValue) {
                                 Winner.BLUE_CORNER, Winner.RED_CORNER -> winMethod
-                                Winner.DRAW -> drawMethod
-                                Winner.NO_RESULT -> noResultMethod
+                                Winner.DRAW                           -> drawMethod
+                                Winner.NO_RESULT                      -> noResultMethod
                             }
                             onConfirmation(winnerValue, method)
                         } else {

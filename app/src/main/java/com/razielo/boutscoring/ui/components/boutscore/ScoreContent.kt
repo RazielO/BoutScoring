@@ -12,8 +12,8 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.razielo.boutscoring.data.models.Bout
+import com.razielo.boutscoring.scoreColors
 import com.razielo.boutscoring.ui.theme.Blue
-import com.razielo.boutscoring.ui.theme.Green
 import com.razielo.boutscoring.ui.theme.Red
 
 @Composable
@@ -33,7 +33,7 @@ fun Content(
         LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             items(bout.rounds) { round ->
                 val enabled = isRoundEnabled(bout, round)
-                val colors: Pair<Color?, Color?> = roundRowColors(bout, round + 1)
+                val colors: Pair<Color?, Color?> = scoreColors(bout.scores[round + 1])
 
                 RoundRow(
                     snackbarHostState = snackbarHostState,
@@ -51,11 +51,3 @@ fun Content(
 
 private fun isRoundEnabled(bout: Bout, round: Int): Boolean =
     round == 0 || (bout.scores[round]?.first != 0 && bout.scores[round]?.second != 0)
-
-private fun roundRowColors(bout: Bout, round: Int): Pair<Color?, Color?> =
-    with(bout.scores[round]) {
-        if (this == null) Pair(null, null)
-        else if (this.first > this.second) Pair(Green, Red)
-        else if (this.second > this.first) Pair(Red, Green)
-        else Pair(null, null)
-    }

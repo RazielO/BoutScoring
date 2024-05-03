@@ -59,8 +59,8 @@ fun ScoreTopBar(
 
                     when (winner) {
                         Winner.BLUE_CORNER, Winner.RED_CORNER -> winMethod = method as WinMethod?
-                        Winner.DRAW                           -> drawMethod = method as DrawMethod?
-                        Winner.NO_RESULT                      -> noResultMethod =
+                        Winner.DRAW -> drawMethod = method as DrawMethod?
+                        Winner.NO_RESULT -> noResultMethod =
                             method as NoResultMethod?
                     }
 
@@ -84,9 +84,9 @@ private fun ResultAction(onClick: () -> Unit) {
 
 private fun updateMethodSelected(bout: Bout): String? = when (bout.winner) {
     Winner.BLUE_CORNER, Winner.RED_CORNER -> bout.winMethod?.displayName
-    Winner.DRAW                           -> bout.drawMethod?.displayName
-    Winner.NO_RESULT                      -> bout.noResultMethod?.displayName
-    null                                  -> null
+    Winner.DRAW -> bout.drawMethod?.displayName
+    Winner.NO_RESULT -> bout.noResultMethod?.displayName
+    null -> null
 }
 
 @Composable
@@ -115,8 +115,8 @@ private fun ResultDialog(
     when {
         winner != null -> methodOptions = when (winner!!) {
             Winner.RED_CORNER, Winner.BLUE_CORNER -> WinMethod.entries.map { it.displayName }
-            Winner.DRAW                           -> DrawMethod.entries.map { it.displayName }
-            Winner.NO_RESULT                      -> NoResultMethod.entries.map { it.displayName }
+            Winner.DRAW -> DrawMethod.entries.map { it.displayName }
+            Winner.NO_RESULT -> NoResultMethod.entries.map { it.displayName }
         }
     }
 
@@ -125,8 +125,8 @@ private fun ResultDialog(
         if (winner != null) {
             when (winner!!) {
                 Winner.BLUE_CORNER, Winner.RED_CORNER -> winMethod = WinMethod.from(selected)
-                Winner.DRAW                           -> drawMethod = DrawMethod.from(selected)
-                Winner.NO_RESULT                      -> noResultMethod =
+                Winner.DRAW -> drawMethod = DrawMethod.from(selected)
+                Winner.NO_RESULT -> noResultMethod =
                     NoResultMethod.from(selected)
             }
         }
@@ -167,8 +167,8 @@ private fun ResultDialog(
                             val winnerValue = winner!!
                             val method: Any? = when (winnerValue) {
                                 Winner.BLUE_CORNER, Winner.RED_CORNER -> winMethod
-                                Winner.DRAW                           -> drawMethod
-                                Winner.NO_RESULT                      -> noResultMethod
+                                Winner.DRAW -> drawMethod
+                                Winner.NO_RESULT -> noResultMethod
                             }
                             onConfirmation(winnerValue, method)
                         } else {

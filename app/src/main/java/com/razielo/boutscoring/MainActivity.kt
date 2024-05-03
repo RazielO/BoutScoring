@@ -1,45 +1,15 @@
 package com.razielo.boutscoring
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.outlined.KeyboardArrowRight
-import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat.startActivity
 import com.razielo.boutscoring.data.models.Bout
 import com.razielo.boutscoring.data.models.DrawMethod
 import com.razielo.boutscoring.data.models.Fighter
 import com.razielo.boutscoring.data.models.NoResultMethod
 import com.razielo.boutscoring.data.models.WinMethod
 import com.razielo.boutscoring.data.models.Winner
-import com.razielo.boutscoring.ui.components.common.BoutScoreResult
-import com.razielo.boutscoring.ui.components.common.TopBar
-import com.razielo.boutscoring.ui.theme.BoutScoringTheme
+import com.razielo.boutscoring.ui.components.main.MainComponent
 import kotlin.random.Random
 
 class MainActivity : ComponentActivity() {
@@ -49,9 +19,7 @@ class MainActivity : ComponentActivity() {
         val bouts: List<Bout> = (1 .. 100).map { generateRandomBout() }
 
         setContent {
-            BoutScoringTheme {
-                MainScaffold(this, bouts)
-            }
+            MainComponent(context = this, bouts)
         }
     }
 }
@@ -148,96 +116,3 @@ private fun generateRandomBout(): Bout {
     )
 }
 
-@Composable
-private fun MainScaffold(context: Context, bouts: List<Bout>) {
-    val topBarText = if (bouts.isEmpty()) "My bouts" else "My ${bouts.size} bouts"
-    Scaffold(topBar = {
-        TopBar(titleText = topBarText, goBack = false)
-    }, floatingActionButton = { FloatingButton(context) }, content = {
-        Surface(
-            modifier = Modifier
-                .padding(it)
-                .fillMaxSize(),
-            color = MaterialTheme.colorScheme.background
-        ) {
-            Content(context, bouts)
-        }
-    })
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun Content(context: Context, bouts: List<Bout>) {
-    LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = Modifier.padding(16.dp)
-    ) {
-        items(bouts.size) { index ->
-            Card(modifier = Modifier.fillMaxWidth(), onClick = {
-                val intent = Intent(context, BoutScoreActivity::class.java)
-                intent.putExtra("bout", bouts[index])
-                startActivity(context, intent, null)
-            }, enabled = false) {
-                val redScore = bouts[index].scores.values.sumOf { it.first }
-                val blueScore = bouts[index].scores.values.sumOf { it.second }
-                val colors = scoreColors(
-                    Pair(redScore, blueScore),
-                    MaterialTheme.colorScheme.onSurfaceVariant
-                )
-
-                Row(
-                    modifier = Modifier.padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Column(Modifier.weight(7f)) {
-                        Row {
-                            CardText(bouts[index].redCorner.fullName, Modifier.weight(5f))
-                            CardText(redScore.toString(), Modifier.weight(1f), colors.first)
-                        }
-                        Row {
-                            CardText("vs", Modifier.weight(3f))
-                            BoutScoreResult(bouts[index], Modifier.weight(1f))
-                        }
-                        Row {
-                            CardText(bouts[index].blueCorner.fullName, Modifier.weight(5f))
-                            CardText(blueScore.toString(), Modifier.weight(1f), colors.second)
-                        }
-                    }
-                    Box(modifier = Modifier.weight(1f)) {
-                        IconButton(onClick = {
-                            val intent = Intent(context, BoutScoreActivity::class.java)
-                            intent.putExtra("bout", bouts[index])
-                            startActivity(context, intent, null)
-                        }) {
-                            Icon(Icons.Outlined.KeyboardArrowRight, "Go to bout score")
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun CardText(
-    text: String,
-    modifier: Modifier,
-    color: Color = MaterialTheme.colorScheme.onSurfaceVariant
-) {
-    Text(
-        text,
-        fontSize = MaterialTheme.typography.bodyLarge.fontSize * 1.2f,
-        modifier = modifier,
-        color = color
-    )
-}
-
-@Composable
-fun FloatingButton(context: Context) {
-    FloatingActionButton(onClick = {
-        val intent = Intent(context, AddBoutActivity::class.java)
-        startActivity(context, intent, null)
-    }) {
-        Icon(Icons.Filled.Add, "Add new bout.")
-    }
-}

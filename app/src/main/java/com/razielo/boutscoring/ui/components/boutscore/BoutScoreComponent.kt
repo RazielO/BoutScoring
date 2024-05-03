@@ -12,23 +12,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.razielo.boutscoring.data.models.Bout
-import com.razielo.boutscoring.ui.theme.BoutScoringTheme
 
 @Composable
 fun BoutScoreComponent(bout: Bout, topBarOnCLick: () -> Unit) {
-    BoutScoringTheme {
-        ScaffoldComponent(
-            bout,
-            topBarOnCLick,
-        )
-    }
-}
-
-
-@Composable
-private fun ScaffoldComponent(
-    bout: Bout, topBarOnCLick: () -> Unit
-) {
     val snackbarHostState = remember { SnackbarHostState() }
     val boutState = remember { mutableStateOf(bout) }
 

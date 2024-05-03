@@ -1,7 +1,5 @@
 package com.razielo.boutscoring.ui.components.main
 
-import android.content.Context
-import android.content.Intent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,14 +17,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
-import com.razielo.boutscoring.BoutScoreActivity
 import com.razielo.boutscoring.data.models.Bout
 import com.razielo.boutscoring.scoreColors
 import com.razielo.boutscoring.ui.components.common.BoutScoreResult
 
 @Composable
-fun BoutListCard(context: Context, bout: Bout) {
+fun BoutListCard(index: Int, bout: Bout, goToBout: (Int) -> Unit) {
     Card(modifier = Modifier.fillMaxWidth()) {
         val redScore = bout.scores.values.sumOf { it.first }
         val blueScore = bout.scores.values.sumOf { it.second }
@@ -55,9 +51,7 @@ fun BoutListCard(context: Context, bout: Bout) {
             }
             Box(modifier = Modifier.weight(1f)) {
                 IconButton(onClick = {
-                    val intent = Intent(context, BoutScoreActivity::class.java)
-                    intent.putExtra("bout", bout)
-                    ContextCompat.startActivity(context, intent, null)
+                    goToBout(index)
                 }) {
                     Icon(Icons.Outlined.KeyboardArrowRight, "Go to bout score")
                 }

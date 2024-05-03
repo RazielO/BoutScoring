@@ -1,6 +1,5 @@
 package com.razielo.boutscoring.ui.components.addbout
 
-import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -15,12 +14,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.razielo.boutscoring.data.models.Bout
 
 @Composable
 fun AddBoutContent(
     snackbarHostState: SnackbarHostState,
-    context: Context,
-    finish: () -> Unit
+    goToBoutScore: (Bout) -> Unit
 ) {
     var redCornerValues by remember { mutableStateOf(List(2) { "" }) }
     var blueCornerValues by remember { mutableStateOf(List(2) { "" }) }
@@ -64,8 +63,7 @@ fun AddBoutContent(
             blueCornerValues,
             selectedButtonIndex,
             rounds,
-            context,
-            finish
+            goToBoutScore
         )
     }
 }

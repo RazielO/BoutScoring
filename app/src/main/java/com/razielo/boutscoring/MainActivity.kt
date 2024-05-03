@@ -3,116 +3,74 @@ package com.razielo.boutscoring
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import com.razielo.boutscoring.data.models.Bout
-import com.razielo.boutscoring.data.models.DrawMethod
-import com.razielo.boutscoring.data.models.Fighter
-import com.razielo.boutscoring.data.models.NoResultMethod
-import com.razielo.boutscoring.data.models.WinMethod
-import com.razielo.boutscoring.data.models.Winner
+import com.razielo.boutscoring.ui.components.addbout.AddBoutComponent
+import com.razielo.boutscoring.ui.components.boutscore.BoutScoreComponent
 import com.razielo.boutscoring.ui.components.main.MainComponent
-import kotlin.random.Random
+import com.razielo.boutscoring.ui.theme.BoutScoringTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val bouts: List<Bout> = (1 .. 100).map { generateRandomBout() }
+        val bouts = (1 .. 100).map { generateRandomBout() }
 
         setContent {
-            MainComponent(context = this, bouts)
+            BoutScoringTheme {
+                MainActivityComposable(boutList = bouts)
+            }
         }
     }
 }
 
-private fun generateRandomFighter(): Fighter {
-    val randomFirstNames = listOf(
-        "John",
-        "Robert",
-        "Michael",
-        "William",
-        "David",
-        "Richard",
-        "Joseph",
-        "Charles",
-        "Thomas",
-        "Daniel",
-        "Matthew",
-        "Anthony",
-        "Donald",
-        "Paul",
-        "Mark",
-        "James",
-        "Steven",
-        "George",
-        "Kenneth",
-        "Edward"
-    )
-
-    val randomLastNames = listOf(
-        "Smith",
-        "Johnson",
-        "Williams",
-        "Brown",
-        "Jones",
-        "Miller",
-        "Davis",
-        "Garcia",
-        "Rodriguez",
-        "Martinez",
-        "Hernandez",
-        "Lopez",
-        "Gonzalez",
-        "Wilson",
-        "Anderson",
-        "Thomas",
-        "Taylor",
-        "Moore",
-        "Jackson",
-        "Martin"
-    )
-
-    val random = Random.Default
-
-    val firstName = randomFirstNames.random(random)
-    val lastName = randomLastNames.random(random)
-
-    return Fighter("$firstName $lastName", lastName.uppercase())
+private enum class Screen {
+    MAIN,
+    FILTERED_BOUTS,
+    ADD_BOUT,
+    SCORE_BOUT
 }
 
-private fun generateRandomBout(): Bout {
-    val random = Random.Default
-    val roundList: List<Int> = listOf(3, 4, 5, 6, 8, 10, 12, 15)
-    val rounds = roundList.random(random)
-    val winner: Winner? =
-        Winner.entries.toMutableList<Winner?>().apply { this.add(null) }.random(random)
-    val winMethod: WinMethod? = when (winner) {
-        null, Winner.NO_RESULT, Winner.DRAW -> null
-        Winner.RED_CORNER, Winner.BLUE_CORNER -> WinMethod.entries.toMutableList<WinMethod?>()
-            .apply { this.add(null) }
-            .random(random)
+@Composable
+private fun MainActivityComposable(boutList: List<Bout>) {
+    val bouts = boutList.toMutableList()
+    var currentScreen by remember { mutableStateOf(Screen.MAIN) }
+    var boutIndex = 0
+    val goToMain = { currentScreen = Screen.MAIN }
+    val addAndGoToScoreBout = { bout: Bout ->
+        bouts.add(bout)
+        boutIndex = bouts.lastIndex
+        currentScreen = Screen.SCORE_BOUT
     }
-    val drawMethod: DrawMethod? = when (winner) {
-        null, Winner.NO_RESULT, Winner.RED_CORNER, Winner.BLUE_CORNER -> null
-        Winner.DRAW -> DrawMethod.entries.toMutableList<DrawMethod?>()
-            .apply { this.add(null) }
-            .random(random)
-    }
-    val noResultMethod: NoResultMethod? = when (winner) {
-        null, Winner.DRAW, Winner.RED_CORNER, Winner.BLUE_CORNER -> null
-        Winner.NO_RESULT -> NoResultMethod.entries.toMutableList<NoResultMethod?>()
-            .apply { this.add(null) }
-            .random(random)
+    val goToAddBout = { currentScreen = Screen.ADD_BOUT }
+    val goToBout = { index: Int ->
+        boutIndex = index
+        currentScreen = Screen.SCORE_BOUT
     }
 
-    return Bout(
-        rounds,
-        (1 .. rounds).associateWith { Pair((6 .. 10).random(random), (6 .. 10).random(random)) },
-        generateRandomFighter(),
-        generateRandomFighter(),
-        winner,
-        winMethod,
-        drawMethod,
-        noResultMethod
-    )
+    when (currentScreen) {
+        Screen.MAIN -> {
+            MainComponent(
+                bouts = bouts,
+                goToAddBout = goToAddBout,
+                goToBout = goToBout
+            )
+        }
+
+        Screen.ADD_BOUT -> {
+            AddBoutComponent(
+                goBackToMain = goToMain, goToBoutScore = addAndGoToScoreBout
+            )
+        }
+
+        Screen.SCORE_BOUT -> {
+            val bout = bouts[boutIndex]
+            BoutScoreComponent(bout = bout, topBarOnCLick = goToMain)
+        }
+
+        Screen.FILTERED_BOUTS -> {}
+    }
 }
-

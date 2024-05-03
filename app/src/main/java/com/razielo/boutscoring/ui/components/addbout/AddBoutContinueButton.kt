@@ -39,9 +39,20 @@ fun AddBoutContinueButton(
             } else {
                 val rounds = roundsValues[roundsIndex]
                 val scores: Map<Int, Pair<Int, Int>> = (1 .. rounds).associateWith { Pair(0, 0) }
-                val redCorner = Fighter(redCornerValues[0].trim(), redCornerValues[1].trim())
-                val blueCorner = Fighter(blueCornerValues[0].trim(), blueCornerValues[1].trim())
-                val bout = Bout(rounds, scores, redCorner, blueCorner)
+                val redCorner = Fighter(
+                    fullName = redCornerValues[0].trim(),
+                    displayName = redCornerValues[1].trim()
+                )
+                val blueCorner = Fighter(
+                    fullName = blueCornerValues[0].trim(),
+                    displayName = blueCornerValues[1].trim()
+                )
+                val bout = Bout(
+                    rounds = rounds,
+                    scores = scores,
+                    redCorner = redCorner,
+                    blueCorner = blueCorner
+                )
 
                 goToScore(bout)
             }

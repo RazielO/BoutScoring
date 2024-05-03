@@ -83,7 +83,7 @@ private fun generateRandomFighter(): Fighter {
     val firstName = randomFirstNames.random(random)
     val lastName = randomLastNames.random(random)
 
-    return Fighter("$firstName $lastName", lastName.uppercase())
+    return Fighter(fullName = "$firstName $lastName", displayName = lastName.uppercase())
 }
 
 fun generateRandomBout(): Bout {
@@ -112,14 +112,19 @@ fun generateRandomBout(): Bout {
     }
 
     return Bout(
-        rounds,
-        (1 .. rounds).associateWith { Pair((6 .. 10).random(random), (6 .. 10).random(random)) },
-        generateRandomFighter(),
-        generateRandomFighter(),
-        winner,
-        winMethod,
-        drawMethod,
-        noResultMethod
+        rounds = rounds,
+        scores = (1 .. rounds).associateWith {
+            Pair(
+                (6 .. 10).random(random),
+                (6 .. 10).random(random)
+            )
+        },
+        redCorner = generateRandomFighter(),
+        blueCorner = generateRandomFighter(),
+        winner = winner,
+        winMethod = winMethod,
+        drawMethod = drawMethod,
+        noResultMethod = noResultMethod
     )
 }
 

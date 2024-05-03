@@ -5,6 +5,7 @@ import com.razielo.boutscoring.data.models.Bout
 import com.razielo.boutscoring.data.models.DrawMethod
 import com.razielo.boutscoring.data.models.Fighter
 import com.razielo.boutscoring.data.models.NoResultMethod
+import com.razielo.boutscoring.data.models.Screen
 import com.razielo.boutscoring.data.models.WinMethod
 import com.razielo.boutscoring.data.models.Winner
 import com.razielo.boutscoring.ui.theme.Green
@@ -18,6 +19,15 @@ fun scoreColors(scores: Pair<Int, Int>, default: Color): Pair<Color, Color> = wi
         Pair(Red, Green)
     } else {
         Pair(default, default)
+    }
+}
+
+fun topBarTitle(screen: Screen, boutCount: Int = 0): String {
+    return when (screen) {
+        Screen.MAIN -> if (boutCount == 0) "My bouts" else "My $boutCount bouts"
+        Screen.FILTERED_BOUTS -> "Filtered bouts"
+        Screen.ADD_BOUT -> "Add new bout"
+        Screen.SCORE_BOUT -> "Score bout"
     }
 }
 

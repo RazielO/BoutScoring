@@ -180,7 +180,10 @@ fun Content(context: Context, bouts: List<Bout>) {
             }, enabled = false) {
                 val redScore = bouts[index].scores.values.sumOf { it.first }
                 val blueScore = bouts[index].scores.values.sumOf { it.second }
-                val colors = scoreColors(Pair(redScore, blueScore))
+                val colors = scoreColors(
+                    Pair(redScore, blueScore),
+                    MaterialTheme.colorScheme.onSurfaceVariant
+                )
 
                 Row(
                     modifier = Modifier.padding(16.dp),
@@ -216,14 +219,16 @@ fun Content(context: Context, bouts: List<Bout>) {
 }
 
 @Composable
-private fun CardText(text: String, modifier: Modifier, color: Color? = null) {
-    val textColor = color ?: MaterialTheme.colorScheme.onSurfaceVariant
-
+private fun CardText(
+    text: String,
+    modifier: Modifier,
+    color: Color = MaterialTheme.colorScheme.onSurfaceVariant
+) {
     Text(
         text,
         fontSize = MaterialTheme.typography.bodyLarge.fontSize * 1.2f,
         modifier = modifier,
-        color = textColor
+        color = color
     )
 }
 

@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -33,7 +34,11 @@ fun Content(
         LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             items(bout.rounds) { round ->
                 val enabled = isRoundEnabled(bout, round)
-                val colors: Pair<Color?, Color?> = scoreColors(bout.scores[round + 1])
+                val colors: Pair<Color, Color> =
+                    scoreColors(
+                        bout.scores[round + 1] ?: Pair(0, 0),
+                        MaterialTheme.colorScheme.onBackground
+                    )
 
                 RoundRow(
                     snackbarHostState = snackbarHostState,

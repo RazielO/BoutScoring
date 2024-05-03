@@ -28,7 +28,7 @@ fun HeaderScores(bout: Bout) {
     val blueScore = bout.scores.values.sumOf { it.second }
 
     Row {
-        val colors = scoreColors(Pair(redScore, blueScore))
+        val colors = scoreColors(Pair(redScore, blueScore), MaterialTheme.colorScheme.onBackground)
 
         HeadText(redScore.toString(), Modifier.weight(2f), colors.first)
         BoutScoreResult(bout, Modifier.weight(1f))
@@ -37,8 +37,12 @@ fun HeaderScores(bout: Bout) {
 }
 
 @Composable
-fun HeadText(text: String, modifier: Modifier, color: Color? = null) {
-    val textColor = color ?: MaterialTheme.colorScheme.onBackground
+fun HeadText(
+    text: String,
+    modifier: Modifier,
+    color: Color = MaterialTheme.colorScheme.onBackground
+) {
+    val textColor = color
 
     Text(
         text,

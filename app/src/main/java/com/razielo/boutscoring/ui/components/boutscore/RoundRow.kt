@@ -28,7 +28,7 @@ fun RoundRow(
     enabled: Boolean,
     round: Int,
     scores: Pair<Int, Int>,
-    colors: Pair<Color?, Color?>,
+    colors: Pair<Color, Color>,
     updateRound: (Int, Pair<Int, Int>) -> Unit
 ) {
     val scope = rememberCoroutineScope()
@@ -77,7 +77,7 @@ private fun roundScore(scores: Pair<Int, Int>, red: Boolean): Pair<Int, Int> {
 }
 
 @Composable
-private fun RoundRowButton(modifier: Modifier, value: Int, textColor: Color?, onClick: () -> Unit) {
+private fun RoundRowButton(modifier: Modifier, value: Int, textColor: Color, onClick: () -> Unit) {
     Button(
         onClick = onClick,
         modifier = modifier.padding(0.dp),
@@ -92,9 +92,11 @@ private fun RoundRowButton(modifier: Modifier, value: Int, textColor: Color?, on
 }
 
 @Composable
-private fun RoundRowText(modifier: Modifier, value: Int, textColor: Color? = null) {
-    val color = textColor ?: MaterialTheme.colorScheme.onBackground
-
+private fun RoundRowText(
+    modifier: Modifier,
+    value: Int,
+    color: Color = MaterialTheme.colorScheme.onBackground
+) {
     Text(
         value.toString(),
         textAlign = TextAlign.Center,

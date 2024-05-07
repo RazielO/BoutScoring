@@ -26,7 +26,6 @@ fun BoutScoreResult(bout: Bout, modifier: Modifier) {
     ) {
         if (bout.winner != null) {
             val text = when (bout.winner) {
-                null -> ""
                 Winner.RED_CORNER, Winner.BLUE_CORNER -> resultText(bout.winner, bout.winMethod)
                 Winner.DRAW -> resultText(bout.winner, bout.drawMethod)
                 Winner.NO_RESULT -> resultText(bout.winner, bout.noResultMethod)
@@ -47,10 +46,7 @@ fun BoutScoreResult(bout: Bout, modifier: Modifier) {
 private fun resultText(winner: Winner?, method: Any?): String {
     val prefix = when (winner) {
         null -> ""
-        Winner.DRAW -> "D"
-        Winner.NO_RESULT -> "NC"
-        Winner.RED_CORNER -> "W"
-        Winner.BLUE_CORNER -> "L"
+        else -> winner.abbreviation
     }
 
     return when (winner) {

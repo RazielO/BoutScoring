@@ -50,8 +50,8 @@ fun AddBoutContinueButton(
                 val bout = Bout(
                     rounds = rounds,
                     scores = scores,
-                    redCorner = redCorner,
-                    blueCorner = blueCorner
+                    redCorner = redCornerValues[0].trim(),
+                    blueCorner = blueCornerValues[0].trim()
                 )
 
                 goToScore(bout)

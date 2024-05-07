@@ -29,7 +29,7 @@ fun Content(
             .fillMaxWidth()
             .padding(16.dp),
     ) {
-        HeaderNames(bout.redCorner.displayName, bout.blueCorner.displayName)
+        HeaderNames(bout.redCorner, bout.blueCorner)
         HeaderScores(bout)
         LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             items(bout.rounds) { round ->

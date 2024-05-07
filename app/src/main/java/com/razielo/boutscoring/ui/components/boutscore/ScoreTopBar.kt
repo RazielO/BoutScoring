@@ -97,7 +97,7 @@ private fun ResultDialog(
     onConfirmation: (Winner, Any?) -> Unit
 ) {
     val scope = rememberCoroutineScope()
-    val resultOptions = Winner.entries.map { it.display }
+    val resultOptions = Winner.entries.map { it.displayName }
     var methodOptions: List<String>? by remember { mutableStateOf(null) }
     var winner: Winner? by remember { mutableStateOf(bout.winner) }
     var winMethod: WinMethod? = bout.winMethod
@@ -106,7 +106,7 @@ private fun ResultDialog(
     var methodSelected: String? by remember { mutableStateOf(updateMethodSelected(bout)) }
 
     fun onResultSelection(selected: String) {
-        winner = Winner.from(selected)
+        winner = Winner.fromDisplayName(selected)
         if (winner == null) {
             return
         }
@@ -124,10 +124,12 @@ private fun ResultDialog(
     fun onMethodSelection(selected: String) {
         if (winner != null) {
             when (winner!!) {
-                Winner.BLUE_CORNER, Winner.RED_CORNER -> winMethod = WinMethod.from(selected)
-                Winner.DRAW -> drawMethod = DrawMethod.from(selected)
+                Winner.BLUE_CORNER, Winner.RED_CORNER -> winMethod =
+                    WinMethod.fromDisplayName(selected)
+
+                Winner.DRAW -> drawMethod = DrawMethod.fromDisplayName(selected)
                 Winner.NO_RESULT -> noResultMethod =
-                    NoResultMethod.from(selected)
+                    NoResultMethod.fromDisplayName(selected)
             }
         }
         methodSelected = updateMethodSelected(bout)
@@ -148,7 +150,7 @@ private fun ResultDialog(
                 HeadText("Set bout result", Modifier)
 
                 Selection(
-                    title = "Winner", options = resultOptions, selected = winner?.display
+                    title = "Winner", options = resultOptions, selected = winner?.displayName
                 ) { selected -> onResultSelection(selected) }
 
                 if (methodOptions != null) {

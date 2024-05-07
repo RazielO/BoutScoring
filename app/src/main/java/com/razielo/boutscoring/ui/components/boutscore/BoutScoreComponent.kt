@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import com.razielo.boutscoring.data.models.Bout
 
 @Composable
-fun BoutScoreComponent(bout: Bout, topBarOnCLick: () -> Unit) {
+fun BoutScoreComponent(bout: Bout, topBarOnCLick: (Bout) -> Unit) {
     val snackbarHostState = remember { SnackbarHostState() }
     val boutState = remember { mutableStateOf(bout) }
 
@@ -22,7 +22,7 @@ fun BoutScoreComponent(bout: Bout, topBarOnCLick: () -> Unit) {
         ScoreTopBar(
             snackbarHostState,
             boutState.value,
-            topBarOnCLick
+            { topBarOnCLick(boutState.value) }
         ) { winner, winMethod, drawMethod, noResultMethod ->
             boutState.value = bout.copy(
                 winner = winner,

@@ -9,12 +9,12 @@ import androidx.compose.ui.unit.dp
 import com.razielo.boutscoring.data.models.Bout
 
 @Composable
-fun MainComponent(bouts: List<Bout>, goToBout: (Int) -> Unit) {
+fun MainComponent(bouts: List<Bout>, goToBout: (Int) -> Unit, deleteBout: (String) -> Unit) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.padding(16.dp)
     ) {
         items(bouts.size) { index ->
-            BoutListCard(index, bouts[index], goToBout)
+            BoutListCard(index, bouts[index], goToBout, deleteBout)
         }
     }
 }

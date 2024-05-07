@@ -1,13 +1,14 @@
 package com.razielo.boutscoring.data.models
 
-enum class Winner(val display: String) {
-    RED_CORNER("Red Corner"),
-    BLUE_CORNER("Blue Corner"),
-    DRAW("Draw"),
-    NO_RESULT("No Result");
+enum class Winner(val displayName: String, val abbreviation: String) {
+    RED_CORNER("Red Corner", "W"),
+    BLUE_CORNER("Blue Corner", "L"),
+    DRAW("Draw", "D"),
+    NO_RESULT("No Result", "NC");
 
     companion object {
-        private val map = entries.associateBy { it.display }
-        infix fun from(display: String) = map[display]
+        private val map = entries.associateBy { it.displayName }
+
+        infix fun fromDisplayName(displayName: String): Winner? = map[displayName]
     }
 }

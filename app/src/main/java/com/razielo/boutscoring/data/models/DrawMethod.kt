@@ -8,6 +8,7 @@ enum class DrawMethod(val displayName: String, val abbreviation: String) {
 
     companion object {
         private val map = DrawMethod.entries.associateBy { it.displayName }
-        infix fun from(display: String) = map[display]
+
+        infix fun fromDisplayName(displayName: String): DrawMethod? = map[displayName]
     }
 }

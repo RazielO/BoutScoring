@@ -6,6 +6,7 @@ enum class NoResultMethod(val displayName: String, val abbreviation: String) {
 
     companion object {
         private val map = NoResultMethod.entries.associateBy { it.displayName }
-        infix fun from(display: String) = map[display]
+
+        infix fun fromDisplayName(displayName: String): NoResultMethod? = map[displayName]
     }
 }

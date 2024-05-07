@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface BoutDao {
-    @Query("SELECT * FROM bout ORDER BY bout_id DESC")
+    @Query("SELECT * FROM bout ORDER BY created_at DESC")
     fun getAllBouts(): Flow<List<Bout>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)

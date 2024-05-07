@@ -5,12 +5,13 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.razielo.boutscoring.data.converters.DateConverter
 import com.razielo.boutscoring.data.converters.ScoresConverter
 import com.razielo.boutscoring.data.dao.BoutDao
 import com.razielo.boutscoring.data.models.Bout
 
 @Database(entities = [Bout::class], version = 1, exportSchema = false)
-@TypeConverters(ScoresConverter::class)
+@TypeConverters(ScoresConverter::class, DateConverter::class)
 abstract class BoutDatabase : RoomDatabase() {
     abstract fun boutDao(): BoutDao
 

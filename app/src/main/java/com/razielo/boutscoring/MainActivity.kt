@@ -32,6 +32,7 @@ import com.razielo.boutscoring.ui.components.common.TopBar
 import com.razielo.boutscoring.ui.components.main.MainComponent
 import com.razielo.boutscoring.ui.theme.BoutScoringTheme
 import kotlinx.coroutines.Job
+import java.util.Date
 
 class MainActivity : ComponentActivity() {
     private val boutViewModel: BoutViewModel by viewModels {
@@ -47,7 +48,7 @@ class MainActivity : ComponentActivity() {
                     boutViewModel.bouts,
                     this,
                     { boutViewModel.insert(it) },
-                    { boutViewModel.update(it) },
+                    { boutViewModel.update(it.copy(updatedAt = Date())) },
                     { boutViewModel.delete(it) }
                 )
             }

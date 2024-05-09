@@ -8,9 +8,7 @@ class ScoresConverter {
     private val gson = Gson()
 
     @TypeConverter
-    fun fromScores(map: Map<Int, Pair<Int, Int>>): String {
-        return gson.toJson(map)
-    }
+    fun fromScores(map: Map<Int, Pair<Int, Int>>): String = gson.toJson(map)
 
     @TypeConverter
     fun toScores(json: String): Map<Int, Pair<Int, Int>> {

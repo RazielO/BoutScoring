@@ -32,4 +32,12 @@ interface BoutDao {
     @Transaction
     @Query("SELECT * FROM bout WHERE bout_id IN (SELECT bout_id FROM bout_fighter_cross_ref WHERE fighter_id = :id)")
     suspend fun getAllFighterBouts(id: String): List<BoutWithFighters>
+
+    @Transaction
+    @Query(
+        "SELECT * FROM bout WHERE bout_id IN " +
+                "(SELECT bout_id FROM bout_fighter_cross_ref WHERE fighter_id IN " +
+                "(SELECT fighter_id FROM fighter WHERE full_name LIKE :pattern))"
+    )
+    suspend fun searchAllFighterBouts(pattern: String): List<BoutWithFighters>
 }

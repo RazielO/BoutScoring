@@ -29,6 +29,10 @@ class BoutViewModel(private val boutRepository: BoutRepository) : ViewModel() {
         _filtered.value = boutRepository.getAllFighterBouts(id)
     }
 
+    fun searchAllFighterBouts(query: String) = viewModelScope.launch {
+        _filtered.value = boutRepository.searchAllFighterBouts("%$query%")
+    }
+
     fun insert(bout: BoutWithFighters) = viewModelScope.launch {
         boutRepository.insert(bout)
     }

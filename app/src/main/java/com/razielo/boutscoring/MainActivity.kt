@@ -1,26 +1,33 @@
 package com.razielo.boutscoring
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LifecycleOwner
 import com.razielo.boutscoring.data.BoutViewModel
 import com.razielo.boutscoring.data.BoutViewModelFactory
@@ -55,19 +62,16 @@ class MainActivity : ComponentActivity() {
 @Composable
 private fun MainActivityComposable(boutViewModel: BoutViewModel, owner: LifecycleOwner) {
     var bouts by remember { mutableStateOf(emptyList<BoutWithFighters>()) }
-    boutViewModel.bouts.observe(owner) { list ->
-        Log.d("$", "Bouts")
-        list.let {
-            bouts = it
-            it.forEach { x -> Log.d("$", x.fighters.joinToString(", ") { v -> v.id }) }
-        }
-    }
+    boutViewModel.bouts.observe(owner) { list -> list.let { bouts = it } }
 
     var bout: BoutWithFighters? by remember { mutableStateOf(null) }
     boutViewModel.bout.observe(owner) { value -> value.let { bout = it } }
 
     var filtered by remember { mutableStateOf(emptyList<BoutWithFighters>()) }
     boutViewModel.filtered.observe(owner) { list -> list.let { filtered = it } }
+
+    var searching by remember { mutableStateOf(false) }
+    var searchText by remember { mutableStateOf("") }
 
     var name by remember { mutableStateOf("") }
     var currentScreen by remember { mutableStateOf(Screen.MAIN) }
@@ -77,14 +81,21 @@ private fun MainActivityComposable(boutViewModel: BoutViewModel, owner: Lifecycl
         filtered.isNotEmpty() -> currentScreen = Screen.FILTERED_BOUTS
     }
 
+    val reset = {
+        bout = null
+        filtered = emptyList()
+        searching = false
+        searchText = ""
+    }
+
     val updateAndGoToMain: (Bout) -> Unit = {
         boutViewModel.update(it)
         currentScreen = Screen.MAIN
-        bout = null
+        reset()
     }
     val goToMain = {
         currentScreen = Screen.MAIN
-        filtered = emptyList()
+        reset()
     }
     val addAndGoToScoreBout: (BoutWithFighters) -> Unit = {
         bout = it
@@ -103,6 +114,12 @@ private fun MainActivityComposable(boutViewModel: BoutViewModel, owner: Lifecycl
     val filterBouts: (Fighter) -> Unit = {
         boutViewModel.getAllFighterBouts(it.id)
         name = it.fullName
+        searching = false
+        searchText = ""
+    }
+    val onSearchTextChange: (String) -> Unit = {
+        searchText = it
+        boutViewModel.searchAllFighterBouts(searchText)
     }
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -110,13 +127,18 @@ private fun MainActivityComposable(boutViewModel: BoutViewModel, owner: Lifecycl
     Scaffold(snackbarHost = {
         SnackbarHost(hostState = snackbarHostState)
     }, topBar = {
-        MainTopBar(
-            hidden = currentScreen == Screen.SCORE_BOUT,
+        MainTopBar(hidden = currentScreen == Screen.SCORE_BOUT,
             currentScreen = currentScreen,
             boutCount = bouts.size,
             goToMain = goToMain,
-            name = name
-        )
+            name = name,
+            searching = searching,
+            searchText = searchText,
+            onSearchTextChange = onSearchTextChange,
+            onSearchClick = {
+                searching = !searching
+                filtered = emptyList()
+            })
     }, floatingActionButton = {
         if (currentScreen == Screen.MAIN) {
             FloatingButton(goToAddBout)
@@ -144,13 +166,41 @@ private fun MainActivityComposable(boutViewModel: BoutViewModel, owner: Lifecycl
 
 @Composable
 private fun MainTopBar(
-    hidden: Boolean, currentScreen: Screen, boutCount: Int, goToMain: () -> Unit, name: String
+    hidden: Boolean,
+    currentScreen: Screen,
+    boutCount: Int,
+    goToMain: () -> Unit,
+    name: String,
+    searching: Boolean,
+    searchText: String,
+    onSearchTextChange: (String) -> Unit,
+    onSearchClick: () -> Unit
 ) {
     if (!hidden) {
-        TopBar(titleText = topBarTitle(currentScreen, boutCount, name),
+        TopBar(titleText = if (searching) "" else topBarTitle(currentScreen, boutCount, name),
             goBack = currentScreen != Screen.MAIN,
             onBack = goToMain,
-            actions = {})
+            actions = {
+                if (searching) {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        OutlinedTextField(
+                            value = searchText,
+                            onValueChange = onSearchTextChange,
+                            placeholder = { Text("Search") },
+                            singleLine = true
+                        )
+                        IconButton(onClick = onSearchClick) {
+                            Icon(Icons.Default.Clear, contentDescription = "Cancel search")
+                        }
+                    }
+                } else {
+                    IconButton(onClick = onSearchClick) {
+                        Icon(Icons.Default.Search, contentDescription = "Search")
+                    }
+                }
+            })
     }
 }
 

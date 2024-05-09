@@ -36,6 +36,11 @@ class BoutRepository(
         return boutDao.getAllFighterBouts(id)
     }
 
+    @WorkerThread
+    suspend fun searchAllFighterBouts(pattern: String): List<BoutWithFighters> {
+        return boutDao.searchAllFighterBouts(pattern)
+    }
+
     private suspend fun insertOrGetFighter(fighter: Fighter): String {
         val existingFighter = fighterDao.getFighterByName(fighter.fullName)
         return if (existingFighter != null) {

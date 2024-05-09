@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface BoutDao {
+    @Transaction
     @Query("SELECT * FROM bout ORDER BY created_at DESC")
     fun getAllBouts(): Flow<List<BoutWithFighters>>
 
@@ -20,11 +21,15 @@ interface BoutDao {
 
     @Transaction
     @Query("SELECT * FROM bout WHERE bout_id = :boutId")
-    suspend fun getBoutWithFighters(boutId: Long): BoutWithFighters?
+    suspend fun getBoutById(boutId: String): BoutWithFighters?
 
     @Update
     suspend fun update(bout: Bout)
 
     @Query("DELETE FROM bout WHERE bout_id = :id")
     suspend fun deleteBoutById(id: String)
+
+    @Transaction
+    @Query("SELECT * FROM bout WHERE bout_id IN (SELECT bout_id FROM bout_fighter_cross_ref WHERE fighter_id = :id)")
+    suspend fun getAllFighterBouts(id: String): List<BoutWithFighters>
 }

@@ -1,6 +1,7 @@
 package com.razielo.boutscoring.data
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
@@ -12,6 +13,21 @@ import kotlinx.coroutines.launch
 
 class BoutViewModel(private val boutRepository: BoutRepository) : ViewModel() {
     val bouts: LiveData<List<BoutWithFighters>> = boutRepository.bouts.asLiveData()
+    private val _bout = MutableLiveData<BoutWithFighters>()
+    val bout: LiveData<BoutWithFighters>
+        get() = _bout
+
+    private val _filtered = MutableLiveData<List<BoutWithFighters>>()
+    val filtered: LiveData<List<BoutWithFighters>>
+        get() = _filtered
+
+    fun getBoutById(id: String) = viewModelScope.launch {
+        _bout.value = boutRepository.getBoutById(id)
+    }
+
+    fun getAllFighterBouts(id: String) = viewModelScope.launch {
+        _filtered.value = boutRepository.getAllFighterBouts(id)
+    }
 
     fun insert(bout: BoutWithFighters) = viewModelScope.launch {
         boutRepository.insert(bout)

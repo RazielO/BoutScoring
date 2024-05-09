@@ -15,10 +15,10 @@ fun scoreColors(scores: Pair<Int, Int>, default: Color): Pair<Color, Color> = wi
     }
 }
 
-fun topBarTitle(screen: Screen, boutCount: Int = 0): String {
+fun topBarTitle(screen: Screen, boutCount: Int = 0, name: String = ""): String {
     return when (screen) {
         Screen.MAIN -> if (boutCount == 0) "My bouts" else "My $boutCount bouts"
-        Screen.FILTERED_BOUTS -> "Filtered bouts"
+        Screen.FILTERED_BOUTS -> "$name bouts"
         Screen.ADD_BOUT -> "Add new bout"
         Screen.SCORE_BOUT -> "Score bout"
     }

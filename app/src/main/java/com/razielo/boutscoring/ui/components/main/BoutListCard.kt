@@ -1,6 +1,7 @@
 package com.razielo.boutscoring.ui.components.main
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -31,6 +32,7 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.razielo.boutscoring.data.models.BoutWithFighters
+import com.razielo.boutscoring.data.models.Fighter
 import com.razielo.boutscoring.scoreColors
 import com.razielo.boutscoring.ui.components.boutscore.HeadText
 import com.razielo.boutscoring.ui.components.common.BoutScoreResult
@@ -41,7 +43,8 @@ fun BoutListCard(
     index: Int,
     bout: BoutWithFighters,
     goToBout: (Int) -> Unit,
-    deleteBout: (BoutWithFighters) -> Unit
+    deleteBout: (BoutWithFighters) -> Unit,
+    filterBouts: (Fighter) -> Unit
 ) {
     val haptics = LocalHapticFeedback.current
     var openAlertDialog by remember { mutableStateOf(false) }
@@ -77,7 +80,11 @@ fun BoutListCard(
         ) {
             Column(Modifier.weight(7f)) {
                 Row {
-                    CardText(bout.fighters[0].fullName, Modifier.weight(5f))
+                    CardText(
+                        bout.fighters[0].fullName,
+                        Modifier
+                            .weight(5f)
+                            .clickable { filterBouts(bout.fighters[0]) })
                     CardText(redScore.toString(), Modifier.weight(1f), colors.first)
                 }
                 Row {
@@ -85,7 +92,11 @@ fun BoutListCard(
                     BoutScoreResult(bout.bout, Modifier.weight(1f))
                 }
                 Row {
-                    CardText(bout.fighters[1].fullName, Modifier.weight(5f))
+                    CardText(
+                        bout.fighters[1].fullName,
+                        Modifier
+                            .weight(5f)
+                            .clickable { filterBouts(bout.fighters[1]) })
                     CardText(blueScore.toString(), Modifier.weight(1f), colors.second)
                 }
             }

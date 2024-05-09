@@ -26,6 +26,16 @@ class BoutRepository(
         boutFighterCrossRefDao.insert(BoutFighterCrossRef(bout.bout.id, blueId))
     }
 
+    @WorkerThread
+    suspend fun getBoutById(id: String): BoutWithFighters? {
+        return boutDao.getBoutById(id)
+    }
+
+    @WorkerThread
+    suspend fun getAllFighterBouts(id: String): List<BoutWithFighters> {
+        return boutDao.getAllFighterBouts(id)
+    }
+
     private suspend fun insertOrGetFighter(fighter: Fighter): String {
         val existingFighter = fighterDao.getFighterByName(fighter.fullName)
         return if (existingFighter != null) {

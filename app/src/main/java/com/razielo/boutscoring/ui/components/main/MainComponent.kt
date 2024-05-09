@@ -7,18 +7,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.razielo.boutscoring.data.models.BoutWithFighters
+import com.razielo.boutscoring.data.models.Fighter
 
 @Composable
 fun MainComponent(
     bouts: List<BoutWithFighters>,
     goToBout: (Int) -> Unit,
-    deleteBout: (BoutWithFighters) -> Unit
+    deleteBout: (BoutWithFighters) -> Unit,
+    filterBouts: (Fighter) -> Unit
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.padding(16.dp)
     ) {
         items(bouts.size) { index ->
-            BoutListCard(index, bouts[index], goToBout, deleteBout)
+            BoutListCard(index, bouts[index], goToBout, deleteBout, filterBouts)
         }
     }
 }

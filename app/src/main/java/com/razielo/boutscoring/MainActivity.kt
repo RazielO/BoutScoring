@@ -1,6 +1,7 @@
 package com.razielo.boutscoring
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -21,19 +22,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
 import com.razielo.boutscoring.data.BoutViewModel
 import com.razielo.boutscoring.data.BoutViewModelFactory
 import com.razielo.boutscoring.data.models.Bout
 import com.razielo.boutscoring.data.models.BoutWithFighters
+import com.razielo.boutscoring.data.models.Fighter
 import com.razielo.boutscoring.data.models.Screen
 import com.razielo.boutscoring.ui.components.addbout.AddBoutComponent
 import com.razielo.boutscoring.ui.components.boutscore.BoutScoreComponent
 import com.razielo.boutscoring.ui.components.common.TopBar
 import com.razielo.boutscoring.ui.components.main.MainComponent
 import com.razielo.boutscoring.ui.theme.BoutScoringTheme
-import kotlinx.coroutines.Job
-import java.util.Date
 
 class MainActivity : ComponentActivity() {
     private val boutViewModel: BoutViewModel by viewModels {
@@ -46,11 +45,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             BoutScoringTheme {
                 MainActivityComposable(
-                    boutViewModel.bouts,
-                    this,
-                    { boutViewModel.insert(it) },
-                    { boutViewModel.update(it.copy(updatedAt = Date())) },
-                    { boutViewModel.delete(it) }
+                    boutViewModel, this
                 )
             }
         }
@@ -58,38 +53,59 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-private fun MainActivityComposable(
-    boutList: LiveData<List<BoutWithFighters>>,
-    owner: LifecycleOwner,
-    insert: (BoutWithFighters) -> Job,
-    update: (Bout) -> Job,
-    deleteBout: (BoutWithFighters) -> Unit
-) {
+private fun MainActivityComposable(boutViewModel: BoutViewModel, owner: LifecycleOwner) {
     var bouts by remember { mutableStateOf(emptyList<BoutWithFighters>()) }
-    boutList.observe(owner) { list -> list.let { bouts = it } }
+    boutViewModel.bouts.observe(owner) { list ->
+        Log.d("$", "Bouts")
+        list.let {
+            bouts = it
+            it.forEach { x -> Log.d("$", x.fighters.joinToString(", ") { v -> v.id }) }
+        }
+    }
 
     var bout: BoutWithFighters? by remember { mutableStateOf(null) }
+    boutViewModel.bout.observe(owner) { value -> value.let { bout = it } }
 
+    var filtered by remember { mutableStateOf(emptyList<BoutWithFighters>()) }
+    boutViewModel.filtered.observe(owner) { list -> list.let { filtered = it } }
+
+    var name by remember { mutableStateOf("") }
     var currentScreen by remember { mutableStateOf(Screen.MAIN) }
 
+    when {
+        bout != null -> currentScreen = Screen.SCORE_BOUT
+        filtered.isNotEmpty() -> currentScreen = Screen.FILTERED_BOUTS
+    }
+
     val updateAndGoToMain: (Bout) -> Unit = {
-        update(it)
+        boutViewModel.update(it)
         currentScreen = Screen.MAIN
+        bout = null
     }
     val goToMain = {
         currentScreen = Screen.MAIN
+        filtered = emptyList()
     }
     val addAndGoToScoreBout: (BoutWithFighters) -> Unit = {
         bout = it
-        insert(it)
+        boutViewModel.insert(it)
         currentScreen = Screen.SCORE_BOUT
     }
     val goToAddBout = { currentScreen = Screen.ADD_BOUT }
     val goToBout: (Int) -> Unit = {
-        bout = bouts[it]
-        currentScreen = Screen.SCORE_BOUT
+        if (currentScreen == Screen.MAIN) {
+            boutViewModel.getBoutById(bouts[it].bout.id)
+        } else {
+            boutViewModel.getBoutById(filtered[it].bout.id)
+        }
+    }
+    val deleteBout: (BoutWithFighters) -> Unit = { boutViewModel.delete(it) }
+    val filterBouts: (Fighter) -> Unit = {
+        boutViewModel.getAllFighterBouts(it.id)
+        name = it.fullName
     }
     val snackbarHostState = remember { SnackbarHostState() }
+
 
     Scaffold(snackbarHost = {
         SnackbarHost(hostState = snackbarHostState)
@@ -98,7 +114,8 @@ private fun MainActivityComposable(
             hidden = currentScreen == Screen.SCORE_BOUT,
             currentScreen = currentScreen,
             boutCount = bouts.size,
-            goToMain = goToMain
+            goToMain = goToMain,
+            name = name
         )
     }, floatingActionButton = {
         if (currentScreen == Screen.MAIN) {
@@ -112,23 +129,14 @@ private fun MainActivityComposable(
             color = MaterialTheme.colorScheme.background
         ) {
             when (currentScreen) {
-                Screen.MAIN -> {
-                    MainComponent(bouts, goToBout, deleteBout)
-                }
-
-                Screen.ADD_BOUT -> {
-                    AddBoutComponent(
-                        snackbarHostState = snackbarHostState, goToBoutScore = addAndGoToScoreBout
-                    )
-                }
-
+                Screen.MAIN -> MainComponent(bouts, goToBout, deleteBout, filterBouts)
+                Screen.FILTERED_BOUTS -> MainComponent(filtered, goToBout, deleteBout, filterBouts)
+                Screen.ADD_BOUT -> AddBoutComponent(snackbarHostState, addAndGoToScoreBout)
                 Screen.SCORE_BOUT -> {
                     if (bout != null) {
-                        BoutScoreComponent(bout = bout!!, topBarOnCLick = updateAndGoToMain)
+                        BoutScoreComponent(bout!!, updateAndGoToMain)
                     }
                 }
-
-                Screen.FILTERED_BOUTS -> {}
             }
         }
     }
@@ -136,10 +144,10 @@ private fun MainActivityComposable(
 
 @Composable
 private fun MainTopBar(
-    hidden: Boolean, currentScreen: Screen, boutCount: Int, goToMain: () -> Unit
+    hidden: Boolean, currentScreen: Screen, boutCount: Int, goToMain: () -> Unit, name: String
 ) {
     if (!hidden) {
-        TopBar(titleText = topBarTitle(currentScreen, boutCount),
+        TopBar(titleText = topBarTitle(currentScreen, boutCount, name),
             goBack = currentScreen != Screen.MAIN,
             onBack = goToMain,
             actions = {})

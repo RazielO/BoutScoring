@@ -8,12 +8,24 @@ import androidx.room.TypeConverters
 import com.razielo.boutscoring.data.converters.DateConverter
 import com.razielo.boutscoring.data.converters.ScoresConverter
 import com.razielo.boutscoring.data.dao.BoutDao
+import com.razielo.boutscoring.data.dao.BoutFighterCrossRefDao
+import com.razielo.boutscoring.data.dao.FighterDao
 import com.razielo.boutscoring.data.models.Bout
+import com.razielo.boutscoring.data.models.BoutFighterCrossRef
+import com.razielo.boutscoring.data.models.Fighter
 
-@Database(entities = [Bout::class], version = 1, exportSchema = false)
+@Database(
+    entities = [Bout::class, Fighter::class, BoutFighterCrossRef::class],
+    version = 1,
+    exportSchema = false
+)
 @TypeConverters(ScoresConverter::class, DateConverter::class)
 abstract class BoutDatabase : RoomDatabase() {
     abstract fun boutDao(): BoutDao
+
+    abstract fun fighterDao(): FighterDao
+
+    abstract fun boutFighterCrossRefDao(): BoutFighterCrossRefDao
 
     companion object {
         @Volatile

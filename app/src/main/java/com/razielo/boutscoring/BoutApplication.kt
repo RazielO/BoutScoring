@@ -7,5 +7,11 @@ import com.razielo.boutscoring.data.repository.BoutRepository
 class BoutApplication : Application() {
     private val database by lazy { BoutDatabase.getDatabase(this) }
 
-    val repository by lazy { BoutRepository(database.boutDao()) }
+    val repository by lazy {
+        BoutRepository(
+            database.boutDao(),
+            database.fighterDao(),
+            database.boutFighterCrossRefDao()
+        )
+    }
 }

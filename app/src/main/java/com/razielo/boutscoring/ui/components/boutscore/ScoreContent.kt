@@ -13,13 +13,16 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.razielo.boutscoring.data.models.Bout
+import com.razielo.boutscoring.data.models.BoutWithFighters
 import com.razielo.boutscoring.scoreColors
 import com.razielo.boutscoring.ui.theme.Blue
 import com.razielo.boutscoring.ui.theme.Red
 
 @Composable
 fun Content(
-    snackbarHostState: SnackbarHostState, bout: Bout, updateRound: (Int, Pair<Int, Int>) -> Unit
+    snackbarHostState: SnackbarHostState,
+    bout: BoutWithFighters,
+    updateRound: (Int, Pair<Int, Int>) -> Unit
 ) {
     val brush = Brush.horizontalGradient(listOf(Red, Blue))
 
@@ -29,14 +32,14 @@ fun Content(
             .fillMaxWidth()
             .padding(16.dp),
     ) {
-        HeaderNames(bout.redCorner, bout.blueCorner)
-        HeaderScores(bout)
+        HeaderNames(bout.fighters[0].displayName, bout.fighters[1].displayName)
+        HeaderScores(bout.bout)
         LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            items(bout.rounds) { round ->
-                val enabled = isRoundEnabled(bout, round)
+            items(bout.bout.rounds) { round ->
+                val enabled = isRoundEnabled(bout.bout, round)
                 val colors: Pair<Color, Color> =
                     scoreColors(
-                        bout.scores[round + 1] ?: Pair(0, 0),
+                        bout.bout.scores[round + 1] ?: Pair(0, 0),
                         MaterialTheme.colorScheme.onBackground
                     )
 
@@ -45,7 +48,7 @@ fun Content(
                     brush = brush,
                     enabled = enabled,
                     round = round + 1,
-                    scores = bout.scores[round + 1] ?: Pair(0, 0),
+                    scores = bout.bout.scores[round + 1] ?: Pair(0, 0),
                     colors = colors,
                     updateRound = updateRound
                 )

@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import com.razielo.boutscoring.data.models.Bout
+import com.razielo.boutscoring.data.models.BoutWithFighters
 import com.razielo.boutscoring.data.models.Fighter
 import kotlinx.coroutines.launch
 
@@ -18,7 +19,7 @@ fun AddBoutContinueButton(
     blueCornerValues: List<String>,
     roundsIndex: Int,
     roundsValues: List<Int>,
-    goToScore: (Bout) -> Unit
+    goToScore: (BoutWithFighters) -> Unit
 ) {
     val scope = rememberCoroutineScope()
 
@@ -50,11 +51,9 @@ fun AddBoutContinueButton(
                 val bout = Bout(
                     rounds = rounds,
                     scores = scores,
-                    redCorner = redCornerValues[0].trim(),
-                    blueCorner = blueCornerValues[0].trim()
                 )
 
-                goToScore(bout)
+                goToScore(BoutWithFighters(bout, listOf(redCorner, blueCorner)))
             }
         },
         modifier = Modifier.fillMaxWidth(),

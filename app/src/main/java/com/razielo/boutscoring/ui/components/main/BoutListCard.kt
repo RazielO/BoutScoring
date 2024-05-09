@@ -30,23 +30,29 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.razielo.boutscoring.data.models.Bout
+import com.razielo.boutscoring.data.models.BoutWithFighters
 import com.razielo.boutscoring.scoreColors
 import com.razielo.boutscoring.ui.components.boutscore.HeadText
 import com.razielo.boutscoring.ui.components.common.BoutScoreResult
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun BoutListCard(index: Int, bout: Bout, goToBout: (Int) -> Unit, deleteBout: (String) -> Unit) {
+fun BoutListCard(
+    index: Int,
+    bout: BoutWithFighters,
+    goToBout: (Int) -> Unit,
+    deleteBout: (BoutWithFighters) -> Unit
+) {
     val haptics = LocalHapticFeedback.current
     var openAlertDialog by remember { mutableStateOf(false) }
 
     when {
         openAlertDialog -> {
-            ConfirmDeleteDialog(bout,
+            ConfirmDeleteDialog(
+                bout,
                 onDismissRequest = { openAlertDialog = false },
                 onConfirmation = {
-                    deleteBout(bout.id)
+                    deleteBout(bout)
                     openAlertDialog = false
                 })
         }
@@ -60,8 +66,8 @@ fun BoutListCard(index: Int, bout: Bout, goToBout: (Int) -> Unit, deleteBout: (S
                 openAlertDialog = true
             })
     ) {
-        val redScore = bout.scores.values.sumOf { it.first }
-        val blueScore = bout.scores.values.sumOf { it.second }
+        val redScore = bout.bout.scores.values.sumOf { it.first }
+        val blueScore = bout.bout.scores.values.sumOf { it.second }
         val colors = scoreColors(
             Pair(redScore, blueScore), MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -71,15 +77,15 @@ fun BoutListCard(index: Int, bout: Bout, goToBout: (Int) -> Unit, deleteBout: (S
         ) {
             Column(Modifier.weight(7f)) {
                 Row {
-                    CardText(bout.redCorner, Modifier.weight(5f))
+                    CardText(bout.fighters[0].fullName, Modifier.weight(5f))
                     CardText(redScore.toString(), Modifier.weight(1f), colors.first)
                 }
                 Row {
                     CardText("vs", Modifier.weight(3f))
-                    BoutScoreResult(bout, Modifier.weight(1f))
+                    BoutScoreResult(bout.bout, Modifier.weight(1f))
                 }
                 Row {
-                    CardText(bout.blueCorner, Modifier.weight(5f))
+                    CardText(bout.fighters[1].fullName, Modifier.weight(5f))
                     CardText(blueScore.toString(), Modifier.weight(1f), colors.second)
                 }
             }
@@ -108,7 +114,7 @@ private fun CardText(
 
 @Composable
 private fun ConfirmDeleteDialog(
-    bout: Bout, onDismissRequest: () -> Unit, onConfirmation: () -> Unit
+    bout: BoutWithFighters, onDismissRequest: () -> Unit, onConfirmation: () -> Unit
 ) {
     Dialog(onDismissRequest = { onDismissRequest() }) {
         Card(
@@ -125,7 +131,7 @@ private fun ConfirmDeleteDialog(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 HeadText(
-                    "Are you sure you want to delete ${bout.redCorner} vs ${bout.blueCorner}?",
+                    "Are you sure you want to delete ${bout.fighters[0].fullName} vs ${bout.fighters[1].fullName}?",
                     Modifier
                 )
 

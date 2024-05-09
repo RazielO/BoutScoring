@@ -14,8 +14,6 @@ data class Bout(
     @PrimaryKey @ColumnInfo(name = "bout_id") val id: String = UUID.randomUUID().toString(),
     val rounds: Int,
     val scores: Map<Int, Pair<Int, Int>>,
-    @ColumnInfo(name = "red_corner") val redCorner: String,
-    @ColumnInfo(name = "blue_corner") val blueCorner: String,
     val winner: Winner? = null,
     @ColumnInfo(name = "win_method") val winMethod: WinMethod? = null,
     @ColumnInfo(name = "draw_method") val drawMethod: DrawMethod? = null,

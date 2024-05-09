@@ -25,6 +25,7 @@ import androidx.lifecycle.LiveData
 import com.razielo.boutscoring.data.BoutViewModel
 import com.razielo.boutscoring.data.BoutViewModelFactory
 import com.razielo.boutscoring.data.models.Bout
+import com.razielo.boutscoring.data.models.BoutWithFighters
 import com.razielo.boutscoring.data.models.Screen
 import com.razielo.boutscoring.ui.components.addbout.AddBoutComponent
 import com.razielo.boutscoring.ui.components.boutscore.BoutScoreComponent
@@ -58,14 +59,16 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 private fun MainActivityComposable(
-    boutList: LiveData<List<Bout>>,
+    boutList: LiveData<List<BoutWithFighters>>,
     owner: LifecycleOwner,
-    insert: (Bout) -> Job,
-    update: (Bout) -> Job, deleteBout: (String) -> Unit
+    insert: (BoutWithFighters) -> Job,
+    update: (Bout) -> Job,
+    deleteBout: (BoutWithFighters) -> Unit
 ) {
-    var bouts by remember { mutableStateOf(emptyList<Bout>()) }
+    var bouts by remember { mutableStateOf(emptyList<BoutWithFighters>()) }
     boutList.observe(owner) { list -> list.let { bouts = it } }
-    var bout: Bout? by remember { mutableStateOf(null) }
+
+    var bout: BoutWithFighters? by remember { mutableStateOf(null) }
 
     var currentScreen by remember { mutableStateOf(Screen.MAIN) }
 
@@ -76,7 +79,7 @@ private fun MainActivityComposable(
     val goToMain = {
         currentScreen = Screen.MAIN
     }
-    val addAndGoToScoreBout: (Bout) -> Unit = {
+    val addAndGoToScoreBout: (BoutWithFighters) -> Unit = {
         bout = it
         insert(it)
         currentScreen = Screen.SCORE_BOUT

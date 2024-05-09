@@ -18,12 +18,14 @@ import androidx.compose.ui.unit.dp
 fun ButtonGroup(values: List<Int>, onClick: (Int) -> Unit, selectedIndex: Int) {
     Row(modifier = Modifier.padding(bottom = 16.dp)) {
         values.forEachIndexed { index, value ->
+            val buttonShape = when (index) {
+                0 -> RoundedCornerShape(topStart = 8.dp, bottomStart = 8.dp)
+                values.size - 1 -> RoundedCornerShape(topEnd = 8.dp, bottomEnd = 8.dp)
+                else -> RectangleShape
+            }
+
             RoundButton(
-                shape = when (index) {
-                    0               -> RoundedCornerShape(topStart = 8.dp, bottomStart = 8.dp)
-                    values.size - 1 -> RoundedCornerShape(topEnd = 8.dp, bottomEnd = 8.dp)
-                    else            -> RectangleShape
-                },
+                shape = buttonShape,
                 modifier = Modifier.weight(1f),
                 enabled = selectedIndex != index,
                 value = value.toString(),
@@ -40,13 +42,20 @@ private fun RoundButton(
     value: String,
     onClick: () -> Unit,
 ) {
+    val customColors = ButtonDefaults.buttonColors(
+        containerColor = MaterialTheme.colorScheme.background,
+        contentColor = MaterialTheme.colorScheme.onBackground,
+        disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+        disabledContentColor = MaterialTheme.colorScheme.onSecondaryContainer
+    )
+
     OutlinedButton(
-        shape = shape, onClick = onClick, colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.background,
-            contentColor = MaterialTheme.colorScheme.onBackground,
-            disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-            disabledContentColor = MaterialTheme.colorScheme.onSecondaryContainer
-        ), modifier = modifier, contentPadding = PaddingValues(0.dp), enabled = enabled
+        shape = shape,
+        onClick = onClick,
+        colors = customColors,
+        modifier = modifier,
+        contentPadding = PaddingValues(0.dp),
+        enabled = enabled
     ) {
         Text(value)
     }

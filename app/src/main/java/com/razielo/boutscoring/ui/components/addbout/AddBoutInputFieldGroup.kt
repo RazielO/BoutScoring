@@ -6,20 +6,23 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import com.razielo.boutscoring.R
 
 @Composable
 fun AddBoutInputFieldGroup(
     values: List<String>, corner: String, onValueChange: (Int, String) -> Unit
 ) {
     val labels: List<String> = listOf(
-        "$corner Corner Full Name", "$corner Corner Display Name"
+        stringResource(R.string.corner_full_name, corner),
+        stringResource(R.string.corner_display_name, corner)
     )
 
     repeat(2) { index ->
         InputField(value = values[index],
             labelText = labels[index],
-            onValueChange = { newValue -> onValueChange(index, newValue) })
+            onValueChange = { onValueChange(index, it) })
     }
 }
 
@@ -29,12 +32,9 @@ private fun InputField(
 ) {
     OutlinedTextField(
         value = value,
-        onValueChange = { newValue ->
-            onValueChange(newValue)
-        },
-        keyboardOptions = KeyboardOptions.Default.copy(
-            imeAction = ImeAction.Done
-        ),
-        label = { Text(labelText) }, modifier = Modifier.fillMaxWidth(),
+        onValueChange = onValueChange,
+        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+        label = { Text(labelText) },
+        modifier = Modifier.fillMaxWidth()
     )
 }

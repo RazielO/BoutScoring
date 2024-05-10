@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">BoutScoring</string>
+    <!-- Add Bout -->
+    <string name="corner_full_name">%1$s Corner Full Name</string>
+    <string name="corner_display_name">%1$s Corner Display Name</string>
+    <string name="continue_text">Continue</string>
+    <string name="vs">vs</string>
+    <string name="red">Red</string>
+    <string name="blue">Blue</string>
+    <string name="number_of_rounds">Number of rounds</string>
 </resources>

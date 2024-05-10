@@ -71,13 +71,15 @@ private fun updateCornerValues(values: List<String>, index: Int, newValue: Strin
 
 private fun updateFullName(values: List<String>, value: String): List<String> =
     values.toMutableList().apply {
-        val parts: List<String> = value.trim().split(" ").filter { it.isNotEmpty() }
+        val parts: List<String> = value.split(" ")
         val suffixes: List<String> = listOf("JR", "SR", "II", "III")
 
         if (parts.last().isNotEmpty() && suffixes.contains(parts.last().uppercase())) {
-            set(1, parts.takeLast(2).joinToString(" "))
-        } else {
-            set(1, parts.last())
+            set(1, parts.takeLast(2).joinToString(" ").uppercase())
+        } else if (parts.any { it.isNotBlank() }) {
+            set(1, parts.last { it.isNotBlank() }.uppercase())
+        } else if (parts.all { it.isBlank() }) {
+            set(1, "")
         }
 
         set(0, parts.joinToString(" ") { it.replaceFirstChar { chr -> chr.uppercase() } })

@@ -8,7 +8,7 @@ data class BoutWithFighters(
     @Embedded val bout: Bout,
     @Relation(
         parentColumn = "bout_id",
-        entityColumn = "fighter_id",
+        entityColumn = "full_name",
         associateBy = Junction(BoutFighterCrossRef::class)
     )
     val fighters: List<Fighter>

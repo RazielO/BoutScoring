@@ -32,8 +32,8 @@ import androidx.lifecycle.LifecycleOwner
 import com.razielo.boutscoring.data.BoutViewModel
 import com.razielo.boutscoring.data.BoutViewModelFactory
 import com.razielo.boutscoring.data.models.Bout
-import com.razielo.boutscoring.data.models.BoutWithFighters
 import com.razielo.boutscoring.data.models.Fighter
+import com.razielo.boutscoring.data.models.ParsedBout
 import com.razielo.boutscoring.data.models.Screen
 import com.razielo.boutscoring.ui.components.addbout.AddBoutComponent
 import com.razielo.boutscoring.ui.components.boutscore.BoutScoreComponent
@@ -61,13 +61,17 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 private fun MainActivityComposable(boutViewModel: BoutViewModel, owner: LifecycleOwner) {
-    var bouts by remember { mutableStateOf(emptyList<BoutWithFighters>()) }
-    boutViewModel.bouts.observe(owner) { list -> list.let { bouts = it } }
+    var bouts by remember { mutableStateOf(emptyList<ParsedBout>()) }
+    boutViewModel.bouts.observe(owner) { list ->
+        list.let {
+            bouts = it.mapNotNull { b -> ParsedBout.fromBoutWithFighters(b) }
+        }
+    }
 
-    var bout: BoutWithFighters? by remember { mutableStateOf(null) }
+    var bout: ParsedBout? by remember { mutableStateOf(null) }
     boutViewModel.bout.observe(owner) { value -> value.let { bout = it } }
 
-    var filtered by remember { mutableStateOf(emptyList<BoutWithFighters>()) }
+    var filtered by remember { mutableStateOf(emptyList<ParsedBout>()) }
     boutViewModel.filtered.observe(owner) { list -> list.let { filtered = it } }
 
     var searching by remember { mutableStateOf(false) }
@@ -97,7 +101,7 @@ private fun MainActivityComposable(boutViewModel: BoutViewModel, owner: Lifecycl
         currentScreen = Screen.MAIN
         reset()
     }
-    val addAndGoToScoreBout: (BoutWithFighters) -> Unit = {
+    val addAndGoToScoreBout: (ParsedBout) -> Unit = {
         bout = it
         boutViewModel.insert(it)
         currentScreen = Screen.SCORE_BOUT
@@ -110,9 +114,9 @@ private fun MainActivityComposable(boutViewModel: BoutViewModel, owner: Lifecycl
             boutViewModel.getBoutById(filtered[it].bout.id)
         }
     }
-    val deleteBout: (BoutWithFighters) -> Unit = { boutViewModel.delete(it) }
+    val deleteBout: (ParsedBout) -> Unit = { boutViewModel.delete(it) }
     val filterBouts: (Fighter) -> Unit = {
-        boutViewModel.getAllFighterBouts(it.id)
+        boutViewModel.getAllFighterBouts(it.fullName)
         name = it.fullName
         searching = false
         searchText = ""
@@ -127,7 +131,8 @@ private fun MainActivityComposable(boutViewModel: BoutViewModel, owner: Lifecycl
     Scaffold(snackbarHost = {
         SnackbarHost(hostState = snackbarHostState)
     }, topBar = {
-        MainTopBar(hidden = currentScreen == Screen.SCORE_BOUT,
+        MainTopBar(
+            hidden = currentScreen == Screen.SCORE_BOUT,
             currentScreen = currentScreen,
             boutCount = bouts.size,
             goToMain = goToMain,
@@ -136,9 +141,11 @@ private fun MainActivityComposable(boutViewModel: BoutViewModel, owner: Lifecycl
             searchText = searchText,
             onSearchTextChange = onSearchTextChange,
             onSearchClick = {
-                searching = !searching
-                filtered = emptyList()
-            })
+                reset()
+                searching = true
+            },
+            onCancelClick = goToMain
+        )
     }, floatingActionButton = {
         if (currentScreen == Screen.MAIN) {
             FloatingButton(goToAddBout)
@@ -174,7 +181,8 @@ private fun MainTopBar(
     searching: Boolean,
     searchText: String,
     onSearchTextChange: (String) -> Unit,
-    onSearchClick: () -> Unit
+    onSearchClick: () -> Unit,
+    onCancelClick: () -> Unit
 ) {
     if (!hidden) {
         TopBar(titleText = if (searching) "" else topBarTitle(currentScreen, boutCount, name),
@@ -191,7 +199,7 @@ private fun MainTopBar(
                             placeholder = { Text("Search") },
                             singleLine = true
                         )
-                        IconButton(onClick = onSearchClick) {
+                        IconButton(onClick = onCancelClick) {
                             Icon(Icons.Default.Clear, contentDescription = "Cancel search")
                         }
                     }

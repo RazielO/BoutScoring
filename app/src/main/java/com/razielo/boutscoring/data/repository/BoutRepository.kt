@@ -7,7 +7,7 @@ import com.razielo.boutscoring.data.dao.FighterDao
 import com.razielo.boutscoring.data.models.Bout
 import com.razielo.boutscoring.data.models.BoutFighterCrossRef
 import com.razielo.boutscoring.data.models.BoutWithFighters
-import com.razielo.boutscoring.data.models.Fighter
+import com.razielo.boutscoring.data.models.ParsedBout
 import kotlinx.coroutines.flow.Flow
 
 class BoutRepository(
@@ -18,37 +18,29 @@ class BoutRepository(
     val bouts: Flow<List<BoutWithFighters>> = boutDao.getAllBouts()
 
     @WorkerThread
-    suspend fun insert(bout: BoutWithFighters) {
-        val redId = insertOrGetFighter(bout.fighters[0])
-        val blueId = insertOrGetFighter(bout.fighters[1])
+    suspend fun insert(bout: ParsedBout) {
+        fighterDao.insert(bout.redCorner)
+        fighterDao.insert(bout.blueCorner)
         boutDao.insert(bout.bout)
-        boutFighterCrossRefDao.insert(BoutFighterCrossRef(bout.bout.id, redId))
-        boutFighterCrossRefDao.insert(BoutFighterCrossRef(bout.bout.id, blueId))
+        boutFighterCrossRefDao.insert(BoutFighterCrossRef(bout.bout.id, bout.redCorner.fullName))
+        boutFighterCrossRefDao.insert(BoutFighterCrossRef(bout.bout.id, bout.blueCorner.fullName))
     }
 
     @WorkerThread
-    suspend fun getBoutById(id: String): BoutWithFighters? {
-        return boutDao.getBoutById(id)
+    suspend fun getBoutById(id: String): ParsedBout? {
+        return boutDao.getBoutById(id)?.let { ParsedBout.fromBoutWithFighters(it) }
     }
 
     @WorkerThread
-    suspend fun getAllFighterBouts(id: String): List<BoutWithFighters> {
-        return boutDao.getAllFighterBouts(id)
+    suspend fun getAllFighterBouts(name: String): List<ParsedBout> {
+        return boutDao.getAllFighterBouts(name)
+            .mapNotNull { ParsedBout.fromBoutWithFighters(it) }
     }
 
     @WorkerThread
-    suspend fun searchAllFighterBouts(pattern: String): List<BoutWithFighters> {
+    suspend fun searchAllFighterBouts(pattern: String): List<ParsedBout> {
         return boutDao.searchAllFighterBouts(pattern)
-    }
-
-    private suspend fun insertOrGetFighter(fighter: Fighter): String {
-        val existingFighter = fighterDao.getFighterByName(fighter.fullName)
-        return if (existingFighter != null) {
-            existingFighter.id
-        } else {
-            fighterDao.insert(fighter)
-            fighter.id
-        }
+            .mapNotNull { ParsedBout.fromBoutWithFighters(it) }
     }
 
     @WorkerThread
@@ -57,13 +49,13 @@ class BoutRepository(
     }
 
     @WorkerThread
-    suspend fun deleteBout(bout: BoutWithFighters) {
+    suspend fun deleteBout(bout: ParsedBout) {
         boutDao.deleteBoutById(bout.bout.id)
-        if (fighterDao.getAllFighterBouts(bout.fighters[0].id).isEmpty()) {
-            fighterDao.deleteFighterById(bout.fighters[0].id)
+        if (fighterDao.getAllFighterBouts(bout.redCorner.fullName).isEmpty()) {
+            fighterDao.deleteFighter(bout.redCorner.fullName)
         }
-        if (fighterDao.getAllFighterBouts(bout.fighters[1].id).isEmpty()) {
-            fighterDao.deleteFighterById(bout.fighters[1].id)
+        if (fighterDao.getAllFighterBouts(bout.blueCorner.fullName).isEmpty()) {
+            fighterDao.deleteFighter(bout.blueCorner.fullName)
         }
     }
 }

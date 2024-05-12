@@ -6,7 +6,7 @@ import androidx.room.ForeignKey
 
 @Entity(
     tableName = "bout_fighter_cross_ref",
-    primaryKeys = ["bout_id", "fighter_id"],
+    primaryKeys = ["bout_id", "full_name"],
     foreignKeys = [ForeignKey(
         entity = Bout::class,
         parentColumns = ["bout_id"],
@@ -14,13 +14,13 @@ import androidx.room.ForeignKey
         onDelete = ForeignKey.CASCADE
     ), ForeignKey(
         entity = Fighter::class,
-        parentColumns = ["fighter_id"],
-        childColumns = ["fighter_id"],
+        parentColumns = ["full_name"],
+        childColumns = ["full_name"],
         onDelete = ForeignKey.CASCADE
     )]
 )
 data class BoutFighterCrossRef(
     @ColumnInfo(name = "bout_id", index = true) val boutId: String,
-    @ColumnInfo(name = "fighter_id", index = true) val fighterId: String
+    @ColumnInfo(name = "full_name", index = true) val fullName: String
 )
 

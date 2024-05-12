@@ -16,11 +16,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.razielo.boutscoring.R
-import com.razielo.boutscoring.data.models.BoutWithFighters
+import com.razielo.boutscoring.data.models.ParsedBout
 
 @Composable
 fun AddBoutComponent(
-    snackbarHostState: SnackbarHostState, goToBoutScore: (BoutWithFighters) -> Unit
+    snackbarHostState: SnackbarHostState, goToBoutScore: (ParsedBout) -> Unit
 ) {
     var redCornerValues by remember { mutableStateOf(List(2) { "" }) }
     var blueCornerValues by remember { mutableStateOf(List(2) { "" }) }

@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.razielo.boutscoring.data.models.Bout
-import com.razielo.boutscoring.data.models.BoutWithFighters
+import com.razielo.boutscoring.data.models.ParsedBout
 import com.razielo.boutscoring.scoreColors
 import com.razielo.boutscoring.ui.theme.Blue
 import com.razielo.boutscoring.ui.theme.Red
@@ -21,7 +21,7 @@ import com.razielo.boutscoring.ui.theme.Red
 @Composable
 fun Content(
     snackbarHostState: SnackbarHostState,
-    bout: BoutWithFighters,
+    bout: ParsedBout,
     updateRound: (Int, Pair<Int, Int>) -> Unit
 ) {
     val brush = Brush.horizontalGradient(listOf(Red, Blue))
@@ -32,7 +32,7 @@ fun Content(
             .fillMaxWidth()
             .padding(16.dp),
     ) {
-        HeaderNames(bout.fighters[0].displayName, bout.fighters[1].displayName)
+        HeaderNames(bout.redCorner.displayName, bout.blueCorner.displayName)
         HeaderScores(bout.bout)
         LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             items(bout.bout.rounds) { round ->

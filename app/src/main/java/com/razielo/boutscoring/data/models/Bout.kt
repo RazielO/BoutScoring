@@ -15,6 +15,8 @@ data class Bout(
     val rounds: Int,
     val scores: Map<Int, Pair<Int, Int>>,
     val winner: Winner? = null,
+    @ColumnInfo(name = "red_corner_id") val redCornerId: String,
+    @ColumnInfo(name = "blue_corner_id") val blueCornerId: String,
     @ColumnInfo(name = "win_method") val winMethod: WinMethod? = null,
     @ColumnInfo(name = "draw_method") val drawMethod: DrawMethod? = null,
     @ColumnInfo(name = "no_result_method") val noResultMethod: NoResultMethod? = null,

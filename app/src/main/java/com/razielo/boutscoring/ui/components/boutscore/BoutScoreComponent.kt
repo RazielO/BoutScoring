@@ -8,25 +8,26 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.razielo.boutscoring.data.models.Bout
-import com.razielo.boutscoring.data.models.BoutWithFighters
+import com.razielo.boutscoring.data.models.ParsedBout
 
 @Composable
-fun BoutScoreComponent(bout: BoutWithFighters, topBarOnCLick: (Bout) -> Unit) {
+fun BoutScoreComponent(bout: ParsedBout, topBarOnCLick: (Bout) -> Unit) {
     val snackbarHostState = remember { SnackbarHostState() }
-    val boutState = remember { mutableStateOf(bout) }
+    var boutState by remember { mutableStateOf(bout) }
 
     Scaffold(topBar = {
         ScoreTopBar(
             snackbarHostState,
-            boutState.value.bout,
-            { topBarOnCLick(boutState.value.bout) }
-        ) { winner, winMethod, drawMethod, noResultMethod ->
-            boutState.value = boutState.value.copy(
-                bout = bout.bout.copy(
+            boutState.bout,
+            { topBarOnCLick(boutState.bout) }) { winner, winMethod, drawMethod, noResultMethod ->
+            boutState = boutState.copy(
+                bout = boutState.bout.copy(
                     winner = winner,
                     winMethod = winMethod,
                     drawMethod = drawMethod,
@@ -43,11 +44,9 @@ fun BoutScoreComponent(bout: BoutWithFighters, topBarOnCLick: (Bout) -> Unit) {
                 .fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            Content(snackbarHostState, boutState.value) { round, values ->
-                val newScores =
-                    boutState.value.bout.scores.toMutableMap().apply { set(round, values) }
-                boutState.value =
-                    boutState.value.copy(bout = boutState.value.bout.copy(scores = newScores))
+            Content(snackbarHostState, boutState) { round, values ->
+                val newScores = boutState.bout.scores.toMutableMap().apply { set(round, values) }
+                boutState = boutState.copy(bout = boutState.bout.copy(scores = newScores))
             }
         }
     })

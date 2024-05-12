@@ -8,17 +8,18 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.razielo.boutscoring.data.models.Bout
 import com.razielo.boutscoring.data.models.BoutWithFighters
+import com.razielo.boutscoring.data.models.ParsedBout
 import com.razielo.boutscoring.data.repository.BoutRepository
 import kotlinx.coroutines.launch
 
 class BoutViewModel(private val boutRepository: BoutRepository) : ViewModel() {
     val bouts: LiveData<List<BoutWithFighters>> = boutRepository.bouts.asLiveData()
-    private val _bout = MutableLiveData<BoutWithFighters>()
-    val bout: LiveData<BoutWithFighters>
+    private val _bout = MutableLiveData<ParsedBout>()
+    val bout: LiveData<ParsedBout>
         get() = _bout
 
-    private val _filtered = MutableLiveData<List<BoutWithFighters>>()
-    val filtered: LiveData<List<BoutWithFighters>>
+    private val _filtered = MutableLiveData<List<ParsedBout>>()
+    val filtered: LiveData<List<ParsedBout>>
         get() = _filtered
 
     fun getBoutById(id: String) = viewModelScope.launch {
@@ -33,7 +34,7 @@ class BoutViewModel(private val boutRepository: BoutRepository) : ViewModel() {
         _filtered.value = boutRepository.searchAllFighterBouts("%$query%")
     }
 
-    fun insert(bout: BoutWithFighters) = viewModelScope.launch {
+    fun insert(bout: ParsedBout) = viewModelScope.launch {
         boutRepository.insert(bout)
     }
 
@@ -41,7 +42,7 @@ class BoutViewModel(private val boutRepository: BoutRepository) : ViewModel() {
         boutRepository.update(bout)
     }
 
-    fun delete(bout: BoutWithFighters) = viewModelScope.launch {
+    fun delete(bout: ParsedBout) = viewModelScope.launch {
         boutRepository.deleteBout(bout)
     }
 }

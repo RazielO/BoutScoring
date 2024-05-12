@@ -6,14 +6,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.razielo.boutscoring.data.models.BoutWithFighters
 import com.razielo.boutscoring.data.models.Fighter
+import com.razielo.boutscoring.data.models.ParsedBout
 
 @Composable
 fun MainComponent(
-    bouts: List<BoutWithFighters>,
+    bouts: List<ParsedBout>,
     goToBout: (Int) -> Unit,
-    deleteBout: (BoutWithFighters) -> Unit,
+    deleteBout: (ParsedBout) -> Unit,
     filterBouts: (Fighter) -> Unit
 ) {
     LazyColumn(

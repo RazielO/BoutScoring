@@ -10,8 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.razielo.boutscoring.R
 import com.razielo.boutscoring.data.models.Bout
-import com.razielo.boutscoring.data.models.BoutWithFighters
 import com.razielo.boutscoring.data.models.Fighter
+import com.razielo.boutscoring.data.models.ParsedBout
 import kotlinx.coroutines.launch
 
 @Composable
@@ -21,7 +21,7 @@ fun AddBoutContinueButton(
     blueCornerValues: List<String>,
     roundsIndex: Int,
     roundsValues: List<Int>,
-    goToScore: (BoutWithFighters) -> Unit
+    goToScore: (ParsedBout) -> Unit
 ) {
     val scope = rememberCoroutineScope()
     val messageText: String = when {
@@ -50,13 +50,16 @@ fun AddBoutContinueButton(
 
 private fun createBout(
     rounds: Int, redCornerValues: List<String>, blueCornerValues: List<String>
-): BoutWithFighters {
+): ParsedBout {
     val scores: Map<Int, Pair<Int, Int>> = (1 .. rounds).associateWith { Pair(0, 0) }
-    val redCorner =
-        Fighter(fullName = redCornerValues[0].trim(), displayName = redCornerValues[1].trim())
-    val blueCorner =
-        Fighter(fullName = blueCornerValues[0].trim(), displayName = blueCornerValues[1].trim())
-    val bout = Bout(rounds = rounds, scores = scores)
+    val redCorner = Fighter(redCornerValues[0].trim(), redCornerValues[1].trim())
+    val blueCorner = Fighter(blueCornerValues[0].trim(), blueCornerValues[1].trim())
+    val bout = Bout(
+        rounds = rounds,
+        scores = scores,
+        redCornerId = redCorner.fullName,
+        blueCornerId = blueCorner.fullName
+    )
 
-    return BoutWithFighters(bout, listOf(redCorner, blueCorner))
+    return ParsedBout(bout, redCorner, blueCorner)
 }

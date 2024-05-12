@@ -7,7 +7,7 @@ import androidx.room.Relation
 data class FighterWithBouts(
     @Embedded val fighter: Fighter,
     @Relation(
-        parentColumn = "fighter_id",
+        parentColumn = "full_name",
         entityColumn = "bout_id",
         associateBy = Junction(BoutFighterCrossRef::class)
     )

@@ -4,18 +4,13 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.KeyboardArrowRight
 import androidx.compose.material3.Card
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -51,8 +46,7 @@ fun BoutListCard(
 
     when {
         openAlertDialog -> {
-            ConfirmDeleteDialog(
-                bout,
+            ConfirmDeleteDialog(bout,
                 onDismissRequest = { openAlertDialog = false },
                 onConfirmation = {
                     deleteBout(bout)
@@ -64,7 +58,7 @@ fun BoutListCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .combinedClickable(onClick = {}, onLongClick = {
+            .combinedClickable(onClick = { goToBout(index) }, onLongClick = {
                 haptics.performHapticFeedback(HapticFeedbackType.LongPress)
                 openAlertDialog = true
             })
@@ -78,34 +72,21 @@ fun BoutListCard(
         Row(
             modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically
         ) {
-            Column(Modifier.weight(7f)) {
-                Row {
-                    CardText(
-                        bout.redCorner.fullName,
-                        Modifier
-                            .weight(5f)
-                            .clickable { filterBouts(bout.redCorner) })
-                    CardText(redScore.toString(), Modifier.weight(1f), colors.first)
-                }
-                Row {
-                    CardText("vs", Modifier.weight(3f))
-                    BoutScoreResult(bout.info, Modifier.weight(1f))
-                }
-                Row {
-                    CardText(
-                        bout.blueCorner.fullName,
-                        Modifier
-                            .weight(5f)
-                            .clickable { filterBouts(bout.blueCorner) })
-                    CardText(blueScore.toString(), Modifier.weight(1f), colors.second)
-                }
+            Column(Modifier.weight(5f)) {
+                CardText(
+                    bout.redCorner.fullName,
+                    Modifier.clickable { filterBouts(bout.redCorner) })
+                CardText("vs", Modifier)
+                CardText(
+                    bout.blueCorner.fullName,
+                    Modifier.clickable { filterBouts(bout.blueCorner) })
             }
-            Box(modifier = Modifier.weight(1f)) {
-                IconButton(onClick = {
-                    goToBout(index)
-                }) {
-                    Icon(Icons.Outlined.KeyboardArrowRight, "Go to bout score")
-                }
+            Column(
+                Modifier.weight(2f), horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                CardText(redScore.toString(), Modifier, colors.first)
+                BoutScoreResult(bout.info, Modifier)
+                CardText(blueScore.toString(), Modifier, colors.second)
             }
         }
     }

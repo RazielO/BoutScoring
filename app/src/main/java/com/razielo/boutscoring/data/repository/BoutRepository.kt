@@ -4,7 +4,6 @@ import androidx.annotation.WorkerThread
 import com.razielo.boutscoring.data.dao.BoutDao
 import com.razielo.boutscoring.data.dao.BoutFighterCrossRefDao
 import com.razielo.boutscoring.data.dao.FighterDao
-import com.razielo.boutscoring.data.models.Bout
 import com.razielo.boutscoring.data.models.BoutFighterCrossRef
 import com.razielo.boutscoring.data.models.BoutWithFighters
 import com.razielo.boutscoring.data.models.ParsedBout
@@ -21,6 +20,7 @@ class BoutRepository(
     suspend fun insert(bout: ParsedBout) {
         fighterDao.insert(bout.redCorner)
         fighterDao.insert(bout.blueCorner)
+        boutDao.insertInfo(bout.info)
         boutDao.insert(bout.bout)
         boutFighterCrossRefDao.insert(BoutFighterCrossRef(bout.bout.id, bout.redCorner.fullName))
         boutFighterCrossRefDao.insert(BoutFighterCrossRef(bout.bout.id, bout.blueCorner.fullName))
@@ -33,8 +33,7 @@ class BoutRepository(
 
     @WorkerThread
     suspend fun getAllFighterBouts(name: String): List<ParsedBout> {
-        return boutDao.getAllFighterBouts(name)
-            .mapNotNull { ParsedBout.fromBoutWithFighters(it) }
+        return boutDao.getAllFighterBouts(name).mapNotNull { ParsedBout.fromBoutWithFighters(it) }
     }
 
     @WorkerThread
@@ -44,13 +43,15 @@ class BoutRepository(
     }
 
     @WorkerThread
-    suspend fun update(bout: Bout) {
-        boutDao.update(bout)
+    suspend fun update(bout: ParsedBout) {
+        boutDao.update(bout.bout)
+        boutDao.updateInfo(bout.info)
     }
 
     @WorkerThread
     suspend fun deleteBout(bout: ParsedBout) {
         boutDao.deleteBoutById(bout.bout.id)
+        boutDao.deleteBoutInfoById(bout.info.id)
         if (fighterDao.getAllFighterBouts(bout.redCorner.fullName).isEmpty()) {
             fighterDao.deleteFighter(bout.redCorner.fullName)
         }

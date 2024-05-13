@@ -10,6 +10,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import com.razielo.boutscoring.data.models.Bout
+import com.razielo.boutscoring.data.models.BoutInfo
 import com.razielo.boutscoring.scoreColors
 import com.razielo.boutscoring.ui.components.common.BoutScoreResult
 
@@ -23,7 +24,7 @@ fun HeaderNames(redCorner: String, blueCorner: String) {
 }
 
 @Composable
-fun HeaderScores(bout: Bout) {
+fun HeaderScores(bout: Bout, info: BoutInfo) {
     val redScore = bout.scores.values.sumOf { it.first }
     val blueScore = bout.scores.values.sumOf { it.second }
 
@@ -31,7 +32,7 @@ fun HeaderScores(bout: Bout) {
         val colors = scoreColors(Pair(redScore, blueScore), MaterialTheme.colorScheme.onBackground)
 
         HeadText(redScore.toString(), Modifier.weight(2f), colors.first)
-        BoutScoreResult(bout, Modifier.weight(1f))
+        BoutScoreResult(info, Modifier.weight(1f))
         HeadText(blueScore.toString(), Modifier.weight(2f), colors.second)
     }
 }

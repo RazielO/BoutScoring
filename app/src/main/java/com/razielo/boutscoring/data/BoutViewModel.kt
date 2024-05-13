@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.razielo.boutscoring.data.models.Bout
 import com.razielo.boutscoring.data.models.BoutWithFighters
 import com.razielo.boutscoring.data.models.ParsedBout
 import com.razielo.boutscoring.data.repository.BoutRepository
@@ -38,7 +37,7 @@ class BoutViewModel(private val boutRepository: BoutRepository) : ViewModel() {
         boutRepository.insert(bout)
     }
 
-    fun update(bout: Bout) = viewModelScope.launch {
+    fun update(bout: ParsedBout) = viewModelScope.launch {
         boutRepository.update(bout)
     }
 

@@ -2,6 +2,7 @@ package com.razielo.boutscoring.data.models
 
 data class ParsedBout(
     val bout: Bout,
+    val info: BoutInfo,
     val redCorner: Fighter,
     val blueCorner: Fighter
 ) {
@@ -11,11 +12,12 @@ data class ParsedBout(
                 return null
             }
 
-            val bout = withFighters.bout
+            val bout = withFighters.bout.bout
+            val info = withFighters.bout.info
             val redCorner = withFighters.fighters.first { it.fullName == bout.redCornerId }
             val blueCorner = withFighters.fighters.first { it.fullName == bout.blueCornerId }
 
-            return ParsedBout(bout, redCorner, blueCorner)
+            return ParsedBout(bout, info, redCorner, blueCorner)
         }
     }
 }

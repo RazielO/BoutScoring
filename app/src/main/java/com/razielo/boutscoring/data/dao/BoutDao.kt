@@ -7,6 +7,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
 import com.razielo.boutscoring.data.models.Bout
+import com.razielo.boutscoring.data.models.BoutInfo
 import com.razielo.boutscoring.data.models.BoutWithFighters
 import kotlinx.coroutines.flow.Flow
 
@@ -19,12 +20,21 @@ interface BoutDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(bout: Bout)
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertInfo(info: BoutInfo)
+
     @Transaction
     @Query("SELECT * FROM bout WHERE bout_id = :boutId")
     suspend fun getBoutById(boutId: String): BoutWithFighters?
 
     @Update
     suspend fun update(bout: Bout)
+
+    @Update
+    suspend fun updateInfo(info: BoutInfo)
+
+    @Query("DELETE FROM bout_info WHERE bout_info_id = :id")
+    suspend fun deleteBoutInfoById(id: String)
 
     @Query("DELETE FROM bout WHERE bout_id = :id")
     suspend fun deleteBoutById(id: String)

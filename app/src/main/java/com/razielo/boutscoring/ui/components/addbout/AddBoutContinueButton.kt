@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.razielo.boutscoring.R
 import com.razielo.boutscoring.data.models.Bout
+import com.razielo.boutscoring.data.models.BoutInfo
 import com.razielo.boutscoring.data.models.Fighter
 import com.razielo.boutscoring.data.models.ParsedBout
 import kotlinx.coroutines.launch
@@ -54,12 +55,14 @@ private fun createBout(
     val scores: Map<Int, Pair<Int, Int>> = (1 .. rounds).associateWith { Pair(0, 0) }
     val redCorner = Fighter(redCornerValues[0].trim(), redCornerValues[1].trim())
     val blueCorner = Fighter(blueCornerValues[0].trim(), blueCornerValues[1].trim())
+    val info = BoutInfo()
     val bout = Bout(
         rounds = rounds,
         scores = scores,
+        boutInfoId = info.id,
         redCornerId = redCorner.fullName,
         blueCornerId = blueCorner.fullName
     )
 
-    return ParsedBout(bout, redCorner, blueCorner)
+    return ParsedBout(bout, info, redCorner, blueCorner)
 }

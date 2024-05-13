@@ -13,21 +13,20 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.razielo.boutscoring.data.models.Bout
 import com.razielo.boutscoring.data.models.ParsedBout
 
 @Composable
-fun BoutScoreComponent(bout: ParsedBout, topBarOnCLick: (Bout) -> Unit) {
+fun BoutScoreComponent(bout: ParsedBout, topBarOnCLick: (ParsedBout) -> Unit) {
     val snackbarHostState = remember { SnackbarHostState() }
     var boutState by remember { mutableStateOf(bout) }
 
     Scaffold(topBar = {
         ScoreTopBar(
             snackbarHostState,
-            boutState.bout,
-            { topBarOnCLick(boutState.bout) }) { winner, winMethod, drawMethod, noResultMethod ->
+            boutState.info,
+            { topBarOnCLick(boutState) }) { winner, winMethod, drawMethod, noResultMethod ->
             boutState = boutState.copy(
-                bout = boutState.bout.copy(
+                info = boutState.info.copy(
                     winner = winner,
                     winMethod = winMethod,
                     drawMethod = drawMethod,

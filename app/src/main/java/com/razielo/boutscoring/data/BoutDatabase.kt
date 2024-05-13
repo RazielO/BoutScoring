@@ -12,10 +12,11 @@ import com.razielo.boutscoring.data.dao.BoutFighterCrossRefDao
 import com.razielo.boutscoring.data.dao.FighterDao
 import com.razielo.boutscoring.data.models.Bout
 import com.razielo.boutscoring.data.models.BoutFighterCrossRef
+import com.razielo.boutscoring.data.models.BoutInfo
 import com.razielo.boutscoring.data.models.Fighter
 
 @Database(
-    entities = [Bout::class, Fighter::class, BoutFighterCrossRef::class],
+    entities = [Bout::class, Fighter::class, BoutFighterCrossRef::class, BoutInfo::class],
     version = 1,
     exportSchema = false
 )

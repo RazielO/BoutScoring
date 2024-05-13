@@ -29,7 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.razielo.boutscoring.data.models.Bout
+import com.razielo.boutscoring.data.models.BoutInfo
 import com.razielo.boutscoring.data.models.DrawMethod
 import com.razielo.boutscoring.data.models.NoResultMethod
 import com.razielo.boutscoring.data.models.WinMethod
@@ -40,7 +40,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun ScoreTopBar(
     snackbarHostState: SnackbarHostState,
-    bout: Bout,
+    info: BoutInfo,
     goBackAction: () -> Unit,
     updateBoutResult: (Winner, WinMethod?, DrawMethod?, NoResultMethod?) -> Unit
 ) {
@@ -48,8 +48,9 @@ fun ScoreTopBar(
 
     when {
         openAlertDialog.value -> {
-            ResultDialog(snackbarHostState = snackbarHostState,
-                bout = bout,
+            ResultDialog(
+                snackbarHostState = snackbarHostState,
+                info = info,
                 onDismissRequest = { openAlertDialog.value = false },
                 onConfirmation = { winner, method ->
                     openAlertDialog.value = false
@@ -82,28 +83,28 @@ private fun ResultAction(onClick: () -> Unit) {
     }
 }
 
-private fun updateMethodSelected(bout: Bout): String? = when (bout.winner) {
-    Winner.BLUE_CORNER, Winner.RED_CORNER -> bout.winMethod?.displayName
-    Winner.DRAW -> bout.drawMethod?.displayName
-    Winner.NO_RESULT -> bout.noResultMethod?.displayName
+private fun updateMethodSelected(info: BoutInfo): String? = when (info.winner) {
+    Winner.BLUE_CORNER, Winner.RED_CORNER -> info.winMethod?.displayName
+    Winner.DRAW -> info.drawMethod?.displayName
+    Winner.NO_RESULT -> info.noResultMethod?.displayName
     null -> null
 }
 
 @Composable
 private fun ResultDialog(
     snackbarHostState: SnackbarHostState,
-    bout: Bout,
+    info: BoutInfo,
     onDismissRequest: () -> Unit,
     onConfirmation: (Winner, Any?) -> Unit
 ) {
     val scope = rememberCoroutineScope()
     val resultOptions = Winner.entries.map { it.displayName }
     var methodOptions: List<String>? by remember { mutableStateOf(null) }
-    var winner: Winner? by remember { mutableStateOf(bout.winner) }
-    var winMethod: WinMethod? = bout.winMethod
-    var drawMethod: DrawMethod? = bout.drawMethod
-    var noResultMethod: NoResultMethod? = bout.noResultMethod
-    var methodSelected: String? by remember { mutableStateOf(updateMethodSelected(bout)) }
+    var winner: Winner? by remember { mutableStateOf(info.winner) }
+    var winMethod: WinMethod? = info.winMethod
+    var drawMethod: DrawMethod? = info.drawMethod
+    var noResultMethod: NoResultMethod? = info.noResultMethod
+    var methodSelected: String? by remember { mutableStateOf(updateMethodSelected(info)) }
 
     fun onResultSelection(selected: String) {
         winner = Winner.fromDisplayName(selected)
@@ -132,7 +133,7 @@ private fun ResultDialog(
                     NoResultMethod.fromDisplayName(selected)
             }
         }
-        methodSelected = updateMethodSelected(bout)
+        methodSelected = updateMethodSelected(info)
     }
 
     Dialog(onDismissRequest = { onDismissRequest() }) {

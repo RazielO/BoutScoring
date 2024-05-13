@@ -33,7 +33,7 @@ fun Content(
             .padding(16.dp),
     ) {
         HeaderNames(bout.redCorner.displayName, bout.blueCorner.displayName)
-        HeaderScores(bout.bout)
+        HeaderScores(bout.bout, bout.info)
         LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             items(bout.bout.rounds) { round ->
                 val enabled = isRoundEnabled(bout.bout, round)

@@ -5,7 +5,7 @@ import androidx.room.Junction
 import androidx.room.Relation
 
 data class BoutWithFighters(
-    @Embedded val bout: Bout,
+    @Embedded val bout: BoutWithInfo,
     @Relation(
         parentColumn = "bout_id",
         entityColumn = "full_name",

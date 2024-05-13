@@ -89,7 +89,7 @@ fun BoutListCard(
                 }
                 Row {
                     CardText("vs", Modifier.weight(3f))
-                    BoutScoreResult(bout.bout, Modifier.weight(1f))
+                    BoutScoreResult(bout.info, Modifier.weight(1f))
                 }
                 Row {
                     CardText(

@@ -31,7 +31,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LifecycleOwner
 import com.razielo.boutscoring.data.BoutViewModel
 import com.razielo.boutscoring.data.BoutViewModelFactory
-import com.razielo.boutscoring.data.models.Bout
 import com.razielo.boutscoring.data.models.Fighter
 import com.razielo.boutscoring.data.models.ParsedBout
 import com.razielo.boutscoring.data.models.Screen
@@ -92,7 +91,7 @@ private fun MainActivityComposable(boutViewModel: BoutViewModel, owner: Lifecycl
         searchText = ""
     }
 
-    val updateAndGoToMain: (Bout) -> Unit = {
+    val updateAndGoToMain: (ParsedBout) -> Unit = {
         boutViewModel.update(it)
         currentScreen = Screen.MAIN
         reset()

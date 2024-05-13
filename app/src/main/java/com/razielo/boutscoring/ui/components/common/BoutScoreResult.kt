@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.razielo.boutscoring.data.models.Bout
+import com.razielo.boutscoring.data.models.BoutInfo
 import com.razielo.boutscoring.data.models.DrawMethod
 import com.razielo.boutscoring.data.models.NoResultMethod
 import com.razielo.boutscoring.data.models.WinMethod
@@ -20,17 +20,17 @@ import com.razielo.boutscoring.ui.theme.Green
 import com.razielo.boutscoring.ui.theme.Red
 
 @Composable
-fun BoutScoreResult(bout: Bout, modifier: Modifier) {
+fun BoutScoreResult(info: BoutInfo, modifier: Modifier) {
     Box(
         modifier = modifier.clip(RoundedCornerShape(8.dp))
     ) {
-        if (bout.winner != null) {
-            val text = when (bout.winner) {
-                Winner.RED_CORNER, Winner.BLUE_CORNER -> resultText(bout.winner, bout.winMethod)
-                Winner.DRAW -> resultText(bout.winner, bout.drawMethod)
-                Winner.NO_RESULT -> resultText(bout.winner, bout.noResultMethod)
+        if (info.winner != null) {
+            val text = when (info.winner) {
+                Winner.RED_CORNER, Winner.BLUE_CORNER -> resultText(info.winner, info.winMethod)
+                Winner.DRAW -> resultText(info.winner, info.drawMethod)
+                Winner.NO_RESULT -> resultText(info.winner, info.noResultMethod)
             }
-            val color = resultColor(bout.winner) ?: MaterialTheme.colorScheme.background
+            val color = resultColor(info.winner) ?: MaterialTheme.colorScheme.background
 
             HeadText(
                 text,

@@ -40,10 +40,10 @@ interface BoutDao {
     suspend fun deleteBoutById(id: String)
 
     @Transaction
-    @Query("SELECT * FROM bout WHERE bout_id IN (SELECT bout_id FROM bout_fighter_cross_ref WHERE full_name = :id)")
+    @Query("SELECT * FROM bout WHERE bout_id IN (SELECT bout_id FROM bout_fighter_cross_ref WHERE full_name = :id) ORDER BY created_at DESC")
     suspend fun getAllFighterBouts(id: String): List<BoutWithFighters>
 
     @Transaction
-    @Query("SELECT * FROM bout WHERE bout_id IN (SELECT bout_id FROM bout_fighter_cross_ref WHERE full_name IN (SELECT full_name FROM fighter WHERE full_name LIKE :pattern))")
+    @Query("SELECT * FROM bout WHERE bout_id IN (SELECT bout_id FROM bout_fighter_cross_ref WHERE full_name IN (SELECT full_name FROM fighter WHERE full_name LIKE :pattern)) ORDER BY created_at DESC")
     suspend fun searchAllFighterBouts(pattern: String): List<BoutWithFighters>
 }

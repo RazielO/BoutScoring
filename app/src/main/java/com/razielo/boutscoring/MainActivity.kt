@@ -4,30 +4,24 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LifecycleOwner
 import com.razielo.boutscoring.data.BoutViewModel
 import com.razielo.boutscoring.data.BoutViewModelFactory
@@ -35,9 +29,11 @@ import com.razielo.boutscoring.data.models.Fighter
 import com.razielo.boutscoring.data.models.ParsedBout
 import com.razielo.boutscoring.data.models.Screen
 import com.razielo.boutscoring.ui.components.addbout.AddBoutComponent
+import com.razielo.boutscoring.ui.components.boutinfo.BoutInfoComponent
 import com.razielo.boutscoring.ui.components.boutscore.BoutScoreComponent
 import com.razielo.boutscoring.ui.components.common.TopBar
 import com.razielo.boutscoring.ui.components.main.MainComponent
+import com.razielo.boutscoring.ui.components.main.MainComponentTopBarAction
 import com.razielo.boutscoring.ui.theme.BoutScoringTheme
 
 class MainActivity : ComponentActivity() {
@@ -75,12 +71,14 @@ private fun MainActivityComposable(boutViewModel: BoutViewModel, owner: Lifecycl
 
     var searching by remember { mutableStateOf(false) }
     var searchText by remember { mutableStateOf("") }
+    var onInfo by remember { mutableStateOf(false) }
 
     var name by remember { mutableStateOf("") }
     var currentScreen by remember { mutableStateOf(Screen.MAIN) }
 
     when {
-        bout != null -> currentScreen = Screen.SCORE_BOUT
+        bout != null && !onInfo -> currentScreen = Screen.SCORE_BOUT
+        bout != null && onInfo -> currentScreen = Screen.BOUT_INFO
         filtered.isNotEmpty() -> currentScreen = Screen.FILTERED_BOUTS
     }
 
@@ -91,10 +89,13 @@ private fun MainActivityComposable(boutViewModel: BoutViewModel, owner: Lifecycl
         searchText = ""
     }
 
-    val updateAndGoToMain: (ParsedBout) -> Unit = {
-        boutViewModel.update(it)
-        currentScreen = Screen.MAIN
-        reset()
+    val goToInfo = {
+        currentScreen = Screen.BOUT_INFO
+        onInfo = true
+    }
+    val goToScore = {
+        currentScreen = Screen.SCORE_BOUT
+        onInfo = false
     }
     val goToMain = {
         currentScreen = Screen.MAIN
@@ -131,10 +132,11 @@ private fun MainActivityComposable(boutViewModel: BoutViewModel, owner: Lifecycl
         SnackbarHost(hostState = snackbarHostState)
     }, topBar = {
         MainTopBar(
-            hidden = currentScreen == Screen.SCORE_BOUT,
             currentScreen = currentScreen,
             boutCount = bouts.size,
             goToMain = goToMain,
+            goToInfo = goToInfo,
+            goToScore = goToScore,
             name = name,
             searching = searching,
             searchText = searchText,
@@ -162,7 +164,19 @@ private fun MainActivityComposable(boutViewModel: BoutViewModel, owner: Lifecycl
                 Screen.ADD_BOUT -> AddBoutComponent(snackbarHostState, addAndGoToScoreBout)
                 Screen.SCORE_BOUT -> {
                     if (bout != null) {
-                        BoutScoreComponent(bout!!, updateAndGoToMain)
+                        BoutScoreComponent(
+                            snackbarHostState,
+                            bout!!
+                        ) { bout -> boutViewModel.update(bout) }
+                    }
+                }
+
+                Screen.BOUT_INFO -> {
+                    if (bout != null) {
+                        BoutInfoComponent(bout!!.info) { info ->
+                            bout = bout!!.copy(info = info)
+                            boutViewModel.updateInfo(info)
+                        }
                     }
                 }
             }
@@ -172,10 +186,11 @@ private fun MainActivityComposable(boutViewModel: BoutViewModel, owner: Lifecycl
 
 @Composable
 private fun MainTopBar(
-    hidden: Boolean,
     currentScreen: Screen,
     boutCount: Int,
     goToMain: () -> Unit,
+    goToInfo: () -> Unit,
+    goToScore: () -> Unit,
     name: String,
     searching: Boolean,
     searchText: String,
@@ -183,32 +198,20 @@ private fun MainTopBar(
     onSearchClick: () -> Unit,
     onCancelClick: () -> Unit
 ) {
-    if (!hidden) {
-        TopBar(titleText = if (searching) "" else topBarTitle(currentScreen, boutCount, name),
-            goBack = currentScreen != Screen.MAIN,
-            onBack = goToMain,
-            actions = {
-                if (searching) {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        OutlinedTextField(
-                            value = searchText,
-                            onValueChange = onSearchTextChange,
-                            placeholder = { Text("Search") },
-                            singleLine = true
-                        )
-                        IconButton(onClick = onCancelClick) {
-                            Icon(Icons.Default.Clear, contentDescription = "Cancel search")
-                        }
-                    }
-                } else {
-                    IconButton(onClick = onSearchClick) {
-                        Icon(Icons.Default.Search, contentDescription = "Search")
-                    }
+    TopBar(titleText = if (searching) "" else topBarTitle(currentScreen, boutCount, name),
+        goBack = currentScreen != Screen.MAIN,
+        onBack = if (currentScreen == Screen.BOUT_INFO) goToScore else goToMain,
+        actions = {
+            if (currentScreen == Screen.MAIN) {
+                MainComponentTopBarAction(
+                    searching, searchText, onSearchTextChange, onSearchClick, onCancelClick
+                )
+            } else if (currentScreen == Screen.SCORE_BOUT) {
+                IconButton(onClick = goToInfo) {
+                    Icon(Icons.Outlined.Info, contentDescription = "Bout Info")
                 }
-            })
-    }
+            }
+        })
 }
 
 @Composable

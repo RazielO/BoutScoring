@@ -21,5 +21,6 @@ fun topBarTitle(screen: Screen, boutCount: Int = 0, name: String = ""): String {
         Screen.FILTERED_BOUTS -> "$name bouts"
         Screen.ADD_BOUT -> "Add new bout"
         Screen.SCORE_BOUT -> "Score bout"
+        Screen.BOUT_INFO -> "Bout info"
     }
 }

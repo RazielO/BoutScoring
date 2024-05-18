@@ -5,6 +5,7 @@ import com.razielo.boutscoring.data.dao.BoutDao
 import com.razielo.boutscoring.data.dao.BoutFighterCrossRefDao
 import com.razielo.boutscoring.data.dao.FighterDao
 import com.razielo.boutscoring.data.models.BoutFighterCrossRef
+import com.razielo.boutscoring.data.models.BoutInfo
 import com.razielo.boutscoring.data.models.BoutWithFighters
 import com.razielo.boutscoring.data.models.ParsedBout
 import kotlinx.coroutines.flow.Flow
@@ -46,6 +47,11 @@ class BoutRepository(
     suspend fun update(bout: ParsedBout) {
         boutDao.update(bout.bout)
         boutDao.updateInfo(bout.info)
+    }
+
+    @WorkerThread
+    suspend fun updateInfo(info: BoutInfo) {
+        boutDao.updateInfo(info)
     }
 
     @WorkerThread

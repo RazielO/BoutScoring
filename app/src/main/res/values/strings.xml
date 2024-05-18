@@ -8,4 +8,14 @@
     <string name="red">Red</string>
     <string name="blue">Blue</string>
     <string name="number_of_rounds">Number of rounds</string>
+    <!-- Bout Info -->
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="date_button_label">Date: %1$s</string>
+    <string name="choose_date">Choose date</string>
+    <string name="winner_dropdown_label">Winner</string>
+    <string name="method_dropdown_label">Method</string>
+    <string name="championship_in_play">Championship in play:</string>
+    <string name="location">Location</string>
+    <string name="notes">Notes</string>
 </resources>

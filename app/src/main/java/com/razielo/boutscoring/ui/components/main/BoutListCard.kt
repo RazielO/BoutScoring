@@ -1,12 +1,14 @@
 package com.razielo.boutscoring.ui.components.main
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,8 +26,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.razielo.boutscoring.R
 import com.razielo.boutscoring.data.models.Fighter
 import com.razielo.boutscoring.data.models.ParsedBout
 import com.razielo.boutscoring.scoreColors
@@ -76,13 +80,26 @@ fun BoutListCard(
                 CardText(
                     bout.redCorner.fullName,
                     Modifier.clickable { filterBouts(bout.redCorner) })
-                CardText("vs", Modifier)
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    CardText("vs", Modifier)
+                    if (bout.info.championship)
+                        Image(
+                            painterResource(R.drawable.belt),
+                            contentDescription = "Championship bout",
+                            modifier = Modifier.height(28.dp)
+                        )
+                }
                 CardText(
                     bout.blueCorner.fullName,
                     Modifier.clickable { filterBouts(bout.blueCorner) })
             }
             Column(
-                Modifier.weight(2f), horizontalAlignment = Alignment.CenterHorizontally
+                Modifier.weight(2f),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(if (bout.info.winner != null) 0.dp else 8.dp)
             ) {
                 CardText(redScore.toString(), Modifier, colors.first)
                 BoutScoreResult(bout.info, Modifier)

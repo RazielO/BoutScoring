@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -26,11 +27,11 @@ fun HeaderNames(redCorner: String, blueCorner: String, championship: Boolean) {
         if (championship) {
             Image(
                 painterResource(R.drawable.belt),
-                contentDescription = "Championship bout",
+                contentDescription = stringResource(R.string.championship_bout),
                 modifier = Modifier.height(28.dp)
             )
         } else {
-            HeadText("vs", Modifier.weight(1f))
+            HeadText(stringResource(R.string.vs), Modifier.weight(1f))
         }
         HeadText(blueCorner, Modifier.weight(2f))
     }

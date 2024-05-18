@@ -10,7 +10,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.razielo.boutscoring.R
 
 @Composable
 fun MainComponentTopBarAction(
@@ -27,16 +29,19 @@ fun MainComponentTopBarAction(
             OutlinedTextField(
                 value = searchText,
                 onValueChange = onSearchTextChange,
-                placeholder = { Text("Search") },
+                placeholder = { Text(stringResource(R.string.search)) },
                 singleLine = true
             )
             IconButton(onClick = onCancelClick) {
-                Icon(Icons.Default.Clear, contentDescription = "Cancel search")
+                Icon(
+                    Icons.Default.Clear,
+                    contentDescription = stringResource(R.string.cancel_search)
+                )
             }
         }
     } else {
         IconButton(onClick = onSearchClick) {
-            Icon(Icons.Default.Search, contentDescription = "Search")
+            Icon(Icons.Default.Search, contentDescription = stringResource(R.string.search))
         }
     }
 }

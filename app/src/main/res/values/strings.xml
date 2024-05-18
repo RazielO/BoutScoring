@@ -26,4 +26,9 @@
     <string name="championship_bout">Championship bout</string>
     <!-- Common -->
     <string name="go_back">Go Back</string>
+    <!-- Main component -->
+    <string name="search">Search</string>
+    <string name="cancel_search">Cancel search</string>
+    <string name="confirm">Confirm</string>
+    <string name="confirm_bout_deletion">Are you sure you want to delete %1$s vs %2$s?</string>
 </resources>

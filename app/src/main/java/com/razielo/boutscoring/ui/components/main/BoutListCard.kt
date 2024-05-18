@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.razielo.boutscoring.R
@@ -77,23 +78,20 @@ fun BoutListCard(
             modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically
         ) {
             Column(Modifier.weight(5f)) {
-                CardText(
-                    bout.redCorner.fullName,
+                CardText(bout.redCorner.fullName,
                     Modifier.clickable { filterBouts(bout.redCorner) })
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    CardText("vs", Modifier)
-                    if (bout.info.championship)
-                        Image(
-                            painterResource(R.drawable.belt),
-                            contentDescription = "Championship bout",
-                            modifier = Modifier.height(28.dp)
-                        )
+                    CardText(stringResource(R.string.vs), Modifier)
+                    if (bout.info.championship) Image(
+                        painterResource(R.drawable.belt),
+                        contentDescription = stringResource(R.string.championship_bout),
+                        modifier = Modifier.height(28.dp)
+                    )
                 }
-                CardText(
-                    bout.blueCorner.fullName,
+                CardText(bout.blueCorner.fullName,
                     Modifier.clickable { filterBouts(bout.blueCorner) })
             }
             Column(
@@ -140,16 +138,19 @@ private fun ConfirmDeleteDialog(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 HeadText(
-                    "Are you sure you want to delete ${bout.redCorner.fullName} vs ${bout.blueCorner.fullName}?",
-                    Modifier
+                    stringResource(
+                        R.string.confirm_bout_deletion,
+                        bout.redCorner.fullName,
+                        bout.blueCorner.fullName
+                    ), Modifier
                 )
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center,
                 ) {
-                    DialogActionButton("Dismiss") { onDismissRequest() }
-                    DialogActionButton("Confirm") { onConfirmation() }
+                    DialogActionButton(stringResource(R.string.cancel)) { onDismissRequest() }
+                    DialogActionButton(stringResource(R.string.confirm)) { onConfirmation() }
                 }
             }
         }

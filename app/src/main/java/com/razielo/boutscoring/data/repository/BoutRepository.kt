@@ -7,7 +7,7 @@ import com.razielo.boutscoring.data.dao.FighterDao
 import com.razielo.boutscoring.data.models.BoutFighterCrossRef
 import com.razielo.boutscoring.data.models.BoutInfo
 import com.razielo.boutscoring.data.models.BoutWithFighters
-import com.razielo.boutscoring.data.models.ParsedBout
+import com.razielo.boutscoring.ui.models.ParsedBout
 import kotlinx.coroutines.flow.Flow
 
 class BoutRepository(

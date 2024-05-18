@@ -1,4 +1,4 @@
-package com.razielo.boutscoring.data.models
+package com.razielo.boutscoring.ui.models
 
 enum class Screen {
     MAIN,

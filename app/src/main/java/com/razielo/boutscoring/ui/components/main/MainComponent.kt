@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.razielo.boutscoring.data.models.Fighter
-import com.razielo.boutscoring.data.models.ParsedBout
+import com.razielo.boutscoring.ui.models.ParsedBout
 
 @Composable
 fun MainComponent(

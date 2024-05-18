@@ -1,4 +1,9 @@
-package com.razielo.boutscoring.data.models
+package com.razielo.boutscoring.ui.models
+
+import com.razielo.boutscoring.data.models.Bout
+import com.razielo.boutscoring.data.models.BoutInfo
+import com.razielo.boutscoring.data.models.BoutWithFighters
+import com.razielo.boutscoring.data.models.Fighter
 
 data class ParsedBout(
     val bout: Bout,

@@ -1,7 +1,7 @@
 package com.razielo.boutscoring
 
 import androidx.compose.ui.graphics.Color
-import com.razielo.boutscoring.data.models.Screen
+import com.razielo.boutscoring.ui.models.Screen
 import com.razielo.boutscoring.ui.theme.Green
 import com.razielo.boutscoring.ui.theme.Red
 

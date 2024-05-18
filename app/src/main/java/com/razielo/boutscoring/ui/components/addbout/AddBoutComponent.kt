@@ -16,7 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.razielo.boutscoring.R
-import com.razielo.boutscoring.data.models.ParsedBout
+import com.razielo.boutscoring.ui.models.ParsedBout
 
 @Composable
 fun AddBoutComponent(

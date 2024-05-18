@@ -31,10 +31,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.razielo.boutscoring.R
 import com.razielo.boutscoring.data.models.Fighter
-import com.razielo.boutscoring.data.models.ParsedBout
 import com.razielo.boutscoring.scoreColors
 import com.razielo.boutscoring.ui.components.boutscore.HeadText
 import com.razielo.boutscoring.ui.components.common.BoutScoreResult
+import com.razielo.boutscoring.ui.models.ParsedBout
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

@@ -12,7 +12,7 @@ import com.razielo.boutscoring.R
 import com.razielo.boutscoring.data.models.Bout
 import com.razielo.boutscoring.data.models.BoutInfo
 import com.razielo.boutscoring.data.models.Fighter
-import com.razielo.boutscoring.data.models.ParsedBout
+import com.razielo.boutscoring.ui.models.ParsedBout
 import kotlinx.coroutines.launch
 
 @Composable

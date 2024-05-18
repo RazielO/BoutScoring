@@ -26,14 +26,14 @@ import androidx.lifecycle.LifecycleOwner
 import com.razielo.boutscoring.data.BoutViewModel
 import com.razielo.boutscoring.data.BoutViewModelFactory
 import com.razielo.boutscoring.data.models.Fighter
-import com.razielo.boutscoring.data.models.ParsedBout
-import com.razielo.boutscoring.data.models.Screen
 import com.razielo.boutscoring.ui.components.addbout.AddBoutComponent
 import com.razielo.boutscoring.ui.components.boutinfo.BoutInfoComponent
 import com.razielo.boutscoring.ui.components.boutscore.BoutScoreComponent
 import com.razielo.boutscoring.ui.components.common.TopBar
 import com.razielo.boutscoring.ui.components.main.MainComponent
 import com.razielo.boutscoring.ui.components.main.MainComponentTopBarAction
+import com.razielo.boutscoring.ui.models.ParsedBout
+import com.razielo.boutscoring.ui.models.Screen
 import com.razielo.boutscoring.ui.theme.BoutScoringTheme
 
 class MainActivity : ComponentActivity() {

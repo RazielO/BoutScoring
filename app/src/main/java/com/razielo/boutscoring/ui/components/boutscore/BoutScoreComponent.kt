@@ -17,8 +17,8 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.razielo.boutscoring.data.models.Bout
-import com.razielo.boutscoring.data.models.ParsedBout
 import com.razielo.boutscoring.scoreColors
+import com.razielo.boutscoring.ui.models.ParsedBout
 import com.razielo.boutscoring.ui.theme.Blue
 import com.razielo.boutscoring.ui.theme.Red
 

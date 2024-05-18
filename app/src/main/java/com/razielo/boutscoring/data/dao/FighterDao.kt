@@ -6,7 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import com.razielo.boutscoring.data.models.Fighter
-import com.razielo.boutscoring.data.models.FighterWithBouts
+import com.razielo.boutscoring.data.models.relations.FighterWithBouts
 
 @Dao
 interface FighterDao {

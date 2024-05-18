@@ -1,7 +1,9 @@
-package com.razielo.boutscoring.data.models
+package com.razielo.boutscoring.data.models.relations
 
 import androidx.room.Embedded
 import androidx.room.Relation
+import com.razielo.boutscoring.data.models.Bout
+import com.razielo.boutscoring.data.models.BoutInfo
 
 data class BoutWithInfo(
     @Embedded val bout: Bout,

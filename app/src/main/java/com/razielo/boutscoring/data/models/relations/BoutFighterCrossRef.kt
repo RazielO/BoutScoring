@@ -1,8 +1,10 @@
-package com.razielo.boutscoring.data.models
+package com.razielo.boutscoring.data.models.relations
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import com.razielo.boutscoring.data.models.Bout
+import com.razielo.boutscoring.data.models.Fighter
 
 @Entity(
     tableName = "bout_fighter_cross_ref",

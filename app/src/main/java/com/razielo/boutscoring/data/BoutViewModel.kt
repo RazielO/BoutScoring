@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.razielo.boutscoring.data.models.BoutInfo
-import com.razielo.boutscoring.data.models.BoutWithFighters
+import com.razielo.boutscoring.data.models.relations.BoutWithFighters
 import com.razielo.boutscoring.data.repository.BoutRepository
 import com.razielo.boutscoring.ui.models.ParsedBout
 import kotlinx.coroutines.launch

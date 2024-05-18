@@ -8,7 +8,7 @@ import androidx.room.Transaction
 import androidx.room.Update
 import com.razielo.boutscoring.data.models.Bout
 import com.razielo.boutscoring.data.models.BoutInfo
-import com.razielo.boutscoring.data.models.BoutWithFighters
+import com.razielo.boutscoring.data.models.relations.BoutWithFighters
 import kotlinx.coroutines.flow.Flow
 
 @Dao

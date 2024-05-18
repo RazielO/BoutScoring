@@ -1,6 +1,6 @@
 package com.razielo.boutscoring.data.models.enums
 
-enum class WeightClasses(val displayName: String) {
+enum class WeightClass(val displayName: String) {
     MINIMUM("Minimumweight (105 lbs)"),
     JR_FLY("Jr Flyweight (108 lbs)"),
     FLY("Flyweight (112 lbs)"),
@@ -22,8 +22,8 @@ enum class WeightClasses(val displayName: String) {
     CATCH("Catchweight");
 
     companion object {
-        private val map = WeightClasses.entries.associateBy { it.displayName }
+        private val map = WeightClass.entries.associateBy { it.displayName }
 
-        infix fun fromDisplayName(displayName: String): WeightClasses? = map[displayName]
+        infix fun fromDisplayName(displayName: String): WeightClass? = map[displayName]
     }
 }

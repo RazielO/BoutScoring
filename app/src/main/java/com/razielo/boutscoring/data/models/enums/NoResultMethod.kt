@@ -1,4 +1,4 @@
-package com.razielo.boutscoring.data.models
+package com.razielo.boutscoring.data.models.enums
 
 enum class NoResultMethod(val displayName: String, val abbreviation: String) {
     NO_DECISION("No Contest", "ND"),

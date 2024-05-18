@@ -3,6 +3,10 @@ package com.razielo.boutscoring.data.models
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.razielo.boutscoring.data.models.enums.DrawMethod
+import com.razielo.boutscoring.data.models.enums.NoResultMethod
+import com.razielo.boutscoring.data.models.enums.WinMethod
+import com.razielo.boutscoring.data.models.enums.Winner
 import java.util.UUID
 
 @Entity(tableName = "bout_info")

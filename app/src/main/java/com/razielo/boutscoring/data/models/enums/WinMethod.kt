@@ -1,4 +1,4 @@
-package com.razielo.boutscoring.data.models
+package com.razielo.boutscoring.data.models.enums
 
 enum class WinMethod(val displayName: String, val abbreviation: String) {
     UNANIMOUS_DECISION("Unanimous Decision", "UD"),

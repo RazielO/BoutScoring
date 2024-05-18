@@ -21,10 +21,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.razielo.boutscoring.R
 import com.razielo.boutscoring.data.models.BoutInfo
-import com.razielo.boutscoring.data.models.DrawMethod
-import com.razielo.boutscoring.data.models.NoResultMethod
-import com.razielo.boutscoring.data.models.WinMethod
-import com.razielo.boutscoring.data.models.Winner
+import com.razielo.boutscoring.data.models.enums.DrawMethod
+import com.razielo.boutscoring.data.models.enums.NoResultMethod
+import com.razielo.boutscoring.data.models.enums.WinMethod
+import com.razielo.boutscoring.data.models.enums.Winner
 
 @Composable
 fun BoutInfoComponent(boutInfo: BoutInfo, updateInfo: (BoutInfo) -> Unit) {

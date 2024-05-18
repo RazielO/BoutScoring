@@ -11,10 +11,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.razielo.boutscoring.data.models.BoutInfo
-import com.razielo.boutscoring.data.models.DrawMethod
-import com.razielo.boutscoring.data.models.NoResultMethod
-import com.razielo.boutscoring.data.models.WinMethod
-import com.razielo.boutscoring.data.models.Winner
+import com.razielo.boutscoring.data.models.enums.DrawMethod
+import com.razielo.boutscoring.data.models.enums.NoResultMethod
+import com.razielo.boutscoring.data.models.enums.WinMethod
+import com.razielo.boutscoring.data.models.enums.Winner
 import com.razielo.boutscoring.ui.components.boutscore.HeadText
 import com.razielo.boutscoring.ui.theme.Green
 import com.razielo.boutscoring.ui.theme.Red

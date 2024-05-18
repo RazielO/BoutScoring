@@ -1,4 +1,4 @@
-package com.razielo.boutscoring.data.models
+package com.razielo.boutscoring.data.models.enums
 
 enum class Winner(val displayName: String, val abbreviation: String) {
     RED_CORNER("Red Corner", "W"),

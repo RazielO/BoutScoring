@@ -1,4 +1,4 @@
-package com.razielo.boutscoring.data.models
+package com.razielo.boutscoring.data.models.enums
 
 enum class DrawMethod(val displayName: String, val abbreviation: String) {
     TECHNICAL_DRAW("Technical Draw", "TD"),

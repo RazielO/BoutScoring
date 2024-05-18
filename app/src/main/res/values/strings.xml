@@ -20,4 +20,5 @@
     <string name="location">Location</string>
     <string name="notes">Notes</string>
     <string name="missing_rounds_error">Select the number of rounds first</string>
+    <string name="select">Select %1$s</string>
 </resources>

@@ -22,7 +22,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.razielo.boutscoring.R
 
 @Composable
 fun DropdownSelection(
@@ -39,7 +41,7 @@ fun DropdownSelection(
         )
         DropdownSelector(
             list = options,
-            preselected = selected ?: "Select $title",
+            preselected = selected ?: stringResource(R.string.select, title),
             enabled = enabled,
             onSelectionChanged = onSelectionChanged,
             modifier = Modifier.fillMaxWidth()

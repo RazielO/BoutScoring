@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.razielo.boutscoring.data.models.enums.DrawMethod
 import com.razielo.boutscoring.data.models.enums.NoResultMethod
+import com.razielo.boutscoring.data.models.enums.WeightClass
 import com.razielo.boutscoring.data.models.enums.WinMethod
 import com.razielo.boutscoring.data.models.enums.Winner
 import java.util.UUID
@@ -16,6 +17,7 @@ data class BoutInfo(
     @ColumnInfo(name = "win_method") val winMethod: WinMethod? = null,
     @ColumnInfo(name = "draw_method") val drawMethod: DrawMethod? = null,
     @ColumnInfo(name = "no_result_method") val noResultMethod: NoResultMethod? = null,
+    val weight: WeightClass? = null,
     val date: String? = null,
     val location: String = "",
     val championship: Boolean = false,

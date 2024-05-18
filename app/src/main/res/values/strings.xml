@@ -16,6 +16,7 @@
     <string name="choose_date">Choose date</string>
     <string name="winner_dropdown_label">Winner</string>
     <string name="method_dropdown_label">Method</string>
+    <string name="weight_dropdown_label">Weight</string>
     <string name="championship_in_play">Championship in play:</string>
     <string name="location">Location</string>
     <string name="notes">Notes</string>

@@ -23,6 +23,7 @@ import com.razielo.boutscoring.R
 import com.razielo.boutscoring.data.models.BoutInfo
 import com.razielo.boutscoring.data.models.enums.DrawMethod
 import com.razielo.boutscoring.data.models.enums.NoResultMethod
+import com.razielo.boutscoring.data.models.enums.WeightClass
 import com.razielo.boutscoring.data.models.enums.WinMethod
 import com.razielo.boutscoring.data.models.enums.Winner
 
@@ -32,6 +33,7 @@ fun BoutInfoComponent(boutInfo: BoutInfo, updateInfo: (BoutInfo) -> Unit) {
     val resultOptions = Winner.entries.map { it.displayName }
     var methodOptions: List<String>? by remember { mutableStateOf(null) }
     var methodSelected: String? by remember { mutableStateOf(updateMethodSelected(info)) }
+    val weights = WeightClass.entries.map { it.displayName }
 
     var location by remember { mutableStateOf(boutInfo.location) }
     var notes by remember { mutableStateOf(boutInfo.notes) }
@@ -63,6 +65,14 @@ fun BoutInfoComponent(boutInfo: BoutInfo, updateInfo: (BoutInfo) -> Unit) {
         ) { selected ->
             info = updateMethod(info, selected, updateInfo)
             methodSelected = updateMethodSelected(info)
+        }
+
+        DropdownSelection(
+            title = stringResource(R.string.weight_dropdown_label),
+            options = weights,
+            selected = info.weight?.displayName
+        ) { selected ->
+            info = updateWeight(info, selected, updateInfo)
         }
 
         ChampionshipToggle(info.championship) {
@@ -127,9 +137,14 @@ private fun updateMethodSelected(info: BoutInfo): String? = when (info.winner) {
     null -> null
 }
 
-private fun updateWinner(
-    info: BoutInfo, selection: String, update: (BoutInfo) -> Unit
-): BoutInfo {
+private fun updateWeight(info: BoutInfo, selection: String, update: (BoutInfo) -> Unit): BoutInfo {
+    val weight = WeightClass.fromDisplayName(selection)
+    val newInfo = info.copy(weight = weight)
+    update(newInfo)
+    return newInfo
+}
+
+private fun updateWinner(info: BoutInfo, selection: String, update: (BoutInfo) -> Unit): BoutInfo {
     val winner = Winner.fromDisplayName(selection)
     val newInfo =
         info.copy(winner = winner, winMethod = null, drawMethod = null, noResultMethod = null)

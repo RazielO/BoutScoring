@@ -26,9 +26,15 @@ fun AddBoutContinueButton(
 ) {
     val scope = rememberCoroutineScope()
     val messageText: String = when {
-        redCornerValues.any { it.isBlank() } -> "Fill the red corner info first"
-        blueCornerValues.any { it.isBlank() } -> "Fill the blue corner info first"
-        roundsIndex == -1 -> "Select the number of rounds first"
+        redCornerValues.any { it.isBlank() } -> stringResource(
+            R.string.missing_info_error, stringResource(R.string.red).lowercase()
+        )
+
+        blueCornerValues.any { it.isBlank() } -> stringResource(
+            R.string.missing_info_error, stringResource(R.string.blue).lowercase()
+        )
+
+        roundsIndex == -1 -> stringResource(R.string.missing_rounds_error)
         else -> ""
     }
 

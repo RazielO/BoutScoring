@@ -8,6 +8,7 @@
     <string name="red">Red</string>
     <string name="blue">Blue</string>
     <string name="number_of_rounds">Number of rounds</string>
+    <string name="missing_info_error">Fill the %1$s corner info first</string>
     <!-- Bout Info -->
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
@@ -18,4 +19,5 @@
     <string name="championship_in_play">Championship in play:</string>
     <string name="location">Location</string>
     <string name="notes">Notes</string>
+    <string name="missing_rounds_error">Select the number of rounds first</string>
 </resources>

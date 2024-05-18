@@ -24,4 +24,6 @@
     <!-- Bout Score -->
     <string name="score_round_error">Score the previous round first</string>
     <string name="championship_bout">Championship bout</string>
+    <!-- Common -->
+    <string name="go_back">Go Back</string>
 </resources>

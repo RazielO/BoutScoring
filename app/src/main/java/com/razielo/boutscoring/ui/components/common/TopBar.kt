@@ -11,6 +11,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
+import com.razielo.boutscoring.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -37,7 +39,8 @@ fun TopBar(
 private fun GoBackButton(onClick: () -> Unit) {
     IconButton(onClick) {
         Icon(
-            imageVector = Icons.Filled.ArrowBack, contentDescription = "Go Back"
+            imageVector = Icons.Filled.ArrowBack,
+            contentDescription = stringResource(R.string.go_back)
         )
     }
 }

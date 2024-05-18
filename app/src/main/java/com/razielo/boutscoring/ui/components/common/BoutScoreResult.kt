@@ -55,12 +55,12 @@ private fun resultText(winner: Winner?, method: Any?): String {
             null -> prefix
             is WinMethod -> "$prefix-${method.abbreviation}"
             is DrawMethod -> when (prefix) {
-                "" -> "D"
+                "" -> DrawMethod.DRAW.abbreviation
                 else -> method.abbreviation
             }
 
             is NoResultMethod -> when (prefix) {
-                "" -> "NC"
+                "" -> NoResultMethod.NO_CONTEST.abbreviation
                 else -> method.abbreviation
             }
 

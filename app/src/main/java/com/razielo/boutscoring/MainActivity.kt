@@ -167,7 +167,10 @@ private fun MainActivityComposable(boutViewModel: BoutViewModel, owner: Lifecycl
                         BoutScoreComponent(
                             snackbarHostState,
                             bout!!
-                        ) { bout -> boutViewModel.update(bout) }
+                        ) { updated ->
+                            boutViewModel.update(updated)
+                            bout = updated
+                        }
                     }
                 }
 

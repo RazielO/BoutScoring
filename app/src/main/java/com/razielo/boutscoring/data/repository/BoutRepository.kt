@@ -6,16 +6,17 @@ import com.razielo.boutscoring.data.dao.BoutFighterCrossRefDao
 import com.razielo.boutscoring.data.dao.FighterDao
 import com.razielo.boutscoring.data.models.BoutInfo
 import com.razielo.boutscoring.data.models.relations.BoutFighterCrossRef
-import com.razielo.boutscoring.data.models.relations.BoutWithFighters
 import com.razielo.boutscoring.ui.models.ParsedBout
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class BoutRepository(
     private val boutDao: BoutDao,
     private val fighterDao: FighterDao,
     private val boutFighterCrossRefDao: BoutFighterCrossRefDao
 ) {
-    val bouts: Flow<List<BoutWithFighters>> = boutDao.getAllBouts()
+    val bouts: Flow<List<ParsedBout>> = boutDao.getAllBouts()
+        .map { list -> list.mapNotNull { ParsedBout.fromBoutWithFighters(it) } }
 
     @WorkerThread
     suspend fun insert(bout: ParsedBout) {

@@ -57,11 +57,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 private fun MainActivityComposable(boutViewModel: BoutViewModel, owner: LifecycleOwner) {
     var bouts by remember { mutableStateOf(emptyList<ParsedBout>()) }
-    boutViewModel.bouts.observe(owner) { list ->
-        list.let {
-            bouts = it.mapNotNull { b -> ParsedBout.fromBoutWithFighters(b) }
-        }
-    }
+    boutViewModel.bouts.observe(owner) { list -> list.let { bouts = it } }
 
     var bout: ParsedBout? by remember { mutableStateOf(null) }
     boutViewModel.bout.observe(owner) { value -> value.let { bout = it } }

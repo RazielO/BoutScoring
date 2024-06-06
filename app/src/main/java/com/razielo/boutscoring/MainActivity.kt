@@ -41,34 +41,33 @@ class MainActivity : ComponentActivity() {
 private fun MainActivityComposable(boutViewModel: BoutViewModel, owner: LifecycleOwner) {
     val navController = rememberNavController()
 
-    NavHost(
-        navController = navController,
+    NavHost(navController = navController,
         startDestination = "main",
         enterTransition = { EnterTransition.None },
         exitTransition = { ExitTransition.None }) {
         composable(route = "main") {
-            MainScreen(
-                boutViewModel = boutViewModel,
+            MainScreen(boutViewModel = boutViewModel,
                 owner = owner,
                 goToBout = { navController.navigate("score") }) {
                 navController.navigate("add_bout")
             }
         }
         composable(route = "score") {
-            BoutScoreScreen(
-                boutViewModel = boutViewModel,
+            BoutScoreScreen(boutViewModel = boutViewModel,
                 goBack = { navController.navigate("main") },
                 goToInfo = { navController.navigate("info") })
         }
         composable(route = "info") {
             BoutInfoScreen(boutViewModel = boutViewModel) {
-                navController.navigate("score")
+                navController.navigate("score") { popUpTo("score") }
             }
         }
         composable(route = "add_bout") {
-            AddBoutScreen(
-                boutViewModel = boutViewModel,
-                goToScore = { navController.navigate("score") }) {
+            AddBoutScreen(boutViewModel = boutViewModel, goToScore = {
+                navController.navigate("score") {
+                    popUpTo("main")
+                }
+            }) {
                 navController.navigate("main")
             }
         }

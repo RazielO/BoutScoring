@@ -13,17 +13,11 @@ import kotlinx.coroutines.launch
 
 class BoutViewModel(private val boutRepository: BoutRepository) : ViewModel() {
     val bouts: LiveData<List<ParsedBout>> = boutRepository.bouts.asLiveData()
-    private val _bout = MutableLiveData<ParsedBout>()
-    val bout: LiveData<ParsedBout>
-        get() = _bout
+    val bout = MutableLiveData<ParsedBout>()
 
     private val _filtered = MutableLiveData<List<ParsedBout>>()
     val filtered: LiveData<List<ParsedBout>>
         get() = _filtered
-
-    fun getBoutById(id: String) = viewModelScope.launch {
-        _bout.value = boutRepository.getBoutById(id)
-    }
 
     fun getAllFighterBouts(id: String) = viewModelScope.launch {
         _filtered.value = boutRepository.getAllFighterBouts(id)

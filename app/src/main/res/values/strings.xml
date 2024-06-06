@@ -32,4 +32,10 @@
     <string name="cancel_search">Cancel search</string>
     <string name="confirm">Confirm</string>
     <string name="confirm_bout_deletion">Are you sure you want to delete %1$s vs %2$s?</string>
+    <string name="add_new_bout_title">Add new bout</string>
+    <string name="bout_info_title">Bout info</string>
+    <string name="score_bout_title">Score bout</string>
+    <string name="my_bouts_title">My bouts</string>
+    <string name="my_bouts_count_title">My %1$s bouts</string>
+    <string name="filtered_bouts_title">%1$s bouts</string>
 </resources>

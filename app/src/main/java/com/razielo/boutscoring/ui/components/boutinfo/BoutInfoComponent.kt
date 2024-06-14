@@ -3,6 +3,7 @@ package com.razielo.boutscoring.ui.components.boutinfo
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -96,7 +97,11 @@ fun BoutInfoComponent(boutInfo: BoutInfo, updateInfo: (BoutInfo) -> Unit) {
         }
 
         InfoTextField(
-            text = stringResource(R.string.notes), value = notes, modifier = Modifier.fillMaxSize()
+            text = stringResource(R.string.notes),
+            value = notes,
+            modifier = Modifier
+                .defaultMinSize(minHeight = 200.dp)
+                .fillMaxWidth()
         ) {
             notes = it
             info = info.copy(notes = notes)

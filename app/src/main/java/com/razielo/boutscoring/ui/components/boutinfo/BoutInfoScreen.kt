@@ -2,6 +2,8 @@ package com.razielo.boutscoring.ui.components.boutinfo
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -14,6 +16,7 @@ import com.razielo.boutscoring.ui.components.common.TopBar
 
 @Composable
 fun BoutInfoScreen(boutViewModel: BoutViewModel, goBack: () -> Unit) {
+    val scrollState = rememberScrollState()
     val bout = boutViewModel.bout.value
 
     if (bout == null) {
@@ -28,7 +31,8 @@ fun BoutInfoScreen(boutViewModel: BoutViewModel, goBack: () -> Unit) {
         Surface(
             modifier = Modifier
                 .padding(padding)
-                .fillMaxSize(),
+                .fillMaxSize()
+                .verticalScroll(scrollState),
             color = MaterialTheme.colorScheme.background
         ) {
             if (bout != null) {

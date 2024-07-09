@@ -28,7 +28,7 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 @Composable
-fun BoutDateSelector(info: BoutInfo, updateInfo: (BoutInfo) -> Unit) {
+fun BoutDateSelector(info: BoutInfo, setDate: (String?) -> Unit) {
     var showDialog by remember { mutableStateOf(false) }
     var displayDate: String? by remember {
         mutableStateOf(
@@ -49,7 +49,7 @@ fun BoutDateSelector(info: BoutInfo, updateInfo: (BoutInfo) -> Unit) {
             DialogDatePicker(initialDate = info.date,
                 dismiss = { showDialog = false },
                 updateDateString = { displayDate = it },
-                save = { updateInfo(info.copy(date = it)) })
+                save = { setDate(it) })
         }
     }
 }

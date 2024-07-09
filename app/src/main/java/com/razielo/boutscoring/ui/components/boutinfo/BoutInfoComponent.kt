@@ -84,7 +84,10 @@ fun BoutInfoComponent(boutInfo: BoutInfo, updateInfo: (BoutInfo) -> Unit) {
             updateInfo(info)
         }
 
-        BoutDateSelector(boutInfo, updateInfo)
+        BoutDateSelector(boutInfo) {
+            info = info.copy(date = it)
+            updateInfo(info)
+        }
 
         InfoTextField(
             text = stringResource(R.string.location),

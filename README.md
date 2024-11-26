@@ -17,6 +17,7 @@
   - Location
   - Date
   - Notes for additional context
+5. **Dark and light mode** (according to system preference)
 
 ## Screenshots
 

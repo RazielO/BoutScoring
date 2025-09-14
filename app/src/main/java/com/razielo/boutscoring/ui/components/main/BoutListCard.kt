@@ -1,5 +1,6 @@
 package com.razielo.boutscoring.ui.components.main
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -28,6 +29,8 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.razielo.boutscoring.R
@@ -48,10 +51,12 @@ fun BoutListCard(
 ) {
     val haptics = LocalHapticFeedback.current
     var openAlertDialog by remember { mutableStateOf(false) }
+    var expandedNotes by remember { mutableStateOf(false) }
 
     when {
         openAlertDialog -> {
-            ConfirmDeleteDialog(bout,
+            ConfirmDeleteDialog(
+                bout,
                 onDismissRequest = { openAlertDialog = false },
                 onConfirmation = {
                     deleteBout(bout)
@@ -78,8 +83,12 @@ fun BoutListCard(
             modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically
         ) {
             Column(Modifier.weight(5f)) {
-                CardText(bout.redCorner.fullName,
-                    Modifier.clickable { filterBouts(bout.redCorner) })
+                if (bout.info.weight != null) {
+                    SecondaryCardText("${stripWeight(bout.info.weight.displayName)} bout")
+                }
+
+                CardText(
+                    bout.redCorner.fullName, Modifier.clickable { filterBouts(bout.redCorner) })
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -91,8 +100,22 @@ fun BoutListCard(
                         modifier = Modifier.height(28.dp)
                     )
                 }
-                CardText(bout.blueCorner.fullName,
-                    Modifier.clickable { filterBouts(bout.blueCorner) })
+                CardText(
+                    bout.blueCorner.fullName, Modifier.clickable { filterBouts(bout.blueCorner) })
+
+                if (bout.info.date != null) {
+                    SecondaryCardText("Date: ${bout.info.date}")
+                }
+
+                if (bout.info.notes.isNotEmpty()) {
+                    TextButton(onClick = { expandedNotes = !expandedNotes }) {
+                        Text(if (expandedNotes) "Hide Notes" else "Show Notes")
+                    }
+
+                    AnimatedVisibility(visible = expandedNotes) {
+                        SecondaryCardText(bout.info.notes)
+                    }
+                }
             }
             Column(
                 Modifier.weight(2f),
@@ -109,13 +132,28 @@ fun BoutListCard(
 
 @Composable
 private fun CardText(
-    text: String, modifier: Modifier, color: Color = MaterialTheme.colorScheme.onSurfaceVariant
+    text: String, modifier: Modifier, color: Color = MaterialTheme.colorScheme.onSurface
 ) {
     Text(
         text,
         fontSize = MaterialTheme.typography.bodyLarge.fontSize * 1.2f,
         modifier = modifier,
         color = color
+    )
+}
+
+fun stripWeight(input: String): String {
+    return input.replace(Regex("\\s*\\(.*?\\)"), "").trim()
+}
+
+@Composable
+private fun SecondaryCardText(
+    text: String
+) {
+    Text(
+        text,
+        fontSize = MaterialTheme.typography.bodyMedium.fontSize,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
     )
 }
 

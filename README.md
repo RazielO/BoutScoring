@@ -4,20 +4,19 @@
 
 **BoutScoring** is an Android app designed to score combat sports bouts using the 10-point scoring system. The app provides a user-friendly interface to manage and score bouts effectively.
 
-
 ## Features
 
 1. **Add Bouts**: Quickly create new bouts with customizable details.
 2. **Delete Bouts**: Remove bouts by long-pressing on them in the list.
 3. **Score Rounds**: Tap on the winning corner to assign points and adjust scores by tapping individual numbers to decrement.
 4. **Edit Bout Information**: Update bout details such as:
-  - Winner
-  - Result method
-  - Weight class
-  - Championship status
-  - Location
-  - Date
-  - Notes for additional context
+    - Winner
+    - Result method
+    - Weight class
+    - Championship status
+    - Location
+    - Date
+    - Notes for additional context
 5. **Dark and light mode** (according to system preference)
 
 ## Screenshots
@@ -28,15 +27,15 @@
 
 ### Add New Bout
 
-<img src="img/Add_New_Bout.webp" alt="Add New Bout" width="300" />
+<img src="img/Add_new_bout.png" alt="Add New Bout" width="300" />
 
 ### Score a Bout
 
-<img src="img/Score_Bout.webp" alt="Score Bout" width="300" />
+<img src="img/Score_bout.png" alt="Score Bout" width="300" />
 
 ### Edit Bout Information
 
-<img src="img/Bout_Info.webp" alt="Bout Info" width="300" />
+<img src="img/Bout_info.png" alt="Bout Info" width="300" />
 
 ## How to Use
 

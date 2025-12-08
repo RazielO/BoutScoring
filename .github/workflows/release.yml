@@ -44,12 +44,6 @@ jobs:
     - name: Verify signature
       run: jarsigner -verify -verbose -certs app/build/outputs/apk/release/app-release-unsigned.apk
 
-    - name: Align APK
-      run: |
-        $ANDROID_HOME/build-tools/34.0.0/zipalign -v 4 \
-          app/build/outputs/apk/release/app-release-unsigned.apk \
-          app/build/outputs/apk/release/app-release.apk
-
     - name: Upload to GitHub Release
       uses: softprops/action-gh-release@v1
       with:

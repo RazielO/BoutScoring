@@ -50,5 +50,4 @@ jobs:
     - name: Upload to GitHub Release
       uses: softprops/action-gh-release@v1
       with:
-        name: BoutScoring
-        path: app/build/outputs/apk/release/app-release.apk
+        files: app/build/outputs/apk/release/*.apk

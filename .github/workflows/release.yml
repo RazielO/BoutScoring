@@ -29,18 +29,26 @@ jobs:
       run: chmod +x gradlew
 
     - name: Build release APK
-      env:
-        KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-        KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-        KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-      run: |
-          ./gradlew assembleRelease \
-            -Pandroid.injected.signing.store.file=release-keystore.jks \
-            -Pandroid.injected.signing.store.password=$KEYSTORE_PASSWORD \
-            -Pandroid.injected.signing.key.alias=$KEY_ALIAS \
-            -Pandroid.injected.signing.key.password=$KEY_PASSWORD
+      run: ./gradlew assembleRelease
       
+    - name: Sign APK
+      run: |
+        jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 \
+          -keystore my-release-key.jks -storepass ${{ secrets.KEYSTORE_PASSWORD }} \
+          -keypass ${{ secrets.KEY_PASSWORD }} \
+          app/build/outputs/apk/release/app-release-unsigned.apk ${{ secrets.KEY_ALIAS }}
+
+    - name: Verify signature
+      run: jarsigner -verify -verbose -certs app/build/outputs/apk/release/app-release-unsigned.apk
+
+    - name: Align APK
+      run: |
+        $ANDROID_HOME/build-tools/34.0.0/zipalign -v 4 \
+          app/build/outputs/apk/release/app-release-unsigned.apk \
+          app/build/outputs/apk/release/app-release.apk
+
     - name: Upload to GitHub Release
       uses: softprops/action-gh-release@v1
       with:
-        files: app/build/outputs/apk/release/*.apk
+        name: BoutScoring
+        path: app/build/outputs/apk/release/app-release.apk

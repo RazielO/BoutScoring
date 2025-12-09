@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.razielo.boutscoring"
-        minSdk = 33
+        minSdk = 23
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"

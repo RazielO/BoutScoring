@@ -63,9 +63,9 @@ jobs:
     - name: Rename final APK
       run: |
         mv app/build/outputs/apk/release/app-release-aligned.apk \
-           BoutScoring-${VERSION_TAG}.apk
+           BoutScoring.apk
 
     - name: Upload final APK
       uses: softprops/action-gh-release@v2
       with:
-        files: BoutScoring-${{ env.VERSION_TAG }}.apk
+        files: BoutScoring.apk

@@ -57,14 +57,16 @@ jobs:
     - name: Verify signature
       run: jarsigner -verify -verbose -certs app/build/outputs/apk/release/app-release-aligned.apk
 
+    - name: Export version tag
+      run: echo "VERSION_TAG=${GITHUB_REF_NAME}" >> $GITHUB_ENV
+
     - name: Rename final APK
       run: |
-        TAG=${GITHUB_REF_NAME}
         mv app/build/outputs/apk/release/app-release-aligned.apk \
-           BoutScoring-v${TAG}.apk
+           BoutScoring-v${VERSION_TAG}.apk
 
     - name: Upload final APK
       uses: actions/upload-artifact@v4
       with:
         name: BoutScoring
-        path: BoutScoring-v${TAG}.apk
+        path: BoutScoring-v${{ env.VERSION_TAG }}.apk

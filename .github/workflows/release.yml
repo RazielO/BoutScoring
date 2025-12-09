@@ -32,7 +32,7 @@ jobs:
       run: chmod +x gradlew
 
     - name: Install Android Build Tools
-      run: sudo apt-get install -y android-sdk-build-tools-34
+      run: sudo apt-get install -y android-sdk-build-tools
 
     - name: Build release APK
       run: ./gradlew assembleRelease

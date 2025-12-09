@@ -68,5 +68,5 @@ jobs:
     - name: Upload final APK
       uses: actions/upload-artifact@v4
       with:
-        name: BoutScoring
+        name: BoutScoring-v${{ env.VERSION_TAG }}.apk
         path: BoutScoring-v${{ env.VERSION_TAG }}.apk

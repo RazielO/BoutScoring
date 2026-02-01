@@ -46,7 +46,8 @@ fun BoutDateSelector(info: BoutInfo, setDate: (String?) -> Unit) {
             Text(displayDate ?: stringResource(R.string.choose_date), textAlign = TextAlign.Center)
         }
         if (showDialog) {
-            DialogDatePicker(initialDate = info.date,
+            DialogDatePicker(
+                initialDate = info.date,
                 dismiss = { showDialog = false },
                 updateDateString = { displayDate = it },
                 save = { setDate(it) })
@@ -75,8 +76,7 @@ private fun DialogDatePicker(
     selectedLocalDate?.let {
         updateDateString(
             stringResource(
-                R.string.date_button_label,
-                DateUtils.dateToString(selectedLocalDate)
+                R.string.date_button_label, DateUtils.dateToString(selectedLocalDate)
             )
         )
     }
@@ -96,11 +96,9 @@ private fun DialogDatePicker(
     }, dismissButton = {
         Button(onClick = {
             dismiss()
-            dateState.setSelection(
-                DateUtils.stringToMillis(
-                    initialDate, DateUtils.isoFormatter
-                ) ?: dateState.selectedDateMillis
-            )
+            dateState.selectedDateMillis = DateUtils.stringToMillis(
+                initialDate, DateUtils.isoFormatter
+            ) ?: dateState.selectedDateMillis
         }) {
             Text(text = stringResource(R.string.cancel))
         }
@@ -124,9 +122,7 @@ private class DateUtils {
 
         fun stringToMillis(string: String?, formatter: DateTimeFormatter): Long? {
             return try {
-                LocalDate.parse(string, formatter)
-                    .atStartOfDay(ZoneId.systemDefault())
-                    .toInstant()
+                LocalDate.parse(string, formatter).atStartOfDay(ZoneId.systemDefault()).toInstant()
                     .toEpochMilli()
             } catch (e: Exception) {
                 null
@@ -145,9 +141,7 @@ private class DateUtils {
             date: LocalDate, dateTimeFormatter: DateTimeFormatter
         ): LocalDate {
             val dateInMillis = LocalDate.parse(date.format(dateTimeFormatter), dateTimeFormatter)
-                .atStartOfDay(ZoneId.systemDefault())
-                .toInstant()
-                .toEpochMilli()
+                .atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
 
             return Instant.ofEpochMilli(dateInMillis).atZone(ZoneId.systemDefault()).toLocalDate()
         }

@@ -93,6 +93,9 @@ fun MainScreen(
 @Composable
 private fun FloatingButton(onClick: () -> Unit) {
     FloatingActionButton(onClick = onClick) {
-        Icon(Icons.Filled.Add, "Add new bout.")
+        Icon(
+            imageVector = Icons.Filled.Add,
+            contentDescription = "Add new bout."
+        )
     }
 }

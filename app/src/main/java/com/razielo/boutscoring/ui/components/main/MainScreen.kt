@@ -1,5 +1,9 @@
 package com.razielo.boutscoring.ui.components.main
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.expandIn
+import androidx.compose.animation.shrinkOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -140,22 +144,31 @@ private fun MainTopBar(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            if (searching) {
-                OutlinedTextField(
-                    value = searchText,
-                    onValueChange = onSearchTextChange,
-                    placeholder = { Text(stringResource(R.string.search)) },
-                    singleLine = true,
-                    shape = RoundedCornerShape(50.dp),
-                    textStyle = MaterialTheme.typography.bodyLarge
-                )
-            } else {
-                Text(
-                    stringResource(R.string.my_bouts_title),
-                    fontWeight = FontWeight.ExtraBold,
-                    fontSize = MaterialTheme.typography.headlineLarge.fontSize
-                )
+            AnimatedContent(
+                targetState = searching,
+                transitionSpec = {
+                    expandIn() togetherWith shrinkOut()
+                },
+                label = "SearchTransition"
+            ) { isSearching ->
+                if (isSearching) {
+                    OutlinedTextField(
+                        value = searchText,
+                        onValueChange = onSearchTextChange,
+                        placeholder = { Text(stringResource(R.string.search)) },
+                        singleLine = true,
+                        shape = RoundedCornerShape(50.dp),
+                        textStyle = MaterialTheme.typography.bodyLarge
+                    )
+                } else {
+                    Text(
+                        stringResource(R.string.my_bouts_title),
+                        fontWeight = FontWeight.ExtraBold,
+                        fontSize = MaterialTheme.typography.headlineLarge.fontSize
+                    )
+                }
             }
+
             Button(
                 onClick = toggleSearch,
                 shape = CircleShape,

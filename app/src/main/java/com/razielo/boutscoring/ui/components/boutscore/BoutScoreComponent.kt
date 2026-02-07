@@ -19,8 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.razielo.boutscoring.data.models.Bout
 import com.razielo.boutscoring.scoreColors
 import com.razielo.boutscoring.ui.models.ParsedBout
-import com.razielo.boutscoring.ui.theme.Blue
-import com.razielo.boutscoring.ui.theme.Red
+import com.razielo.boutscoring.ui.theme.AppColors
 
 @Composable
 fun BoutScoreComponent(
@@ -29,7 +28,7 @@ fun BoutScoreComponent(
     update: (ParsedBout) -> Unit,
 ) {
     var bout by remember { mutableStateOf(boutParam) }
-    val brush = Brush.horizontalGradient(listOf(Red, Blue))
+    val brush = Brush.horizontalGradient(listOf(AppColors.Red, AppColors.Blue))
 
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),

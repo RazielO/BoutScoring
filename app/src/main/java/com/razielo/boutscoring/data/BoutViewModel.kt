@@ -17,7 +17,12 @@ class BoutViewModel(private val boutRepository: BoutRepository) : ViewModel() {
 
     private val _filtered = MutableLiveData<List<ParsedBout>>()
     val filtered: LiveData<List<ParsedBout>>
-        get() = _filtered
+        get() = if (_filtered.isInitialized) {
+            _filtered
+        } else {
+            searchAllFighterBouts("")
+            _filtered
+        }
 
     fun getAllFighterBouts(id: String) = viewModelScope.launch {
         _filtered.value = boutRepository.getAllFighterBouts(id)

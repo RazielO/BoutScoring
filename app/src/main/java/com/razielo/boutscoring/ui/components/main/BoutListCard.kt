@@ -1,22 +1,32 @@
 package com.razielo.boutscoring.ui.components.main
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.AbsoluteCutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicText
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
+import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -24,30 +34,36 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.unit.sp
 import com.razielo.boutscoring.R
-import com.razielo.boutscoring.data.models.Fighter
-import com.razielo.boutscoring.scoreColors
-import com.razielo.boutscoring.ui.components.boutscore.HeadText
-import com.razielo.boutscoring.ui.components.common.BoutScoreResult
+import com.razielo.boutscoring.data.models.BoutInfo
 import com.razielo.boutscoring.ui.models.ParsedBout
+import com.razielo.boutscoring.ui.theme.AppColors
 
+
+/**
+ * Card element that shows an overview of a bout, it includes each corner's names, scores, a
+ * graph of the bout, a button that shows/hides the notes and the result
+ */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun BoutListCard(
     index: Int,
     bout: ParsedBout,
     goToBout: (Int) -> Unit,
-    deleteBout: (ParsedBout) -> Unit,
-    filterBouts: (Fighter) -> Unit
+    deleteBout: (ParsedBout) -> Unit
 ) {
     val haptics = LocalHapticFeedback.current
     var openAlertDialog by remember { mutableStateOf(false) }
@@ -65,141 +81,300 @@ fun BoutListCard(
         }
     }
 
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .combinedClickable(onClick = { goToBout(index) }, onLongClick = {
                 haptics.performHapticFeedback(HapticFeedbackType.LongPress)
                 openAlertDialog = true
-            })
+            }), elevation = CardDefaults.cardElevation(10.dp)
     ) {
         val redScore = bout.bout.scores.values.sumOf { it.first }
         val blueScore = bout.bout.scores.values.sumOf { it.second }
-        val colors = scoreColors(
-            Pair(redScore, blueScore), MaterialTheme.colorScheme.onSurfaceVariant
-        )
 
-        Row(
-            modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(Modifier.weight(5f)) {
-                if (bout.info.weight != null) {
-                    SecondaryCardText("${stripWeight(bout.info.weight.displayName)} bout")
-                }
+        Box {
+            CornerAccent(
+                color = Color(AppColors.Red.toArgb()), // red
+                alignment = Alignment.TopStart, modifier = Modifier.align(Alignment.TopStart)
+            )
+            CornerAccent(
+                color = Color(AppColors.Blue.toArgb()), // blue
+                alignment = Alignment.TopEnd, modifier = Modifier.align(Alignment.TopEnd)
+            )
 
-                CardText(
-                    bout.redCorner.fullName, Modifier.clickable { filterBouts(bout.redCorner) })
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    CardText(stringResource(R.string.vs), Modifier)
-                    if (bout.info.championship) Image(
-                        painterResource(R.drawable.belt),
-                        contentDescription = stringResource(R.string.championship_bout),
-                        modifier = Modifier.height(28.dp)
-                    )
-                }
-                CardText(
-                    bout.blueCorner.fullName, Modifier.clickable { filterBouts(bout.blueCorner) })
 
-                if (bout.info.date != null) {
-                    SecondaryCardText("Date: ${bout.info.date}")
-                }
-
-                if (bout.info.notes.isNotEmpty()) {
-                    TextButton(onClick = { expandedNotes = !expandedNotes }) {
-                        Text(if (expandedNotes) "Hide Notes" else "Show Notes")
-                    }
-
-                    AnimatedVisibility(visible = expandedNotes) {
-                        SecondaryCardText(bout.info.notes)
-                    }
-                }
-            }
             Column(
-                Modifier.weight(2f),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(if (bout.info.winner != null) 0.dp else 8.dp)
+                modifier = Modifier.padding(16.dp)
             ) {
-                CardText(redScore.toString(), Modifier, colors.first)
-                BoutScoreResult(bout.info, Modifier)
-                CardText(blueScore.toString(), Modifier, colors.second)
+                Column(
+                    modifier = Modifier
+                        .padding(top = 8.dp)
+                        .fillMaxWidth(),
+                ) {
+                    // Corners colors row
+                    Row {
+                        CornerHeader(
+                            stringResource(R.string.red),
+                            AppColors.Red,
+                            Modifier.weight(3f)
+                        )
+                        if (bout.info.championship) {
+                            Image(
+                                painterResource(R.drawable.belt),
+                                contentDescription = stringResource(R.string.championship_bout),
+                                Modifier.height(20.dp)
+                            )
+                        } else {
+                            Spacer(Modifier.weight(1f))
+                        }
+                        CornerHeader(
+                            stringResource(R.string.blue),
+                            AppColors.Blue,
+                            Modifier.weight(3f),
+                            TextAlign.End
+                        )
+                    }
+                    // Corners names row
+                    Row {
+                        FighterName(
+                            bout.redCorner.fullName, AppColors.Red, Modifier.weight(3f)
+                        )
+                        Text(
+                            stringResource(R.string.vs).uppercase(),
+                            fontSize = MaterialTheme.typography.headlineSmall.fontSize,
+                            fontWeight = FontWeight.ExtraBold,
+                            fontStyle = FontStyle.Italic,
+                            color = Color.Gray,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.weight(1f)
+                        )
+                        FighterName(
+                            bout.blueCorner.fullName,
+                            AppColors.Blue,
+                            Modifier.weight(3f),
+                            TextAlign.End
+                        )
+                    }
+                    // Corners scores row
+                    Row {
+                        CornerScore(
+                            redScore,
+                            AppColors.Red,
+                            Modifier.weight(3f)
+                        )
+                        Spacer(Modifier.weight(1f))
+                        CornerScore(
+                            blueScore,
+                            AppColors.Blue,
+                            Modifier.weight(3f),
+                            TextAlign.End
+                        )
+                    }
+                }
+
+                // Graph
+                Box {
+                    // Display the graph only if any round was scored
+                    if (bout.bout.scores.any { it.value.first != 0 && it.value.second != 0 }) {
+                        CumulativeScoreGraph(
+                            scores = bout.bout.scores,
+                            modifier = Modifier.padding(top = 12.dp),
+                        )
+                    }
+                }
+
+                // Bottom
+                BottomPills(bout.info, expandedNotes, {
+                    expandedNotes = !expandedNotes
+                })
             }
         }
     }
 }
 
+/**
+ * Element to show each corner's color
+ */
 @Composable
-private fun CardText(
-    text: String, modifier: Modifier, color: Color = MaterialTheme.colorScheme.onSurface
+fun CornerHeader(
+    corner: String,
+    color: Color,
+    modifier: Modifier = Modifier,
+    textAlign: TextAlign = TextAlign.Start
 ) {
     Text(
-        text,
-        fontSize = MaterialTheme.typography.bodyLarge.fontSize * 1.2f,
-        modifier = modifier,
-        color = color
+        stringResource(
+            R.string.corner_color, corner
+        ).uppercase(),
+        fontWeight = FontWeight.Bold,
+        fontSize = MaterialTheme.typography.labelSmall.fontSize,
+        letterSpacing = 1.5.sp,
+        color = color,
+        textAlign = textAlign,
+        modifier = modifier
     )
 }
 
-fun stripWeight(input: String): String {
-    return input.replace(Regex("\\s*\\(.*?\\)"), "").trim()
-}
-
+/**
+ * Element to show each corner's fighter name
+ */
 @Composable
-private fun SecondaryCardText(
-    text: String
+fun FighterName(
+    name: String,
+    color: Color,
+    modifier: Modifier = Modifier,
+    textAlign: TextAlign = TextAlign.Start
 ) {
     Text(
-        text,
-        fontSize = MaterialTheme.typography.bodyMedium.fontSize,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        name,
+        fontWeight = FontWeight.W600,
+        fontSize = MaterialTheme.typography.headlineSmall.fontSize,
+        lineHeight = MaterialTheme.typography.headlineSmall.fontSize * 1.2,
+        color = color,
+        textAlign = textAlign,
+        modifier = modifier
     )
 }
 
+/**
+ * Element to show each corner's score
+ */
 @Composable
-private fun ConfirmDeleteDialog(
-    bout: ParsedBout, onDismissRequest: () -> Unit, onConfirmation: () -> Unit
+fun CornerScore(
+    score: Int,
+    color: Color,
+    modifier: Modifier = Modifier,
+    textAlign: TextAlign = TextAlign.Start
 ) {
-    Dialog(onDismissRequest = { onDismissRequest() }) {
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight(),
-            shape = RoundedCornerShape(16.dp),
+    Text(
+        score.toString(),
+        fontWeight = FontWeight.W900,
+        fontSize = MaterialTheme.typography.headlineSmall.fontSize,
+        color = color,
+        textAlign = textAlign,
+        modifier = modifier
+    )
+}
+
+/**
+ * Bottom element of the card, two pills and the notes are shown when relevant:
+ * - If the bout has notes, it will show a button to show them, if the button is clicked, it will show/hide the notes
+ * - If the bout has a result, it will show a pill with the result
+ */
+@Composable
+fun BottomPills(info: BoutInfo, expandedNotes: Boolean, onClickNotes: () -> Unit) {
+    val hasNotes = info.notes.isNotEmpty()
+    val hasWinner = info.winner != null
+
+    if (hasNotes || hasWinner) {
+        HorizontalDivider(Modifier.padding(top = 6.dp))
+        AnimatedVisibility(
+            visible = expandedNotes,
+            enter = fadeIn() + expandVertically(),
+            exit = fadeOut() + shrinkVertically()
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
+                    .padding(top = 8.dp)
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
+                    .padding(12.dp)
             ) {
-                HeadText(
-                    stringResource(
-                        R.string.confirm_bout_deletion,
-                        bout.redCorner.fullName,
-                        bout.blueCorner.fullName
-                    ), Modifier
+                Text(
+                    info.notes,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center,
-                ) {
-                    DialogActionButton(stringResource(R.string.cancel)) { onDismissRequest() }
-                    DialogActionButton(stringResource(R.string.confirm)) { onConfirmation() }
-                }
             }
         }
+
+        Box(
+            modifier = Modifier
+                .padding(top = 8.dp)
+                .fillMaxWidth(),
+        ) {
+            if (hasNotes) {
+                val notesTextId = if (expandedNotes) R.string.hide_notes else R.string.show_notes
+                Pill(
+                    text = stringResource(notesTextId),
+                    modifier = Modifier
+                        .clickable(onClick = onClickNotes)
+                        .align(Alignment.TopStart),
+                    background = MaterialTheme.colorScheme.surfaceColorAtElevation(
+                        100.dp
+                    ),
+                    textColor = MaterialTheme.colorScheme.onSurface
+                )
+            }
+
+            if (hasWinner) {
+                Pill(
+                    text = info.resultText(),
+                    modifier = Modifier.align(Alignment.TopEnd),
+                    background = info.resultColor() ?: MaterialTheme.colorScheme.background,
+                )
+            }
+        }
+
     }
 }
 
+/**
+ * Generic pill element
+ */
 @Composable
-private fun DialogActionButton(text: String, onClick: () -> Unit) {
-    TextButton(
-        onClick,
+fun Pill(
+    text: String, modifier: Modifier = Modifier, background: Color, textColor: Color = Color.Black
+) {
+    Box(
+        modifier = modifier
+            .clip(RoundedCornerShape(48.dp))
+            .background(background)
+            .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
-        Text(text)
+        BasicText(
+            text,
+            style = MaterialTheme.typography.labelLarge.copy(color = textColor)
+        )
     }
 }
+
+/**
+ * Element used to color a corner
+ */
+@Composable
+fun CornerAccent(
+    color: Color, alignment: Alignment, modifier: Modifier = Modifier
+) {
+    val cornerSize = 30.dp
+    val shape = when (alignment) {
+        Alignment.TopStart -> AbsoluteCutCornerShape(bottomRight = cornerSize)
+        Alignment.TopEnd -> AbsoluteCutCornerShape(bottomLeft = cornerSize)
+        else -> AbsoluteCutCornerShape(0.dp)
+    }
+
+    Box(
+        modifier
+            .size(cornerSize)
+            .clip(shape)
+            .background(color)
+    )
+}
+
+/**
+ * Bout list card preview
+ */
+@Preview(showBackground = false)
+@Composable
+private fun BoutListCardPreview() {
+    BoutListCard(
+        index = 1,
+        bout = ParsedBout.example(),
+        goToBout = {},
+        deleteBout = {}
+    )
+}
+
+

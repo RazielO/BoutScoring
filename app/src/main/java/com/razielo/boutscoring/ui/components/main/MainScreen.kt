@@ -1,26 +1,44 @@
 package com.razielo.boutscoring.ui.components.main
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LifecycleOwner
 import com.razielo.boutscoring.R
 import com.razielo.boutscoring.data.BoutViewModel
-import com.razielo.boutscoring.data.models.Fighter
-import com.razielo.boutscoring.ui.components.common.TopBar
 import com.razielo.boutscoring.ui.models.ParsedBout
 
 @Composable
@@ -36,66 +54,167 @@ fun MainScreen(
     var filtered by remember { mutableStateOf(emptyList<ParsedBout>()) }
     boutViewModel.filtered.observe(owner) { list -> list.let { filtered = it } }
 
-    var filtering by remember { mutableStateOf(false) }
-    var name by remember { mutableStateOf("") }
-
     var searching by remember { mutableStateOf(false) }
     var searchText by remember { mutableStateOf("") }
 
-    val goToBoutF: (Int) -> Unit = { index: Int ->
-        boutViewModel.bout.value = if (!filtering) bouts[index] else filtered[index]
+    val goToBoutScoring: (Int) -> Unit = { index: Int ->
+        boutViewModel.bout.value = if (!searching) bouts[index] else filtered[index]
         goToBout()
     }
-
     val deleteBout: (ParsedBout) -> Unit = { boutViewModel.delete(it) }
 
-    val filterBouts: (Fighter) -> Unit = {
-        name = it.fullName
-        filtering = true
-        boutViewModel.getAllFighterBouts(it.fullName)
+    val onSearchTextChange: (String) -> Unit = {
+        searchText = it
+        boutViewModel.searchAllFighterBouts(it)
     }
 
-    val title: String = if (searching) ""
-    else if (!filtering && bouts.isEmpty()) stringResource(R.string.my_bouts_title)
-    else if (!filtering) stringResource(R.string.my_bouts_count_title, bouts.size)
-    else stringResource(R.string.filtered_bouts_title, name)
+    val toggleSearch = {
+        if (searching) {
+            searching = false
+            boutViewModel.searchAllFighterBouts("")
+        } else {
+            searching = true
+        }
+        searchText = ""
+    }
 
-    Scaffold(topBar = {
-        TopBar(titleText = title, goBack = filtering, onBack = {
-            filtering = false
-        }, actions = {
-            MainComponentTopBarAction(searching, searchText, {
-                searchText = it
-                boutViewModel.searchAllFighterBouts(it)
-            }, {
-                searching = true
-                filtering = true
-            }, {
-                searching = false
-                searchText = ""
-                filtering = false
-            })
-        })
-    }, floatingActionButton = {
-        FloatingButton(onClick = goToAddBout)
-    }) { padding ->
+    MainScreenContent(
+        bouts = if (searching) filtered else bouts,
+        searching = searching,
+        searchText = searchText,
+        onSearchTextChange = onSearchTextChange,
+        toggleSearch = toggleSearch,
+        goToAddBout = goToAddBout,
+        goToBoutScoring = goToBoutScoring,
+        deleteBout = deleteBout
+    )
+}
+
+/**
+ * Content of the main screen
+ */
+@Composable
+private fun MainScreenContent(
+    bouts: List<ParsedBout>,
+    searching: Boolean,
+    searchText: String,
+    onSearchTextChange: (String) -> Unit,
+    toggleSearch: () -> Unit,
+    goToAddBout: () -> Unit,
+    goToBoutScoring: (Int) -> Unit,
+    deleteBout: (ParsedBout) -> Unit,
+) {
+    Scaffold(
+        topBar = {
+            MainTopBar(searching, searchText, onSearchTextChange, toggleSearch)
+        },
+        floatingActionButton = {
+            FloatingButton(onClick = goToAddBout)
+        }) { padding ->
         Surface(
             modifier = Modifier
                 .padding(padding)
                 .fillMaxSize(),
-            color = MaterialTheme.colorScheme.background
         ) {
-            MainComponent(if (!filtering) bouts else filtered, goToBoutF, deleteBout, filterBouts)
+            BoutList(bouts, goToBoutScoring, deleteBout)
         }
     }
 }
 
+/**
+ * Top bar
+ */
+@Composable
+private fun MainTopBar(
+    searching: Boolean,
+    searchText: String = "",
+    onSearchTextChange: (String) -> Unit,
+    toggleSearch: () -> Unit
+) {
+    Box {
+        Row(
+            modifier = Modifier
+                .padding(horizontal = 16.dp, vertical = 20.dp)
+                .fillMaxWidth()
+                .height(60.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            if (searching) {
+                OutlinedTextField(
+                    value = searchText,
+                    onValueChange = onSearchTextChange,
+                    placeholder = { Text(stringResource(R.string.search)) },
+                    singleLine = true,
+                    shape = RoundedCornerShape(50.dp),
+                    textStyle = MaterialTheme.typography.bodyLarge
+                )
+            } else {
+                Text(
+                    stringResource(R.string.my_bouts_title),
+                    fontWeight = FontWeight.ExtraBold,
+                    fontSize = MaterialTheme.typography.headlineLarge.fontSize
+                )
+            }
+            Button(
+                onClick = toggleSearch,
+                shape = CircleShape,
+                contentPadding = PaddingValues(0.dp),
+                elevation = ButtonDefaults.buttonElevation(8.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                ),
+                modifier = Modifier.fillMaxHeight()
+            ) {
+                if (searching) {
+                    Icon(
+                        Icons.Default.Close,
+                        contentDescription = stringResource(R.string.stop_search),
+                    )
+                } else {
+                    Icon(
+                        Icons.Default.Search,
+                        contentDescription = stringResource(R.string.search),
+                    )
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Round floating action button to add a new bout
+ */
 @Composable
 private fun FloatingButton(onClick: () -> Unit) {
-    FloatingActionButton(onClick = onClick) {
+    FloatingActionButton(
+        onClick = onClick,
+        shape = RoundedCornerShape(50.dp),
+        containerColor = Color(59, 130, 246),
+        contentColor = Color.White
+    ) {
         Icon(
             imageVector = Icons.Filled.Add,
-            contentDescription = "Add new bout."
+            contentDescription = stringResource(R.string.add_new_bout_title),
         )
     }
+}
+
+/**
+ * Show a preview of the main screen
+ */
+@Preview
+@Composable
+private fun MainScreenPreview() {
+    MainScreenContent(
+        bouts = listOf(ParsedBout.example(), ParsedBout.example(), ParsedBout.example()),
+        searching = false,
+        searchText = "",
+        onSearchTextChange = {},
+        goToAddBout = {},
+        goToBoutScoring = {},
+        deleteBout = {},
+        toggleSearch = {}
+    )
 }

@@ -38,4 +38,9 @@
     <string name="my_bouts_title">My bouts</string>
     <string name="my_bouts_count_title">My %1$s bouts</string>
     <string name="filtered_bouts_title">%1$s bouts</string>
+    <!-- Bout List Card -->
+    <string name="show_notes">Show Notes</string>
+    <string name="hide_notes">Hide Notes</string>
+    <string name="corner_color">%1$s Corner</string>
+    <string name="stop_search">Stop search</string>
 </resources>

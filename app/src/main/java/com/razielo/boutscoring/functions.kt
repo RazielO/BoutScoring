@@ -2,18 +2,18 @@ package com.razielo.boutscoring
 
 import androidx.compose.ui.graphics.Color
 import com.razielo.boutscoring.ui.models.Screen
-import com.razielo.boutscoring.ui.theme.Green
-import com.razielo.boutscoring.ui.theme.Red
+import com.razielo.boutscoring.ui.theme.AppColors
 
-fun scoreColors(scores: Pair<Int, Int>, default: Color): Pair<Color, Color> = with(scores) {
-    if (this.first > this.second) {
-        Pair(Green, Red)
-    } else if (this.second > this.first) {
-        Pair(Red, Green)
-    } else {
-        Pair(default, default)
+fun scoreColors(scores: Pair<Int, Int>, default: Color): Pair<Color, Color> =
+    with(scores) {
+        if (this.first > this.second) {
+            Pair(AppColors.Green, AppColors.Red)
+        } else if (this.second > this.first) {
+            Pair(AppColors.Red, AppColors.Green)
+        } else {
+            Pair(default, default)
+        }
     }
-}
 
 fun topBarTitle(screen: Screen, boutCount: Int = 0, name: String = ""): String {
     return when (screen) {

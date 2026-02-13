@@ -16,12 +16,19 @@
     <string name="choose_date">Choose date</string>
     <string name="winner_dropdown_label">Winner</string>
     <string name="method_dropdown_label">Method</string>
-    <string name="weight_dropdown_label">Weight</string>
-    <string name="championship_in_play">Championship in play:</string>
-    <string name="location">Location</string>
-    <string name="notes">Notes</string>
+    <string name="weight_dropdown_label">Weight Class</string>
+    <string name="championship_in_play">Championship in play</string>
+    <string name="location_label">Location</string>
+    <string name="location">Venue or City</string>
+    <string name="notes_label">Notes</string>
+    <string name="notes">Additional details about the bout…</string>
+    <string name="previous_month">Previous month</string>
+    <string name="next_month">Next month</string>
     <string name="missing_rounds_error">Select the number of rounds first</string>
     <string name="select">Select %1$s</string>
+    <string name="select_fight_date">Select Fight Date</string>
+    <string name="confirm_selection">Confirm Selection</string>
+    <string name="previous">Previous</string>
     <!-- Bout Score -->
     <string name="score_round_error">Score the previous round first</string>
     <string name="championship_bout">Championship bout</string>

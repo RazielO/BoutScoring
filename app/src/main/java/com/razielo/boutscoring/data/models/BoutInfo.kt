@@ -1,6 +1,5 @@
 package com.razielo.boutscoring.data.models
 
-import androidx.compose.ui.graphics.Color
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -9,7 +8,6 @@ import com.razielo.boutscoring.data.models.enums.NoResultMethod
 import com.razielo.boutscoring.data.models.enums.WeightClass
 import com.razielo.boutscoring.data.models.enums.WinMethod
 import com.razielo.boutscoring.data.models.enums.Winner
-import com.razielo.boutscoring.ui.theme.AppColors
 import java.util.UUID
 
 @Entity(tableName = "bout_info")
@@ -30,17 +28,10 @@ data class BoutInfo(
 
         return when {
             winner == null -> ""
-            winMethod != null -> "$prefix-${winMethod!!.abbreviation}"
-            drawMethod != null -> drawMethod!!.abbreviation
-            noResultMethod != null -> noResultMethod!!.abbreviation
+            winMethod != null -> "$prefix-${winMethod.abbreviation}"
+            drawMethod != null -> drawMethod.abbreviation
+            noResultMethod != null -> noResultMethod.abbreviation
             else -> prefix
         }
-    }
-
-    fun resultColor(): Color? = when (winner) {
-        null -> null
-        Winner.RED_CORNER -> AppColors.Green
-        Winner.BLUE_CORNER -> AppColors.Red
-        Winner.DRAW, Winner.NO_RESULT -> Color.LightGray
     }
 }

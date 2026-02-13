@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -20,7 +19,7 @@ fun BoutScoreResult(info: BoutInfo, modifier: Modifier) {
     ) {
         if (info.winner != null) {
             val text = info.resultText()
-            val color = info.resultColor() ?: MaterialTheme.colorScheme.background
+            val color = resultColor(info.winner)
 
             HeadText(
                 text, Modifier

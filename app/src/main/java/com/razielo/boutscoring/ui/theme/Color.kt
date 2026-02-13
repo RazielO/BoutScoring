@@ -14,4 +14,5 @@ object AppColors {
     val Green = Color(0.1804f, 0.8f, 0.4431f, 1.0f)
     val Red = Color(0.9059f, 0.298f, 0.2653f, 1.0f)
     val Blue = Color(0.1608f, 0.512f, 0.7255f, 1.0f)
+    val Gold = Color(0.8275f, 0.6784f, 0.2275f, 1.0f)
 }

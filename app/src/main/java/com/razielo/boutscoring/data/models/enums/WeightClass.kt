@@ -2,7 +2,7 @@ package com.razielo.boutscoring.data.models.enums
 
 enum class WeightClass(val displayName: String) {
     MINIMUM("Minimumweight (105 lbs)"),
-    JR_FLY("Jr Flyweight (108 lbs)"),
+    JR_FLY("Junior Flyweight (108 lbs)"),
     FLY("Flyweight (112 lbs)"),
     SUPER_FLY("Super Flyweight (115 lbs)"),
     BANTAM("Bantamweight (118 lbs)"),

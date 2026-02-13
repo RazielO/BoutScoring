@@ -49,6 +49,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.razielo.boutscoring.R
 import com.razielo.boutscoring.data.models.BoutInfo
+import com.razielo.boutscoring.ui.components.common.resultColor
 import com.razielo.boutscoring.ui.models.ParsedBout
 import com.razielo.boutscoring.ui.theme.AppColors
 
@@ -313,7 +314,7 @@ fun BottomPills(info: BoutInfo, expandedNotes: Boolean, onClickNotes: () -> Unit
                 Pill(
                     text = info.resultText(),
                     modifier = Modifier.align(Alignment.TopEnd),
-                    background = info.resultColor() ?: MaterialTheme.colorScheme.background,
+                    background = resultColor(info.winner),
                 )
             }
         }

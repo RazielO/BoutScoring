@@ -1,5 +1,6 @@
 package com.razielo.boutscoring.ui.components.main
 
+import android.content.res.Configuration
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.expandIn
 import androidx.compose.animation.shrinkOut
@@ -43,7 +44,16 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LifecycleOwner
 import com.razielo.boutscoring.R
 import com.razielo.boutscoring.data.BoutViewModel
+import com.razielo.boutscoring.data.models.Bout
+import com.razielo.boutscoring.data.models.BoutInfo
+import com.razielo.boutscoring.data.models.Fighter
+import com.razielo.boutscoring.data.models.enums.DrawMethod
+import com.razielo.boutscoring.data.models.enums.WeightClass
+import com.razielo.boutscoring.data.models.enums.WinMethod
+import com.razielo.boutscoring.data.models.enums.Winner
 import com.razielo.boutscoring.ui.models.ParsedBout
+import com.razielo.boutscoring.ui.theme.BoutScoringTheme
+import java.util.Date
 
 @Composable
 fun MainScreen(
@@ -217,17 +227,91 @@ private fun FloatingButton(onClick: () -> Unit) {
 /**
  * Show a preview of the main screen
  */
-@Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun MainScreenPreview() {
-    MainScreenContent(
-        bouts = listOf(ParsedBout.example(), ParsedBout.example(), ParsedBout.example()),
-        searching = false,
-        searchText = "",
-        onSearchTextChange = {},
-        goToAddBout = {},
-        goToBoutScoring = {},
-        deleteBout = {},
-        toggleSearch = {}
+    val bout2 = ParsedBout(
+        bout = Bout(
+            rounds = 12,
+            scores = mapOf(
+                1 to Pair(9, 10),
+                2 to Pair(9, 10),
+                3 to Pair(9, 10),
+                4 to Pair(10, 9),
+                5 to Pair(10, 9),
+                6 to Pair(10, 9),
+                7 to Pair(9, 10),
+                8 to Pair(9, 10),
+                9 to Pair(9, 10),
+                10 to Pair(9, 10),
+                11 to Pair(9, 10),
+                12 to Pair(10, 9)
+            ),
+            boutInfoId = "",
+            redCornerId = "",
+            blueCornerId = "",
+            createdAt = Date(),
+            updatedAt = Date()
+        ),
+        info = BoutInfo(
+            winner = Winner.BLUE_CORNER,
+            winMethod = WinMethod.MAJORITY_DECISION,
+            weight = WeightClass.LIGHT_HEAVY,
+            date = "2025-02-22",
+            location = "Kingdom Arena, Riyadh",
+            championship = true,
+            notes = ""
+        ),
+        redCorner = Fighter(fullName = "Artur Beterbiev", displayName = "Beterbiev"),
+        blueCorner = Fighter(fullName = "Dmitrii Bivol", displayName = "Bivol")
     )
+
+    val bout3 = ParsedBout(
+        bout = Bout(
+            rounds = 12,
+            scores = mapOf(
+                1 to Pair(9, 10),
+                2 to Pair(9, 10),
+                3 to Pair(9, 10),
+                4 to Pair(10, 8),
+                5 to Pair(9, 10),
+                6 to Pair(10, 9),
+                7 to Pair(10, 8),
+                8 to Pair(9, 10),
+                9 to Pair(9, 10),
+                10 to Pair(10, 9),
+                11 to Pair(10, 9),
+                12 to Pair(9, 10)
+            ),
+            boutInfoId = "",
+            redCornerId = "",
+            blueCornerId = "",
+            createdAt = Date(),
+            updatedAt = Date()
+        ),
+        info = BoutInfo(
+            winner = Winner.DRAW,
+            drawMethod = DrawMethod.MAJORITY_DRAW,
+            weight = WeightClass.SUPER_LIGHT,
+            date = "2023-11-16",
+            location = "T-Mobile Arena, Las Vegas",
+            championship = true,
+            notes = "Conceicao down twice"
+        ),
+        redCorner = Fighter(fullName = " Emanuel Navarrete", displayName = "Navarrete"),
+        blueCorner = Fighter(fullName = " Robson Conceicao", displayName = " Conceicao")
+    )
+
+    BoutScoringTheme(darkTheme = true) {
+        MainScreenContent(
+            bouts = listOf(ParsedBout.example(), bout2, bout3),
+            searching = false,
+            searchText = "",
+            onSearchTextChange = {},
+            goToAddBout = {},
+            goToBoutScoring = {},
+            deleteBout = {},
+            toggleSearch = {}
+        )
+    }
 }

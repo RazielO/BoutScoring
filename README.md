@@ -25,6 +25,8 @@
 
 <img src="img/Bout_list.png" alt="Bout List" width="300" />
 
+<img src="img/Bout_list_dark.png" alt="Bout List Dark" width="300" />
+
 ### Add New Bout
 
 <img src="img/Add_new_bout.png" alt="Add New Bout" width="300" />

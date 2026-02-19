@@ -12,7 +12,8 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.razielo.boutscoring.ui.models.ParsedBout
-import com.razielo.boutscoring.ui.theme.AppColors
+import com.razielo.boutscoring.ui.theme.blueContainerDark
+import com.razielo.boutscoring.ui.theme.redContainerDark
 import kotlin.math.sign
 
 /**
@@ -80,8 +81,8 @@ fun CumulativeScoreGraph(
 
             val lineColor = when {
                 curr.total == 0 -> Color.Gray
-                curr.total > 0 -> AppColors.Red
-                else -> AppColors.Blue
+                curr.total > 0 -> redContainerDark
+                else -> blueContainerDark
             }
 
             // Color the line as accumulated delta, to show bout's story
@@ -99,8 +100,8 @@ fun CumulativeScoreGraph(
                 val xZero = x1 + (x2 - x1) * t
 
                 val firstLineColor = when {
-                    prev.total > 0 -> AppColors.Red
-                    else -> AppColors.Blue
+                    prev.total > 0 -> redContainerDark
+                    else -> blueContainerDark
                 }
 
                 // First half
@@ -131,8 +132,8 @@ fun CumulativeScoreGraph(
 
             val pointColor = when {
                 point.delta == 0 -> Color.Gray
-                point.delta > 0 -> AppColors.Red
-                else -> AppColors.Blue
+                point.delta > 0 -> redContainerDark
+                else -> blueContainerDark
             }
 
             drawCircle(

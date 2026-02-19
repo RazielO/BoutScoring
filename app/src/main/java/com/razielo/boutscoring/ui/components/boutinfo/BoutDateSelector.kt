@@ -263,19 +263,19 @@ private fun ManualDate(
     selectedDate: LocalDate,
     onDateSelected: (LocalDate) -> Unit
 ) {
-    var selectedDate by remember { mutableStateOf(selectedDate) }
+    var selectedDt by remember { mutableStateOf(selectedDate) }
 
     val minYear = 1900
     val maxYear = LocalDate.now().year + 1
 
-    val days = (1..selectedDate.month.length(selectedDate.isLeapYear)).toList()
-    var day by remember { mutableIntStateOf(selectedDate.dayOfMonth) }
+    val days = (1..selectedDt.month.length(selectedDt.isLeapYear)).toList()
+    var day by remember { mutableIntStateOf(selectedDt.dayOfMonth) }
 
     val months = Month.entries.map { it.toString().uppercase().take(3) }
-    var month by remember { mutableIntStateOf(selectedDate.monthValue) }
+    var month by remember { mutableIntStateOf(selectedDt.monthValue) }
 
     val years = (minYear..maxYear).toList()
-    var year by remember { mutableIntStateOf(selectedDate.year) }
+    var year by remember { mutableIntStateOf(selectedDt.year) }
 
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -286,13 +286,13 @@ private fun ManualDate(
             selectedIndex = day - 1,
             onNext = {
                 if (day == days.last()) day = 1 else day++
-                selectedDate = selectedDate.withDayOfMonth(day)
-                onDateSelected(selectedDate)
+                selectedDt = selectedDt.withDayOfMonth(day)
+                onDateSelected(selectedDt)
             },
             onPrevious = {
                 if (day == 1) day = days.last() else day--
-                selectedDate = selectedDate.withDayOfMonth(day)
-                onDateSelected(selectedDate)
+                selectedDt = selectedDt.withDayOfMonth(day)
+                onDateSelected(selectedDt)
             }
         )
 
@@ -301,13 +301,13 @@ private fun ManualDate(
             selectedIndex = month - 1,
             onNext = {
                 if (month == months.size) month = 1 else month++
-                selectedDate = selectedDate.withMonth(month)
-                onDateSelected(selectedDate)
+                selectedDt = selectedDt.withMonth(month)
+                onDateSelected(selectedDt)
             },
             onPrevious = {
                 if (month == 1) month = months.size else month--
-                selectedDate = selectedDate.withMonth(month)
-                onDateSelected(selectedDate)
+                selectedDt = selectedDt.withMonth(month)
+                onDateSelected(selectedDt)
             }
         )
 
@@ -316,13 +316,13 @@ private fun ManualDate(
             selectedIndex = year - minYear,
             onNext = {
                 if (year == years.last()) year = minYear else year++
-                selectedDate = selectedDate.withYear(year)
-                onDateSelected(selectedDate)
+                selectedDt = selectedDt.withYear(year)
+                onDateSelected(selectedDt)
             },
             onPrevious = {
                 if (year == minYear) year = maxYear else year--
-                selectedDate = selectedDate.withYear(year)
-                onDateSelected(selectedDate)
+                selectedDt = selectedDt.withYear(year)
+                onDateSelected(selectedDt)
             }
         )
     }

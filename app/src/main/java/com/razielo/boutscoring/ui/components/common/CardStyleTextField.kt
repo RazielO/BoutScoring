@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun CardStyleTextField(
-    labelText: String,
+    labelText: String? = null,
     hintText: String,
     value: String,
     modifier: Modifier,
@@ -31,12 +31,14 @@ fun CardStyleTextField(
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.spacedBy(6.dp),
     ) {
-        Text(
-            text = labelText,
-            fontSize = MaterialTheme.typography.labelLarge.fontSize,
-            fontWeight = FontWeight.SemiBold,
-            color = Color.Gray,
-        )
+        if (labelText != null) {
+            Text(
+                text = labelText,
+                fontSize = MaterialTheme.typography.labelLarge.fontSize,
+                fontWeight = FontWeight.SemiBold,
+                color = Color.Gray,
+            )
+        }
 
         OutlinedCard(
             modifier = modifier

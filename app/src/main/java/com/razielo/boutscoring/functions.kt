@@ -2,14 +2,15 @@ package com.razielo.boutscoring
 
 import androidx.compose.ui.graphics.Color
 import com.razielo.boutscoring.ui.models.Screen
-import com.razielo.boutscoring.ui.theme.AppColors
+import com.razielo.boutscoring.ui.theme.greenContainerDark
+import com.razielo.boutscoring.ui.theme.redContainerDark
 
 fun scoreColors(scores: Pair<Int, Int>, default: Color): Pair<Color, Color> =
     with(scores) {
         if (this.first > this.second) {
-            Pair(AppColors.Green, AppColors.Red)
+            Pair(greenContainerDark, redContainerDark)
         } else if (this.second > this.first) {
-            Pair(AppColors.Red, AppColors.Green)
+            Pair(redContainerDark, greenContainerDark)
         } else {
             Pair(default, default)
         }

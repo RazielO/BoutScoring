@@ -63,8 +63,8 @@ data class ParsedBout(
                     12 to Pair(9, 10)
                 ),
                 boutInfoId = boutInfo.id,
-                redCornerId = redCorner.displayName,
-                blueCornerId = blueCorner.displayName,
+                redCornerId = redCorner.fullName,
+                blueCornerId = blueCorner.fullName,
                 createdAt = Date(),
                 updatedAt = Date()
             )

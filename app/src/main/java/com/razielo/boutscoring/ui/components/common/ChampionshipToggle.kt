@@ -20,7 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.razielo.boutscoring.R
-import com.razielo.boutscoring.ui.theme.AppColors
+import com.razielo.boutscoring.ui.theme.goldContainerDark
 
 
 @Composable
@@ -56,7 +56,7 @@ fun ChampionshipToggle(championship: Boolean, toggle: (Boolean) -> Unit) {
                 championship,
                 onCheckedChange = toggle,
                 colors = SwitchDefaults.colors().copy(
-                    checkedTrackColor = AppColors.Gold
+                    checkedTrackColor = goldContainerDark
                 ),
             )
         }

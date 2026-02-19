@@ -32,6 +32,11 @@
     <!-- Bout Score -->
     <string name="score_round_error">Score the previous round first</string>
     <string name="championship_bout">Championship bout</string>
+    <string name="round_i">Round %1$s</string>
+    <string name="round">Round</string>
+    <string name="round_abbr">Rd</string>
+    <string name="save">Save</string>
+    <string name="add_quick_note">Add Quick Note</string>
     <!-- Common -->
     <string name="go_back">Go Back</string>
     <!-- Main component -->

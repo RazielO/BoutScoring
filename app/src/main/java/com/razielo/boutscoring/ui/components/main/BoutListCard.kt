@@ -20,7 +20,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.AbsoluteCutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicText
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -36,7 +35,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
@@ -49,9 +47,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.razielo.boutscoring.R
 import com.razielo.boutscoring.data.models.BoutInfo
+import com.razielo.boutscoring.ui.components.common.Pill
 import com.razielo.boutscoring.ui.components.common.resultColor
 import com.razielo.boutscoring.ui.models.ParsedBout
-import com.razielo.boutscoring.ui.theme.AppColors
+import com.razielo.boutscoring.ui.theme.blueContainerDark
+import com.razielo.boutscoring.ui.theme.redContainerDark
 
 
 /**
@@ -96,11 +96,11 @@ fun BoutListCard(
 
         Box {
             CornerAccent(
-                color = Color(AppColors.Red.toArgb()), // red
+                color = redContainerDark, // red
                 alignment = Alignment.TopStart, modifier = Modifier.align(Alignment.TopStart)
             )
             CornerAccent(
-                color = Color(AppColors.Blue.toArgb()), // blue
+                color = blueContainerDark, // blue
                 alignment = Alignment.TopEnd, modifier = Modifier.align(Alignment.TopEnd)
             )
 
@@ -117,7 +117,7 @@ fun BoutListCard(
                     Row {
                         CornerHeader(
                             stringResource(R.string.red),
-                            AppColors.Red,
+                            redContainerDark,
                             Modifier.weight(3f)
                         )
                         if (bout.info.championship) {
@@ -131,7 +131,7 @@ fun BoutListCard(
                         }
                         CornerHeader(
                             stringResource(R.string.blue),
-                            AppColors.Blue,
+                            blueContainerDark,
                             Modifier.weight(3f),
                             TextAlign.End
                         )
@@ -139,7 +139,7 @@ fun BoutListCard(
                     // Corners names row
                     Row {
                         FighterName(
-                            bout.redCorner.fullName, AppColors.Red, Modifier.weight(3f)
+                            bout.redCorner.fullName, redContainerDark, Modifier.weight(3f)
                         )
                         Text(
                             stringResource(R.string.vs).uppercase(),
@@ -152,7 +152,7 @@ fun BoutListCard(
                         )
                         FighterName(
                             bout.blueCorner.fullName,
-                            AppColors.Blue,
+                            blueContainerDark,
                             Modifier.weight(3f),
                             TextAlign.End
                         )
@@ -161,13 +161,13 @@ fun BoutListCard(
                     Row {
                         CornerScore(
                             redScore,
-                            AppColors.Red,
+                            redContainerDark,
                             Modifier.weight(3f)
                         )
                         Spacer(Modifier.weight(1f))
                         CornerScore(
                             blueScore,
-                            AppColors.Blue,
+                            blueContainerDark,
                             Modifier.weight(3f),
                             TextAlign.End
                         )
@@ -322,25 +322,6 @@ fun BottomPills(info: BoutInfo, expandedNotes: Boolean, onClickNotes: () -> Unit
     }
 }
 
-/**
- * Generic pill element
- */
-@Composable
-fun Pill(
-    text: String, modifier: Modifier = Modifier, background: Color, textColor: Color = Color.Black
-) {
-    Box(
-        modifier = modifier
-            .clip(RoundedCornerShape(48.dp))
-            .background(background)
-            .padding(horizontal = 16.dp, vertical = 8.dp)
-    ) {
-        BasicText(
-            text,
-            style = MaterialTheme.typography.labelLarge.copy(color = textColor)
-        )
-    }
-}
 
 /**
  * Element used to color a corner

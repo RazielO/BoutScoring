@@ -22,7 +22,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -51,11 +50,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.razielo.boutscoring.R
 import com.razielo.boutscoring.data.BoutViewModel
 import com.razielo.boutscoring.scoreColors
 import com.razielo.boutscoring.ui.components.common.Pill
+import com.razielo.boutscoring.ui.components.common.TopBar
 import com.razielo.boutscoring.ui.components.common.resultColor
 import com.razielo.boutscoring.ui.models.ParsedBout
 import com.razielo.boutscoring.ui.theme.BoutScoringTheme
@@ -318,7 +317,7 @@ private fun ContentSwitcher(
                     Text(
                         text = option,
                         color = textColor,
-                        fontSize = 15.sp,
+                        style = MaterialTheme.typography.bodyMedium,
                         fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
                     )
                 }
@@ -329,37 +328,15 @@ private fun ContentSwitcher(
 
 @Composable
 private fun BoutScoreTopBar(goBack: () -> Unit, goToInfo: () -> Unit) {
-    Surface(shadowElevation = 8.dp) {
-        Row(
-            Modifier
-                .background(MaterialTheme.colorScheme.surfaceVariant)
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                IconButton(onClick = goBack) {
-                    Icon(
-                        Icons.AutoMirrored.Default.ArrowBack,
-                        contentDescription = stringResource(R.string.go_back)
-                    )
-                }
-                Text(
-                    stringResource(R.string.score_bout_title).uppercase(),
-                    fontWeight = FontWeight.Bold,
-                    style = MaterialTheme.typography.titleLarge
-                )
-            }
-
-            IconButton(onClick = goToInfo) {
-                Icon(
-                    Icons.Default.Info,
-                    contentDescription = stringResource(R.string.bout_info_title)
-                )
-            }
+    TopBar(
+        stringResource(R.string.score_bout_title).uppercase(),
+        goBack = goBack
+    ) {
+        IconButton(onClick = goToInfo) {
+            Icon(
+                Icons.Default.Info,
+                contentDescription = stringResource(R.string.bout_info_title)
+            )
         }
     }
 }

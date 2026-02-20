@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
@@ -18,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.razielo.boutscoring.ui.theme.BoutScoringTheme
 
 @Composable
 fun CardStyleTextField(
@@ -34,7 +34,7 @@ fun CardStyleTextField(
         if (labelText != null) {
             Text(
                 text = labelText,
-                fontSize = MaterialTheme.typography.labelLarge.fontSize,
+                style = MaterialTheme.typography.labelLarge,
                 fontWeight = FontWeight.SemiBold,
                 color = Color.Gray,
             )
@@ -55,9 +55,8 @@ fun CardStyleTextField(
                     .padding(16.dp),
                 enabled = true,
                 singleLine = true,
-                textStyle = LocalTextStyle.current.copy(
+                textStyle = MaterialTheme.typography.bodyMedium.copy(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    fontSize = MaterialTheme.typography.bodyMedium.fontSize,
                 ),
                 decorationBox = { innerTextField ->
                     if (value.isEmpty()) {
@@ -76,10 +75,12 @@ fun CardStyleTextField(
 @Preview(showBackground = true)
 @Composable
 private fun CardStyleTextFieldPreview() {
-    CardStyleTextField(
-        labelText = "Label",
-        hintText = "Hint text",
-        value = "Value",
-        modifier = Modifier
-    ) { }
+    BoutScoringTheme {
+        CardStyleTextField(
+            labelText = "Label",
+            hintText = "Hint text",
+            value = "Value",
+            modifier = Modifier
+        ) { }
+    }
 }

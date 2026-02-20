@@ -24,7 +24,7 @@ fun AddBoutScreen(boutViewModel: BoutViewModel, goToScore: () -> Unit, goBack: (
 
     Scaffold(snackbarHost = { SnackbarHost(hostState = snackbarHostState) }, topBar = {
         TopBar(
-            titleText = stringResource(R.string.add_new_bout_title), goBack = true, onBack = goBack
+            titleText = stringResource(R.string.add_new_bout_title), goBack = goBack
         )
     }) { padding ->
         Surface(

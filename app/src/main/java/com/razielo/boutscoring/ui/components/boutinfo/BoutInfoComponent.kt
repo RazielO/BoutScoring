@@ -25,6 +25,7 @@ import com.razielo.boutscoring.data.models.enums.Winner
 import com.razielo.boutscoring.ui.components.common.CardStyleTextField
 import com.razielo.boutscoring.ui.components.common.ChampionshipToggle
 import com.razielo.boutscoring.ui.models.ParsedBout
+import com.razielo.boutscoring.ui.theme.BoutScoringTheme
 
 @Composable
 fun BoutInfoComponent(boutInfo: BoutInfo, updateInfo: (BoutInfo) -> Unit) {
@@ -178,5 +179,7 @@ private fun getMethodOptions(winner: Winner?): List<String> = when (winner) {
 @Preview(showBackground = true)
 @Composable
 private fun BoutInfoComponentPreview() {
-    BoutInfoComponent(ParsedBout.example().info.copy()) { }
+    BoutScoringTheme {
+        BoutInfoComponent(ParsedBout.example().info.copy()) { }
+    }
 }

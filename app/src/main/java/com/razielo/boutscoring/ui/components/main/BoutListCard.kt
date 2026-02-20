@@ -44,12 +44,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.razielo.boutscoring.R
 import com.razielo.boutscoring.data.models.BoutInfo
 import com.razielo.boutscoring.ui.components.common.Pill
 import com.razielo.boutscoring.ui.components.common.resultColor
 import com.razielo.boutscoring.ui.models.ParsedBout
+import com.razielo.boutscoring.ui.theme.BoutScoringTheme
 import com.razielo.boutscoring.ui.theme.blueContainerDark
 import com.razielo.boutscoring.ui.theme.redContainerDark
 
@@ -143,7 +143,7 @@ fun BoutListCard(
                         )
                         Text(
                             stringResource(R.string.vs).uppercase(),
-                            fontSize = MaterialTheme.typography.headlineSmall.fontSize,
+                            style = MaterialTheme.typography.headlineSmall,
                             fontWeight = FontWeight.ExtraBold,
                             fontStyle = FontStyle.Italic,
                             color = Color.Gray,
@@ -198,19 +198,16 @@ fun BoutListCard(
  * Element to show each corner's color
  */
 @Composable
-fun CornerHeader(
+private fun CornerHeader(
     corner: String,
     color: Color,
     modifier: Modifier = Modifier,
     textAlign: TextAlign = TextAlign.Start
 ) {
     Text(
-        stringResource(
-            R.string.corner_color, corner
-        ).uppercase(),
+        stringResource(R.string.corner_color, corner).uppercase(),
         fontWeight = FontWeight.Bold,
-        fontSize = MaterialTheme.typography.labelSmall.fontSize,
-        letterSpacing = 1.5.sp,
+        style = MaterialTheme.typography.labelMedium,
         color = color,
         textAlign = textAlign,
         modifier = modifier
@@ -221,7 +218,7 @@ fun CornerHeader(
  * Element to show each corner's fighter name
  */
 @Composable
-fun FighterName(
+private fun FighterName(
     name: String,
     color: Color,
     modifier: Modifier = Modifier,
@@ -230,8 +227,7 @@ fun FighterName(
     Text(
         name,
         fontWeight = FontWeight.W600,
-        fontSize = MaterialTheme.typography.headlineSmall.fontSize,
-        lineHeight = MaterialTheme.typography.headlineSmall.fontSize * 1.2,
+        style = MaterialTheme.typography.headlineSmall,
         color = color,
         textAlign = textAlign,
         modifier = modifier
@@ -242,7 +238,7 @@ fun FighterName(
  * Element to show each corner's score
  */
 @Composable
-fun CornerScore(
+private fun CornerScore(
     score: Int,
     color: Color,
     modifier: Modifier = Modifier,
@@ -251,7 +247,7 @@ fun CornerScore(
     Text(
         score.toString(),
         fontWeight = FontWeight.W900,
-        fontSize = MaterialTheme.typography.headlineSmall.fontSize,
+        style = MaterialTheme.typography.headlineSmall,
         color = color,
         textAlign = textAlign,
         modifier = modifier
@@ -264,7 +260,7 @@ fun CornerScore(
  * - If the bout has a result, it will show a pill with the result
  */
 @Composable
-fun BottomPills(info: BoutInfo, expandedNotes: Boolean, onClickNotes: () -> Unit) {
+private fun BottomPills(info: BoutInfo, expandedNotes: Boolean, onClickNotes: () -> Unit) {
     val hasNotes = info.notes.isNotEmpty()
     val hasWinner = info.winner != null
 
@@ -327,7 +323,7 @@ fun BottomPills(info: BoutInfo, expandedNotes: Boolean, onClickNotes: () -> Unit
  * Element used to color a corner
  */
 @Composable
-fun CornerAccent(
+private fun CornerAccent(
     color: Color, alignment: Alignment, modifier: Modifier = Modifier
 ) {
     val cornerSize = 30.dp
@@ -351,12 +347,14 @@ fun CornerAccent(
 @Preview(showBackground = false)
 @Composable
 private fun BoutListCardPreview() {
-    BoutListCard(
-        index = 1,
-        bout = ParsedBout.example(),
-        goToBout = {},
-        deleteBout = {}
-    )
+    BoutScoringTheme {
+        BoutListCard(
+            index = 1,
+            bout = ParsedBout.example(),
+            goToBout = {},
+            deleteBout = {}
+        )
+    }
 }
 
 

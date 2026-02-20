@@ -33,7 +33,9 @@
 
 ### Score a Bout
 
-<img src="img/Score_bout.png" alt="Score Bout" width="300" />
+<img src="img/Score_bout_carousel.png" alt="Score Bout Carousel" width="300" />
+
+<img src="img/Score_bout_list.png" alt="Score Bout List" width="300" />
 
 ### Edit Bout Information
 

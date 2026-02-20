@@ -42,12 +42,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.razielo.boutscoring.DateUtils
 import com.razielo.boutscoring.R
 import com.razielo.boutscoring.data.models.BoutInfo
 import com.razielo.boutscoring.ui.models.ParsedBout
+import com.razielo.boutscoring.ui.theme.BoutScoringTheme
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.Month
@@ -143,7 +143,7 @@ private fun BoutDatePickerDialog(
                     Modifier
                         .padding(bottom = 24.dp)
                         .fillMaxWidth(),
-                    fontSize = 20.sp,
+                    style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colorScheme.onSurface
@@ -189,7 +189,7 @@ private fun BoutDatePickerDialog(
                                             Locale.getDefault()
                                         ).capitalize(androidx.compose.ui.text.intl.Locale.current)
                                     } ${currentMonth.year}",
-                                    fontSize = 16.sp,
+                                    style = MaterialTheme.typography.bodyLarge,
                                     fontWeight = FontWeight.Medium,
                                 )
                             }
@@ -355,19 +355,19 @@ private fun DateSelectorComponent(
             Text(
                 options[prevIndex].toString(),
                 fontWeight = FontWeight.Black,
-                fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f),
             )
             Text(
                 options[selectedIndex].toString(),
                 fontWeight = FontWeight.Black,
-                fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.onSurface
             )
             Text(
                 options[nextIndex].toString(),
                 fontWeight = FontWeight.Black,
-                fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
             )
         }
@@ -406,7 +406,7 @@ private fun CalendarGrid(
                     modifier = Modifier.weight(1f),
                     textAlign = TextAlign.Center,
                     color = Color.Gray,
-                    fontSize = MaterialTheme.typography.bodySmall.fontSize,
+                    style = MaterialTheme.typography.bodySmall,
                     fontWeight = FontWeight.Bold
                 )
             }
@@ -454,7 +454,7 @@ private fun CalendarGrid(
                                     Text(
                                         text = day.toString(),
                                         color = if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurface,
-                                        fontSize = MaterialTheme.typography.bodySmall.fontSize,
+                                        style = MaterialTheme.typography.bodySmall,
                                         fontWeight = FontWeight.Bold
                                     )
                                 }
@@ -470,30 +470,36 @@ private fun CalendarGrid(
 @Preview
 @Composable
 private fun BoutDatePickerCalendarPreview() {
-    BoutDatePickerDialog(
-        onDismiss = {},
-        onConfirm = {},
-        initialDateStr = "2026-01-01",
-        calendarGrid = true,
-        onSwitchView = {}
-    )
+    BoutScoringTheme {
+        BoutDatePickerDialog(
+            onDismiss = {},
+            onConfirm = {},
+            initialDateStr = "2026-01-01",
+            calendarGrid = true,
+            onSwitchView = {}
+        )
+    }
 }
 
 @Preview
 @Composable
 private fun BoutDatePickerManualPreview() {
-    BoutDatePickerDialog(
-        onDismiss = {},
-        onConfirm = {},
-        initialDateStr = "2026-01-01",
-        calendarGrid = false,
-        onSwitchView = {}
-    )
+    BoutScoringTheme {
+        BoutDatePickerDialog(
+            onDismiss = {},
+            onConfirm = {},
+            initialDateStr = "2026-01-01",
+            calendarGrid = false,
+            onSwitchView = {}
+        )
+    }
 }
 
 @Preview
 @Composable
 private fun BoutDateSelectorPreview() {
-    BoutDateSelector(ParsedBout.example().info.copy()) {}
+    BoutScoringTheme {
+        BoutDateSelector(ParsedBout.example().info.copy()) {}
+    }
 }
 

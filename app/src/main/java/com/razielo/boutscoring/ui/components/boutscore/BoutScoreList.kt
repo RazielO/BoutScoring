@@ -123,7 +123,7 @@ private fun RoundRow(
                 modifier = Modifier.weight(1f),
                 textAlign = TextAlign.Center,
                 color = Color.Gray,
-                fontSize = MaterialTheme.typography.bodySmall.fontSize,
+                style = MaterialTheme.typography.bodySmall,
                 fontWeight = FontWeight.Bold
             )
 

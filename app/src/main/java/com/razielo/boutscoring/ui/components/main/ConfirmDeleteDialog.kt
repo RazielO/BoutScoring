@@ -7,9 +7,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,10 +20,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.razielo.boutscoring.R
 import com.razielo.boutscoring.ui.models.ParsedBout
+import com.razielo.boutscoring.ui.theme.BoutScoringTheme
 
 /**
  * Dialog that ask for confirmation to delete a bout
@@ -56,16 +58,36 @@ fun ConfirmDeleteDialog(
                 Text(
                     questionText,
                     textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.W500,
-                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.headlineSmall,
                 )
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
-                    TextButton(onDismissRequest) { Text(stringResource(R.string.cancel)) }
-                    TextButton(onConfirmation) { Text(stringResource(R.string.confirm)) }
+                    Button(
+                        modifier = Modifier.weight(1f),
+                        shape = RoundedCornerShape(8.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.secondary,
+                            contentColor = MaterialTheme.colorScheme.onSecondary,
+                        ),
+                        onClick = onDismissRequest,
+                    ) {
+                        Text(stringResource(R.string.cancel))
+                    }
+                    Button(
+                        modifier = Modifier.weight(1f),
+                        shape = RoundedCornerShape(8.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.error,
+                            contentColor = MaterialTheme.colorScheme.onError,
+                        ),
+                        onClick = onDismissRequest,
+                    ) {
+                        Text(stringResource(R.string.confirm))
+                    }
                 }
             }
         }
@@ -78,5 +100,7 @@ fun ConfirmDeleteDialog(
 @Preview(showBackground = true)
 @Composable
 private fun ConfirmDeleteDialogPreview() {
-    ConfirmDeleteDialog(bout = ParsedBout.example(), onDismissRequest = {}, onConfirmation = {})
+    BoutScoringTheme {
+        ConfirmDeleteDialog(bout = ParsedBout.example(), onDismissRequest = {}, onConfirmation = {})
+    }
 }

@@ -174,7 +174,7 @@ private fun MainTopBar(
                     Text(
                         stringResource(R.string.my_bouts_title),
                         fontWeight = FontWeight.ExtraBold,
-                        fontSize = MaterialTheme.typography.headlineLarge.fontSize
+                        style = MaterialTheme.typography.displaySmall
                     )
                 }
             }
@@ -302,7 +302,7 @@ private fun MainScreenPreview() {
         blueCorner = Fighter(fullName = " Robson Conceicao", displayName = " Conceicao")
     )
 
-    BoutScoringTheme(darkTheme = true) {
+    BoutScoringTheme(darkTheme = false) {
         MainScreenContent(
             bouts = listOf(ParsedBout.example(), bout2, bout3),
             searching = false,

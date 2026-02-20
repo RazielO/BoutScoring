@@ -50,12 +50,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.razielo.boutscoring.R
 import com.razielo.boutscoring.data.models.enums.WeightClass
 import com.razielo.boutscoring.data.models.enums.Winner
 import com.razielo.boutscoring.ui.models.ParsedBout
+import com.razielo.boutscoring.ui.theme.BoutScoringTheme
 import kotlinx.coroutines.delay
 
 @Composable
@@ -80,7 +80,7 @@ fun DropdownSelection(
         Text(
             text = title,
             modifier = Modifier.padding(),
-            fontSize = MaterialTheme.typography.labelLarge.fontSize,
+            style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.SemiBold,
             color = Color.Gray
         )
@@ -149,7 +149,7 @@ private fun DropdownLabel(text: String) {
                 .weight(1f)
                 .padding(horizontal = 16.dp, vertical = 8.dp)
                 .fillMaxWidth(),
-            fontSize = MaterialTheme.typography.bodyMedium.fontSize
+            style = MaterialTheme.typography.bodyMedium
         )
         Icon(
             Icons.Outlined.KeyboardArrowDown,
@@ -180,7 +180,10 @@ private fun DialogSelectionItem(text: String, selected: Boolean, onClick: () -> 
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text)
+            Text(
+                text,
+                style = MaterialTheme.typography.bodyMedium
+            )
             Icon(
                 Icons.Filled.CheckCircle,
                 contentDescription = null,
@@ -218,24 +221,11 @@ private fun DialogSelector(
                     Modifier
                         .padding(bottom = 24.dp)
                         .fillMaxWidth(),
-                    fontSize = 20.sp,
+                    style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colorScheme.onSurface
                 )
-//                LazyColumn(
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .heightIn(max = 400.dp)
-//                ) {
-//                    items(options.size) { idx ->
-//                        val text = options[idx]
-//                        DialogSelectionItem(
-//                            text,
-//                            text == selectedElement
-//                        ) { selectedElement = text }
-//                    }
-//                }
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -360,22 +350,26 @@ fun VerticalScrollbar(
 @Preview(showBackground = true)
 @Composable
 private fun DropdownSelectionPreview() {
-    DropdownSelection(
-        title = stringResource(R.string.winner_dropdown_label),
-        options = Winner.entries.map { it.displayName },
-        selectedElement = ParsedBout.example().info.winner?.displayName,
-        onSelectionChanged = {}
-    )
+    BoutScoringTheme {
+        DropdownSelection(
+            title = stringResource(R.string.winner_dropdown_label),
+            options = Winner.entries.map { it.displayName },
+            selectedElement = ParsedBout.example().info.winner?.displayName,
+            onSelectionChanged = {}
+        )
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun DialogSelectorPreview() {
-    DialogSelector(
-        title = "Weight Class",
-        options = WeightClass.entries.map { it.displayName },
-        selected = WeightClass.JR_FLY.displayName,
-        onDismiss = {},
-        onConfirm = {}
-    )
+    BoutScoringTheme {
+        DialogSelector(
+            title = "Weight Class",
+            options = WeightClass.entries.map { it.displayName },
+            selected = WeightClass.JR_FLY.displayName,
+            onDismiss = {},
+            onConfirm = {}
+        )
+    }
 }

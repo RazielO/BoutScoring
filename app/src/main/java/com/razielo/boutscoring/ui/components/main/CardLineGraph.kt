@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.razielo.boutscoring.ui.models.ParsedBout
+import com.razielo.boutscoring.ui.theme.BoutScoringTheme
 import com.razielo.boutscoring.ui.theme.blueContainerDark
 import com.razielo.boutscoring.ui.theme.redContainerDark
 import kotlin.math.sign
@@ -179,6 +180,8 @@ private fun cumulativeDelta(
  */
 @Preview(showBackground = true)
 @Composable
-fun CumulativeScoreGraphPreview() {
-    CumulativeScoreGraph(ParsedBout.example().bout.scores)
+private fun CumulativeScoreGraphPreview() {
+    BoutScoringTheme {
+        CumulativeScoreGraph(ParsedBout.example().bout.scores)
+    }
 }

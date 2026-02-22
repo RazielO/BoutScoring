@@ -26,7 +26,6 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        boutViewModel.insert(ParsedBout.example())
 
         setContent {
             BoutScoringTheme {
@@ -63,7 +62,7 @@ private fun MainActivityComposable(boutViewModel: BoutViewModel, owner: Lifecycl
         }
         composable(route = "info") {
             BoutInfoScreen(boutViewModel = boutViewModel) {
-                navController.navigate("score") { navController.popBackStack() }
+                navController.popBackStack()
             }
         }
         composable(route = "add_bout") {

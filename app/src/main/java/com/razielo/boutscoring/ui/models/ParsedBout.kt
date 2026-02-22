@@ -1,5 +1,6 @@
 package com.razielo.boutscoring.ui.models
 
+import com.razielo.boutscoring.DateUtils
 import com.razielo.boutscoring.data.models.Bout
 import com.razielo.boutscoring.data.models.BoutInfo
 import com.razielo.boutscoring.data.models.Fighter
@@ -7,6 +8,7 @@ import com.razielo.boutscoring.data.models.enums.WeightClass
 import com.razielo.boutscoring.data.models.enums.WinMethod
 import com.razielo.boutscoring.data.models.enums.Winner
 import com.razielo.boutscoring.data.models.relations.BoutWithFighters
+import java.time.LocalDate
 import java.util.Date
 
 /**
@@ -31,6 +33,35 @@ data class ParsedBout(
 
             return ParsedBout(bout, info, redCorner, blueCorner)
         }
+
+        fun fromInputData(
+            rounds: Int,
+            redCornerName: String,
+            redCornerDisplay: String,
+            blueCornerName: String,
+            blueCornerDisplay: String,
+            championship: Boolean,
+            weightClass: WeightClass?
+        ): ParsedBout {
+            val scores: Map<Int, Pair<Int, Int>> = (1..rounds).associateWith { Pair(0, 0) }
+            val redCorner = Fighter(redCornerName.trim(), redCornerDisplay.trim())
+            val blueCorner = Fighter(blueCornerName.trim(), blueCornerDisplay.trim())
+            val info = BoutInfo().copy(
+                championship = championship,
+                weight = weightClass,
+                date = DateUtils.dateToString(LocalDate.now(), DateUtils.isoFormatter)
+            )
+            val bout = Bout(
+                rounds = rounds,
+                scores = scores,
+                boutInfoId = info.id,
+                redCornerId = redCorner.fullName,
+                blueCornerId = blueCorner.fullName
+            )
+
+            return ParsedBout(bout, info, redCorner, blueCorner)
+        }
+
 
         fun example(): ParsedBout {
             val boutInfo = BoutInfo(
@@ -71,8 +102,5 @@ data class ParsedBout(
 
             return ParsedBout(bout, boutInfo, redCorner, blueCorner)
         }
-
-
     }
 }
-

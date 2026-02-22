@@ -32,7 +32,7 @@ import com.razielo.boutscoring.ui.theme.BoutScoringTheme
 fun ConfirmDeleteDialog(
     bout: ParsedBout,
     onDismissRequest: () -> Unit,
-    onConfirmation: () -> Unit
+    onConfirm: () -> Unit
 ) {
     val redCorner = bout.redCorner.fullName
     val blueCorner = bout.blueCorner.fullName
@@ -84,7 +84,7 @@ fun ConfirmDeleteDialog(
                             containerColor = MaterialTheme.colorScheme.error,
                             contentColor = MaterialTheme.colorScheme.onError,
                         ),
-                        onClick = onDismissRequest,
+                        onClick = onConfirm,
                     ) {
                         Text(stringResource(R.string.confirm))
                     }
@@ -101,6 +101,6 @@ fun ConfirmDeleteDialog(
 @Composable
 private fun ConfirmDeleteDialogPreview() {
     BoutScoringTheme {
-        ConfirmDeleteDialog(bout = ParsedBout.example(), onDismissRequest = {}, onConfirmation = {})
+        ConfirmDeleteDialog(bout = ParsedBout.example(), onDismissRequest = {}, onConfirm = {})
     }
 }

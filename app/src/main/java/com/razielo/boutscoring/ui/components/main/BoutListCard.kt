@@ -75,7 +75,7 @@ fun BoutListCard(
             ConfirmDeleteDialog(
                 bout,
                 onDismissRequest = { openAlertDialog = false },
-                onConfirmation = {
+                onConfirm = {
                     deleteBout(bout)
                     openAlertDialog = false
                 })

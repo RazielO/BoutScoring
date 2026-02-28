@@ -90,6 +90,7 @@ fun BoutInfoComponent(boutInfo: BoutInfo, updateInfo: (BoutInfo) -> Unit) {
             hintText = stringResource(R.string.location),
             labelText = stringResource(R.string.location_label),
             value = location,
+            singleLine = true,
             modifier = Modifier.fillMaxWidth()
         ) {
             location = it
@@ -101,6 +102,7 @@ fun BoutInfoComponent(boutInfo: BoutInfo, updateInfo: (BoutInfo) -> Unit) {
             hintText = stringResource(R.string.notes),
             labelText = stringResource(R.string.notes_label),
             value = notes,
+            singleLine = false,
             modifier = Modifier
                 .defaultMinSize(minHeight = 200.dp)
                 .fillMaxWidth()

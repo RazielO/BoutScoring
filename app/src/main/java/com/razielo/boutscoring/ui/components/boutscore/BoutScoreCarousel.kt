@@ -1,5 +1,6 @@
 package com.razielo.boutscoring.ui.components.boutscore
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
@@ -7,6 +8,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -16,11 +18,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
@@ -69,12 +74,10 @@ fun BoutScoreCarousel(
     var bout by remember { mutableStateOf(boutParam) }
     val pagerState = rememberPagerState(pageCount = { bout.bout.rounds }, initialPage = 0)
 
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
+    Column {
         Row(
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth(),
         ) {
             Box(
                 modifier = Modifier.weight(1f),
@@ -90,11 +93,11 @@ fun BoutScoreCarousel(
             ) { i ->
                 PagerCard(
                     i,
-                    Modifier.weight(8f),
+                    Modifier,
                     bout.bout.scores[i + 1],
                     updateScore =
-                        { i, values ->
-                            bout = bout.copy(bout = updateRound(bout.bout, i + 1, values))
+                        { round, values ->
+                            bout = bout.copy(bout = updateRound(bout.bout, round + 1, values))
                             update(bout)
                         },
                     addQuickNote = { note ->
@@ -120,6 +123,7 @@ fun BoutScoreCarousel(
                     RoundHint(pagerState.currentPage + 2) { pagerState.requestScrollToPage(it) }
                 }
             }
+
         }
 
         DotsIndicator(
@@ -133,6 +137,7 @@ fun BoutScoreCarousel(
 private fun updateRound(bout: Bout, round: Int, values: Pair<Int, Int>): Bout =
     bout.copy(scores = bout.scores.toMutableMap().apply { set(round, values) })
 
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 private fun PagerCard(
     round: Int,
@@ -146,109 +151,60 @@ private fun PagerCard(
     Card(
         modifier = modifier,
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+        BoxWithConstraints(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
         ) {
-            Text(
-                stringResource(R.string.round).uppercase(),
-                style = MaterialTheme.typography.titleMedium,
-                color = Color.Gray,
-                fontWeight = FontWeight.Bold,
-            )
+            if (maxHeight < 200.dp) {
+                val scrollState = rememberScrollState()
 
-            Text(
-                (round + 1).toString(),
-                style = MaterialTheme.typography.displayLarge,
-                fontWeight = FontWeight.W900,
-            )
-
-
-            if (score != null && score.first != 0 && score.second != 0) {
-                val cardColor =
-                    if (score.first > score.second) redContainerDark else blueContainerDark
-                Card(
-                    colors = CardDefaults.cardColors(
-                        containerColor = cardColor.copy(alpha = 0.5f)
-                    )
-                ) {
-                    // Parsed to int because for some reason, scores sometimes appear as 10.0-9.0
-                    Text(
-                        text = "${score.first.toInt()}-${score.second.toInt()}",
-                        modifier = Modifier.padding(horizontal = 24.dp, vertical = 12.dp),
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-            } else {
-                Spacer(
-                    Modifier
-                        .padding(horizontal = 24.dp, vertical = 12.dp)
-                        .height(MaterialTheme.typography.titleLarge.fontSize.value.dp * 1.2f)
-                )
-            }
-
-            Spacer(Modifier.height(8.dp))
-
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                ScoringButton(
-                    text = "10-9",
-                    modifier = Modifier.weight(1f),
-                    color = redContainerDark,
-                ) { updateScore(round, Pair(10, 9)) }
-                ScoringButton(
-                    text = "9-10",
-                    color = blueContainerDark,
-                    modifier = Modifier.weight(1f),
-                ) { updateScore(round, Pair(9, 10)) }
-            }
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                ScoringButton(
-                    text = "10-8",
-                    modifier = Modifier.weight(1f),
-                    color = redContainerDark,
-                ) { updateScore(round, Pair(10, 8)) }
-                ScoringButton(
-                    text = "8-10",
-                    modifier = Modifier.weight(1f),
-                    color = blueContainerDark,
-                ) { updateScore(round, Pair(8, 10)) }
-            }
-
-            Spacer(Modifier.height(8.dp))
-
-            Button(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                contentPadding = PaddingValues(16.dp),
-                shape = RoundedCornerShape(12.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                    contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                ),
-                onClick = { showQuickNoteDialog = true }
-            ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    modifier = Modifier.verticalScroll(scrollState)
                 ) {
-                    Icon(
-                        Icons.Default.Edit,
-                        contentDescription = null,
-                        modifier = Modifier.size(MaterialTheme.typography.bodySmall.fontSize.value.dp)
-                    )
-                    Text(
-                        stringResource(R.string.add_quick_note),
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = FontWeight.Bold
-                    )
+                    CardHeader(round + 1, modifier = Modifier.weight(1f))
+                    CardRoundResult(score, modifier = Modifier.weight(1f))
+                    CardButtons(round, 2, updateScore, modifier = Modifier.weight(2f))
+                }
+            } else if (maxHeight < 400.dp) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        CardHeader(round + 1)
+                        CardRoundResult(score)
+                    }
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.weight(2f)
+                    ) {
+                        CardButtons(round, 8, updateScore)
+                        CardQuickNoteButton({ showQuickNoteDialog = true })
+                    }
+                }
+            } else {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                ) {
+                    CardHeader(round + 1)
+                    CardRoundResult(score)
+                    Spacer(Modifier.height(8.dp))
+                    CardButtons(round, 8, updateScore)
+                    CardQuickNoteButton({ showQuickNoteDialog = true })
                 }
             }
         }
@@ -263,6 +219,135 @@ private fun PagerCard(
                 showQuickNoteDialog = false
             }
         )
+    }
+}
+
+
+@Composable
+private fun CardHeader(round: Int, modifier: Modifier = Modifier) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
+    ) {
+        Text(
+            stringResource(R.string.round).uppercase(),
+            style = MaterialTheme.typography.titleMedium,
+            color = Color.Gray,
+            fontWeight = FontWeight.Bold,
+        )
+
+        Text(
+            round.toString(),
+            style = MaterialTheme.typography.displayLarge,
+            fontWeight = FontWeight.W900,
+        )
+    }
+}
+
+@Composable
+private fun CardRoundResult(score: Pair<Int, Int>?, modifier: Modifier = Modifier) {
+    if (score != null && score.first != 0 && score.second != 0) {
+        val cardColor =
+            if (score.first > score.second) redContainerDark else blueContainerDark
+        Card(
+            colors = CardDefaults.cardColors(
+                containerColor = cardColor.copy(alpha = 0.5f),
+            ),
+            modifier = modifier.wrapContentWidth()
+        ) {
+            // Parsed to int because for some reason, scores sometimes appear as 10.0-9.0
+            Text(
+                text = "${score.first.toInt()}-${score.second.toInt()}",
+                modifier = Modifier.padding(horizontal = 24.dp, vertical = 12.dp),
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center
+            )
+        }
+    } else {
+        Text(
+            text = "10-10",
+            modifier = modifier.padding(horizontal = 24.dp, vertical = 12.dp),
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold,
+            color = Color.Transparent
+        )
+    }
+}
+
+@Composable
+private fun CardButtons(
+    round: Int,
+    verticalSpace: Int,
+    updateScore: (Int, Pair<Int, Int>) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(verticalSpace.dp),
+        modifier = modifier
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            ScoringButton(
+                text = "10-9",
+                modifier = Modifier.weight(1f),
+                color = redContainerDark,
+            ) { updateScore(round, Pair(10, 9)) }
+            ScoringButton(
+                text = "9-10",
+                color = blueContainerDark,
+                modifier = Modifier.weight(1f),
+            ) { updateScore(round, Pair(9, 10)) }
+        }
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            ScoringButton(
+                text = "10-8",
+                modifier = Modifier.weight(1f),
+                color = redContainerDark,
+            ) { updateScore(round, Pair(10, 8)) }
+            ScoringButton(
+                text = "8-10",
+                modifier = Modifier.weight(1f),
+                color = blueContainerDark,
+            ) { updateScore(round, Pair(8, 10)) }
+        }
+    }
+}
+
+@Composable
+private fun CardQuickNoteButton(
+    showQuickNoteDialog: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Button(
+        modifier = modifier
+            .fillMaxWidth(),
+        contentPadding = PaddingValues(16.dp),
+        shape = RoundedCornerShape(12.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+            contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+        ),
+        onClick = showQuickNoteDialog
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+        ) {
+            Icon(
+                Icons.Default.Edit,
+                contentDescription = null,
+                modifier = Modifier.size(MaterialTheme.typography.bodySmall.fontSize.value.dp)
+            )
+            Text(
+                stringResource(R.string.add_quick_note),
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Bold
+            )
+        }
     }
 }
 
@@ -299,6 +384,7 @@ private fun QuickNoteDialog(
                 CardStyleTextField(
                     hintText = stringResource(R.string.add_quick_note),
                     value = note,
+                    singleLine = false,
                     modifier = Modifier
                         .defaultMinSize(minHeight = 200.dp)
                         .fillMaxWidth()
@@ -440,6 +526,46 @@ private fun QuickNoteDialogPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun BoutScoreCarouselPreview() {
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+    val errorMsg = stringResource(R.string.score_round_error)
+
+    BoutScoringTheme {
+        BoutScoreCarousel(
+            ParsedBout.example(),
+            {
+
+                scope.launch {
+                    snackbarHostState.showSnackbar(errorMsg)
+                }
+            }
+        ) { }
+    }
+}
+
+@Preview(showBackground = true, device = "spec:width=1280dp,height=200dp,dpi=240")
+@Composable
+private fun BoutScoreCarouselPreviewHorizontalSmall() {
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+    val errorMsg = stringResource(R.string.score_round_error)
+
+    BoutScoringTheme {
+        BoutScoreCarousel(
+            ParsedBout.example(),
+            {
+
+                scope.launch {
+                    snackbarHostState.showSnackbar(errorMsg)
+                }
+            }
+        ) { }
+    }
+}
+
+@Preview(showBackground = true, device = "spec:width=1280dp,height=400dp,dpi=240")
+@Composable
+private fun BoutScoreCarouselPreviewHorizontal() {
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     val errorMsg = stringResource(R.string.score_round_error)

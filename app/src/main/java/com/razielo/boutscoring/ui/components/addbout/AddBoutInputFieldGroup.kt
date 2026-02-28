@@ -164,6 +164,7 @@ private fun EditDisplayDialog(
                 CardStyleTextField(
                     hintText = stringResource(R.string.corner_display_name),
                     value = value,
+                    singleLine = true,
                     modifier = Modifier
                 ) {
                     value = it

@@ -16,11 +16,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -56,6 +54,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.razielo.boutscoring.R
 import com.razielo.boutscoring.data.BoutViewModel
+import com.razielo.boutscoring.resultText
 import com.razielo.boutscoring.scoreColors
 import com.razielo.boutscoring.ui.components.common.Pill
 import com.razielo.boutscoring.ui.components.common.TopBar
@@ -164,8 +163,7 @@ private fun BoutScoreContent(
 
                     val colors =
                         scoreColors(
-                            Pair(redScore, blueScore),
-                            Color.Gray
+                            Pair(redScore, blueScore)
                         )
 
                     ScoreText(
@@ -264,81 +262,6 @@ private fun HeadText(
 }
 
 @Composable
-private fun ContentSwitcher(
-    options: List<String>,
-    selectedIndex: Int,
-    onSelectionChange: (Int) -> Unit,
-    modifier: Modifier = Modifier,
-    activeColor: Color = MaterialTheme.colorScheme.primaryContainer,
-    inactiveColor: Color = MaterialTheme.colorScheme.secondaryContainer,
-    activeTextColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
-    inactiveTextColor: Color = MaterialTheme.colorScheme.onSecondaryContainer,
-    backgroundColor: Color = MaterialTheme.colorScheme.secondaryContainer
-) {
-    Box(
-        modifier = modifier
-            .wrapContentSize()
-            .padding(vertical = 8.dp)
-            .fillMaxWidth(),
-        contentAlignment = Alignment.Center
-    ) {
-        Row(
-            Modifier
-                .clip(RoundedCornerShape(8.dp))
-                .background(backgroundColor)
-                .padding(horizontal = 4.dp, vertical = 4.dp)
-                .fillMaxWidth(0.8f)
-        ) {
-            options.forEachIndexed { index, option ->
-                val isSelected = index == selectedIndex
-
-                val itemBackgroundColor by animateColorAsState(
-                    targetValue = if (isSelected) activeColor else inactiveColor,
-                    animationSpec = tween(300),
-                    label = "itemBackgroundColor"
-                )
-
-                val textColor by animateColorAsState(
-                    targetValue = if (isSelected) activeTextColor else inactiveTextColor,
-                    animationSpec = tween(300),
-                    label = "textColor"
-                )
-
-                val shape = RoundedCornerShape(6.dp)
-
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .then(
-                            if (isSelected) {
-                                Modifier.shadow(
-                                    elevation = 2.dp,
-                                    shape = shape,
-                                    clip = false
-                                )
-                            } else {
-                                Modifier
-                            }
-                        )
-                        .background(itemBackgroundColor, shape)
-                        .clip(RoundedCornerShape(6.dp))
-                        .clickable { onSelectionChange(index) }
-                        .padding(vertical = 8.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = option,
-                        color = textColor,
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
 private fun ContentSwitch(
     carouselMode: Boolean,
     onSelectionChange: () -> Unit,
@@ -350,8 +273,8 @@ private fun ContentSwitch(
     val backgroundColor: Color = MaterialTheme.colorScheme.secondaryContainer
 
     val options = listOf(
-        Pair(Icons.Default.ViewCarousel, "Carousel view"),
-        Pair(Icons.AutoMirrored.Default.List, "List view"),
+        Pair(Icons.Default.ViewCarousel, stringResource(R.string.carousel_view)),
+        Pair(Icons.AutoMirrored.Default.List, stringResource(R.string.list_view)),
     )
 
     Box(

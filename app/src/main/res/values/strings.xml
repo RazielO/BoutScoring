@@ -8,12 +8,12 @@
     <string name="red">Red</string>
     <string name="blue">Blue</string>
     <string name="number_of_rounds">Number of rounds</string>
-    <string name="missing_info_error">Fill the %1$s corner info first</string>
     <string name="select_rounds_first">Select the number of rounds first</string>
+    <string name="will_be_displayed_as">Will be displayed as: %1$s</string>
+    <string name="edit">Edit</string>
+    <string name="bout_settings">Bout Settings</string>
     <!-- Bout Info -->
     <string name="cancel">Cancel</string>
-    <string name="ok">OK</string>
-    <string name="date_button_label">Date: %1$s</string>
     <string name="choose_date">Choose date</string>
     <string name="winner_dropdown_label">Winner</string>
     <string name="method_dropdown_label">Method</string>
@@ -37,19 +37,18 @@
     <string name="round_abbr">Rd</string>
     <string name="save">Save</string>
     <string name="add_quick_note">Add Quick Note</string>
+    <string name="carousel_view">Carousel view</string>
+    <string name="list_view">List view</string>
     <!-- Common -->
     <string name="go_back">Go Back</string>
     <!-- Main component -->
     <string name="search">Search</string>
-    <string name="cancel_search">Cancel search</string>
     <string name="confirm">Confirm</string>
     <string name="confirm_bout_deletion">Are you sure you want to delete %1$s vs %2$s?</string>
     <string name="add_new_bout_title">Add new bout</string>
     <string name="bout_info_title">Bout info</string>
     <string name="score_bout_title">Score bout</string>
     <string name="my_bouts_title">My bouts</string>
-    <string name="my_bouts_count_title">My %1$s bouts</string>
-    <string name="filtered_bouts_title">%1$s bouts</string>
     <!-- Bout List Card -->
     <string name="show_notes">Show Notes</string>
     <string name="hide_notes">Hide Notes</string>
@@ -58,4 +57,69 @@
     <string name="fill_all_fields">Fill all fields first</string>
     <string name="enter_name">Enter name</string>
     <string name="edit_display_name">Edit display name for %1$s</string>
+    <!-- Weight classes -->
+    <string name="weight_format">%1$s (%2$d lbs)</string>
+    <string name="weight_heavy_format">%1$s (%2$d+ lbs)</string>
+
+    <string name="weight_minimum">Minimumweight</string>
+    <string name="weight_jr_fly">Junior Flyweight</string>
+    <string name="weight_fly">Flyweight</string>
+    <string name="weight_super_fly">Super Flyweight</string>
+    <string name="weight_bantam">Bantamweight</string>
+    <string name="weight_super_bantam">Super Bantamweight</string>
+    <string name="weight_feather">Featherweight</string>
+    <string name="weight_super_feather">Super Featherweight</string>
+    <string name="weight_light">Lightweight</string>
+    <string name="weight_super_light">Super Lightweight</string>
+    <string name="weight_welter">Welterweight</string>
+    <string name="weight_super_welter">Super Welterweight</string>
+    <string name="weight_middle">Middleweight</string>
+    <string name="weight_super_middle">Super Middleweight</string>
+    <string name="weight_light_heavy">Light Heavyweight</string>
+    <string name="weight_cruiser">Cruiserweight</string>
+    <string name="weight_bridger">Bridgerweight</string>
+    <string name="weight_heavy">Heavyweight</string>
+    <string name="weight_catch">Catchweight</string>
+    <!-- Draw methods -->
+    <string name="technical_draw">Technical Draw</string>
+    <string name="draw">Draw</string>
+    <string name="split_draw">Split Draw</string>
+    <string name="majority_draw">Majority Draw</string>
+
+    <string name="technical_draw_abbr">TD</string>
+    <string name="draw_abbr">D</string>
+    <string name="split_draw_abbr">SD</string>
+    <string name="majority_draw_abbr">MD</string>
+    <!-- No result methods -->
+    <string name="no_decision">No Decision</string>
+    <string name="no_contest">No Contest</string>
+
+    <string name="no_decision_abbr">ND</string>
+    <string name="no_contest_abbr">NC</string>
+    <!-- Win methods -->
+    <string name="unanimous_decision">Unanimous Decision</string>
+    <string name="split_decision">Split Decision</string>
+    <string name="majority_decision">Majority Decision</string>
+    <string name="points">Points</string>
+    <string name="knockout">Knockout</string>
+    <string name="technical_knockout">Technical Knockout</string>
+    <string name="retired">Retired</string>
+    <string name="technical_decision">Technical Decision</string>
+    <string name="disqualification">Disqualification</string>
+
+    <string name="unanimous_decision_abbr">UD</string>
+    <string name="split_decision_abbr">SD</string>
+    <string name="majority_decision_abbr">MD</string>
+    <string name="points_abbr">PTS</string>
+    <string name="knockout_abbr">KO</string>
+    <string name="technical_knockout_abbr">TKO</string>
+    <string name="retired_abbr">RTD</string>
+    <string name="technical_decision_abbr">TD</string>
+    <string name="disqualification_abbr">DSQ</string>
+    <!-- Winner -->
+    <string name="red_corner">Red Corner</string>
+    <string name="blue_corner">Blue Corner</string>
+    <string name="no_result">No Result</string>
+    <string name="win_abbr">W</string>
+    <string name="loss_abbr">L</string>
 </resources>

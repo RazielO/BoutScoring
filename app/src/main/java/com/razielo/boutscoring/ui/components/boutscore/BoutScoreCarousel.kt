@@ -1,7 +1,5 @@
 package com.razielo.boutscoring.ui.components.boutscore
 
-import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
@@ -110,7 +108,6 @@ fun BoutScoreCarousel(
                             "$notes\n${note.trim()}"
                         }
                         bout = bout.copy(info = bout.info.copy(notes = newNotes))
-                        Log.d("$", "Notes: \"$newNotes\"")
                         update(bout)
                     }
                 )
@@ -137,7 +134,6 @@ fun BoutScoreCarousel(
 private fun updateRound(bout: Bout, round: Int, values: Pair<Int, Int>): Bout =
     bout.copy(scores = bout.scores.toMutableMap().apply { set(round, values) })
 
-@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 private fun PagerCard(
     round: Int,
@@ -156,6 +152,8 @@ private fun PagerCard(
                 .fillMaxWidth()
                 .padding(16.dp),
         ) {
+            val maxHeight = this.maxHeight
+
             if (maxHeight < 200.dp) {
                 val scrollState = rememberScrollState()
 
@@ -247,8 +245,12 @@ private fun CardHeader(round: Int, modifier: Modifier = Modifier) {
 @Composable
 private fun CardRoundResult(score: Pair<Int, Int>?, modifier: Modifier = Modifier) {
     if (score != null && score.first != 0 && score.second != 0) {
-        val cardColor =
-            if (score.first > score.second) redContainerDark else blueContainerDark
+        val cardColor = when {
+            score.first > score.second -> redContainerDark
+            score.first < score.second -> blueContainerDark
+            else -> Color.Gray
+        }
+
         Card(
             colors = CardDefaults.cardColors(
                 containerColor = cardColor.copy(alpha = 0.5f),

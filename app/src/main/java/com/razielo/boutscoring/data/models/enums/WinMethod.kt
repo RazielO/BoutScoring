@@ -1,19 +1,19 @@
 package com.razielo.boutscoring.data.models.enums
 
-enum class WinMethod(val displayName: String, val abbreviation: String) {
-    UNANIMOUS_DECISION("Unanimous Decision", "UD"),
-    SPLIT_DECISION("Split Decision", "SD"),
-    MAJORITY_DECISION("Majority Decision", "MD"),
-    POINTS("Points", "PTS"),
-    KNOCKOUT("Knockout", "KO"),
-    TECHNICAL_KNOCKOUT("Technical Knockout", "TKO"),
-    RETIRED("Retired", "RTD"),
-    TECHNICAL_DECISION("Technical Decision", "TD"),
-    DISQUALIFICATION("Disqualification", "DQ");
+import androidx.annotation.StringRes
+import com.razielo.boutscoring.R
 
-    companion object {
-        private val map = WinMethod.entries.associateBy { it.displayName }
-
-        infix fun fromDisplayName(displayName: String): WinMethod? = map[displayName]
-    }
+enum class WinMethod(
+    @get:StringRes override val displayName: Int,
+    @get:StringRes override val abbreviation: Int
+) : ResultMethod {
+    UNANIMOUS_DECISION(R.string.unanimous_decision, R.string.unanimous_decision_abbr),
+    SPLIT_DECISION(R.string.split_decision, R.string.split_decision_abbr),
+    MAJORITY_DECISION(R.string.majority_decision, R.string.majority_decision_abbr),
+    POINTS(R.string.points, R.string.points_abbr),
+    KNOCKOUT(R.string.knockout, R.string.knockout_abbr),
+    TECHNICAL_KNOCKOUT(R.string.technical_knockout, R.string.technical_knockout_abbr),
+    RETIRED(R.string.retired, R.string.retired_abbr),
+    TECHNICAL_DECISION(R.string.technical_decision, R.string.technical_decision_abbr),
+    DISQUALIFICATION(R.string.disqualification, R.string.disqualification_abbr);
 }

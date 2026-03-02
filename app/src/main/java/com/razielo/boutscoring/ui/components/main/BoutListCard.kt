@@ -46,6 +46,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.razielo.boutscoring.R
 import com.razielo.boutscoring.data.models.BoutInfo
+import com.razielo.boutscoring.resultText
 import com.razielo.boutscoring.ui.components.common.Pill
 import com.razielo.boutscoring.ui.components.common.resultColor
 import com.razielo.boutscoring.ui.models.ParsedBout
@@ -186,9 +187,9 @@ fun BoutListCard(
                 }
 
                 // Bottom
-                BottomPills(bout.info, expandedNotes, {
+                BottomPills(bout.info, expandedNotes) {
                     expandedNotes = !expandedNotes
-                })
+                }
             }
         }
     }

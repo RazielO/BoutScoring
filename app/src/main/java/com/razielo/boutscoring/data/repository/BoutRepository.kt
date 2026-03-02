@@ -29,16 +29,6 @@ class BoutRepository(
     }
 
     @WorkerThread
-    suspend fun getBoutById(id: String): ParsedBout? {
-        return boutDao.getBoutById(id)?.let { ParsedBout.fromBoutWithFighters(it) }
-    }
-
-    @WorkerThread
-    suspend fun getAllFighterBouts(name: String): List<ParsedBout> {
-        return boutDao.getAllFighterBouts(name).mapNotNull { ParsedBout.fromBoutWithFighters(it) }
-    }
-
-    @WorkerThread
     suspend fun searchAllFighterBouts(pattern: String): List<ParsedBout> {
         return boutDao.searchAllFighterBouts(pattern)
             .mapNotNull { ParsedBout.fromBoutWithFighters(it) }

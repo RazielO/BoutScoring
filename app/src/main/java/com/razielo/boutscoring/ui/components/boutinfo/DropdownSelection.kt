@@ -37,6 +37,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -53,8 +54,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.razielo.boutscoring.R
 import com.razielo.boutscoring.data.models.enums.WeightClass
+import com.razielo.boutscoring.data.models.enums.WeightClass.Companion.displayName
 import com.razielo.boutscoring.data.models.enums.Winner
-import com.razielo.boutscoring.ui.models.ParsedBout
 import com.razielo.boutscoring.ui.theme.BoutScoringTheme
 import kotlinx.coroutines.delay
 
@@ -63,14 +64,14 @@ fun DropdownSelection(
     title: String,
     options: List<String>,
     enabled: Boolean = true,
-    selectedElement: String?,
-    onSelectionChanged: (String?) -> Unit
+    selectedIndex: Int?,
+    onSelectionChanged: (Int?) -> Unit
 ) {
     var showDialog by remember { mutableStateOf(false) }
-    var selected by remember { mutableStateOf(selectedElement) }
+    var selected by remember { mutableStateOf(selectedIndex) }
 
-    LaunchedEffect(selectedElement) {
-        selected = selectedElement
+    LaunchedEffect(selectedIndex) {
+        selected = selectedIndex
     }
 
     Column(
@@ -85,7 +86,7 @@ fun DropdownSelection(
             color = Color.Gray
         )
         DropdownSelector(
-            selectedElement = selected,
+            selectedElement = selected?.let { options[it] },
             enabled = enabled,
             onClick = { showDialog = true },
             labelText = stringResource(R.string.select, title),
@@ -97,7 +98,7 @@ fun DropdownSelection(
         DialogSelector(
             title = title,
             options = options,
-            selected = selected,
+            selectedIndex = selected,
             onDismiss = { showDialog = false },
             onConfirm = {
                 selected = it
@@ -117,8 +118,6 @@ private fun DropdownSelector(
     labelText: String,
     modifier: Modifier = Modifier
 ) {
-
-
     val disabledColors =
         CardDefaults.outlinedCardColors(
             contentColor = Color.LightGray,
@@ -197,11 +196,11 @@ private fun DialogSelectionItem(text: String, selected: Boolean, onClick: () -> 
 private fun DialogSelector(
     title: String,
     options: List<String>,
-    selected: String?,
+    selectedIndex: Int?,
     onDismiss: () -> Unit,
-    onConfirm: (String?) -> Unit
+    onConfirm: (Int?) -> Unit
 ) {
-    var selectedElement by remember { mutableStateOf(selected) }
+    var selected by remember { mutableStateOf(selectedIndex) }
     val listState = rememberLazyListState()
 
     Dialog(onDismissRequest = onDismiss) {
@@ -239,8 +238,8 @@ private fun DialogSelector(
                             val text = options[idx]
                             DialogSelectionItem(
                                 text,
-                                text == selectedElement
-                            ) { selectedElement = text }
+                                selected != null && options[selected!!] == text
+                            ) { selected = idx }
                         }
                     }
 
@@ -276,7 +275,7 @@ private fun DialogSelector(
                     }
 
                     Button(
-                        onClick = { onConfirm(selectedElement) },
+                        onClick = { onConfirm(selected) },
                         modifier = Modifier
                             .height(48.dp),
                         shape = RoundedCornerShape(8.dp)
@@ -321,13 +320,16 @@ fun VerticalScrollbar(
                     shape = RoundedCornerShape(2.dp)
                 )
         ) {
-            val firstVisibleItemIndex = listState.firstVisibleItemIndex
-            val totalItemsCount = listState.layoutInfo.totalItemsCount
-            val visibleItemsCount = listState.layoutInfo.visibleItemsInfo.size
+            val firstVisibleItemIndex =
+                remember { derivedStateOf { listState.firstVisibleItemIndex } }
+            val totalItemsCount =
+                remember { derivedStateOf { listState.layoutInfo } }.value.totalItemsCount
+            val visibleItemsCount =
+                remember { derivedStateOf { listState.layoutInfo } }.value.visibleItemsInfo.size
 
             if (totalItemsCount > 0) {
                 val thumbHeight = (visibleItemsCount.toFloat() / totalItemsCount) * 1f
-                val thumbOffset = (firstVisibleItemIndex.toFloat() / totalItemsCount) * 1f
+                val thumbOffset = (firstVisibleItemIndex.value.toFloat() / totalItemsCount) * 1f
 
                 Box(
                     modifier = Modifier
@@ -353,8 +355,8 @@ private fun DropdownSelectionPreview() {
     BoutScoringTheme {
         DropdownSelection(
             title = stringResource(R.string.winner_dropdown_label),
-            options = Winner.entries.map { it.displayName },
-            selectedElement = ParsedBout.example().info.winner?.displayName,
+            options = Winner.entries.map { stringResource(it.displayName) },
+            selectedIndex = 0,
             onSelectionChanged = {}
         )
     }
@@ -365,9 +367,9 @@ private fun DropdownSelectionPreview() {
 private fun DialogSelectorPreview() {
     BoutScoringTheme {
         DialogSelector(
-            title = "Weight Class",
-            options = WeightClass.entries.map { it.displayName },
-            selected = WeightClass.JR_FLY.displayName,
+            title = stringResource(R.string.weight_dropdown_label),
+            options = WeightClass.entries.map { it.displayName() },
+            selectedIndex = 5,
             onDismiss = {},
             onConfirm = {}
         )

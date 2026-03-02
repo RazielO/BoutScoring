@@ -19,7 +19,9 @@ import com.razielo.boutscoring.R
 import com.razielo.boutscoring.data.models.BoutInfo
 import com.razielo.boutscoring.data.models.enums.DrawMethod
 import com.razielo.boutscoring.data.models.enums.NoResultMethod
+import com.razielo.boutscoring.data.models.enums.ResultMethod
 import com.razielo.boutscoring.data.models.enums.WeightClass
+import com.razielo.boutscoring.data.models.enums.WeightClass.Companion.displayName
 import com.razielo.boutscoring.data.models.enums.WinMethod
 import com.razielo.boutscoring.data.models.enums.Winner
 import com.razielo.boutscoring.ui.components.common.CardStyleTextField
@@ -30,10 +32,11 @@ import com.razielo.boutscoring.ui.theme.BoutScoringTheme
 @Composable
 fun BoutInfoComponent(boutInfo: BoutInfo, updateInfo: (BoutInfo) -> Unit) {
     var info by remember { mutableStateOf(boutInfo) }
-    var methodOptions: List<String>? by remember { mutableStateOf(null) }
-    var methodSelected: String? by remember { mutableStateOf(updateMethodSelected(info)) }
-    val weights = WeightClass.entries.map { it.displayName }
-    val resultOptions = Winner.entries.map { it.displayName }
+    var methodOptions: List<ResultMethod>? by remember { mutableStateOf(null) }
+
+    var methodSelected: Int? by remember { mutableStateOf(null) }
+    val weights = WeightClass.entries
+    val resultOptions = Winner.entries
 
     var location by remember { mutableStateOf(boutInfo.location) }
     var notes by remember { mutableStateOf(boutInfo.notes) }
@@ -50,30 +53,31 @@ fun BoutInfoComponent(boutInfo: BoutInfo, updateInfo: (BoutInfo) -> Unit) {
     ) {
         DropdownSelection(
             title = stringResource(R.string.winner_dropdown_label),
-            options = resultOptions,
-            selectedElement = info.winner?.displayName,
+            options = resultOptions.map { stringResource(it.displayName) },
+            selectedIndex = selectedIndex(resultOptions, info.winner),
         ) {
             methodSelected = null
-            info = updateWinner(info, it, updateInfo)
+            info = updateWinner(info, it?.let { i -> resultOptions[i] }, updateInfo)
             methodOptions = getMethodOptions(info.winner)
         }
 
         DropdownSelection(
             title = stringResource(R.string.method_dropdown_label),
-            options = methodOptions ?: emptyList(),
+            options = methodOptions?.map { stringResource(it.displayName) } ?: emptyList(),
             enabled = methodOptions != null,
-            selectedElement = methodSelected
+            selectedIndex = methodOptions?.let { selectedIndex(it, methodSelected) }
         ) {
-            info = updateMethod(info, it, updateInfo)
+            val option = it?.let { i -> methodOptions?.let { list -> list[i] } }
+            info = updateMethod(info, option, updateInfo)
             methodSelected = updateMethodSelected(info)
         }
 
         DropdownSelection(
             title = stringResource(R.string.weight_dropdown_label),
-            options = weights,
-            selectedElement = info.weight?.displayName,
+            options = weights.map { it.displayName() },
+            selectedIndex = selectedIndex(weights, info.weight),
         ) {
-            info = updateWeight(info, it, updateInfo)
+            info = updateWeight(info, it?.let { i -> weights[i] }, updateInfo)
         }
 
         ChampionshipToggle(info.championship) {
@@ -114,16 +118,22 @@ fun BoutInfoComponent(boutInfo: BoutInfo, updateInfo: (BoutInfo) -> Unit) {
     }
 }
 
-private fun updateMethodSelected(info: BoutInfo): String? = when (info.winner) {
+private fun <T> selectedIndex(list: List<T>, element: T?): Int? =
+    element?.let { elem -> list.indexOf(elem).takeIf { it >= 0 } }
+
+private fun updateMethodSelected(info: BoutInfo): Int? = when (info.winner) {
     Winner.BLUE_CORNER, Winner.RED_CORNER -> info.winMethod?.displayName
     Winner.DRAW -> info.drawMethod?.displayName
     Winner.NO_RESULT -> info.noResultMethod?.displayName
     null -> null
 }
 
-private fun updateWeight(info: BoutInfo, selection: String?, update: (BoutInfo) -> Unit): BoutInfo {
-    if (selection != null) {
-        val weight = WeightClass.fromDisplayName(selection)
+private fun updateWeight(
+    info: BoutInfo,
+    weight: WeightClass?,
+    update: (BoutInfo) -> Unit
+): BoutInfo {
+    if (weight != null) {
         val newInfo = info.copy(weight = weight)
         update(newInfo)
         return newInfo
@@ -132,9 +142,8 @@ private fun updateWeight(info: BoutInfo, selection: String?, update: (BoutInfo) 
     }
 }
 
-private fun updateWinner(info: BoutInfo, selection: String?, update: (BoutInfo) -> Unit): BoutInfo {
-    if (selection != null) {
-        val winner = Winner.fromDisplayName(selection)
+private fun updateWinner(info: BoutInfo, winner: Winner?, update: (BoutInfo) -> Unit): BoutInfo {
+    if (winner != null) {
         val newInfo =
             info.copy(winner = winner, winMethod = null, drawMethod = null, noResultMethod = null)
         update(newInfo)
@@ -144,7 +153,11 @@ private fun updateWinner(info: BoutInfo, selection: String?, update: (BoutInfo) 
     }
 }
 
-private fun updateMethod(info: BoutInfo, option: String?, update: (BoutInfo) -> Unit): BoutInfo {
+private fun updateMethod(
+    info: BoutInfo,
+    option: ResultMethod?,
+    update: (BoutInfo) -> Unit
+): BoutInfo {
     if (option != null) {
         val newInfo = when (info.winner) {
             null -> {
@@ -152,15 +165,15 @@ private fun updateMethod(info: BoutInfo, option: String?, update: (BoutInfo) -> 
             }
 
             Winner.RED_CORNER, Winner.BLUE_CORNER -> {
-                info.copy(winMethod = WinMethod.fromDisplayName(option))
+                info.copy(winMethod = option as WinMethod?)
             }
 
             Winner.DRAW -> {
-                info.copy(drawMethod = DrawMethod.fromDisplayName(option))
+                info.copy(drawMethod = option as DrawMethod?)
             }
 
             Winner.NO_RESULT -> {
-                info.copy(noResultMethod = NoResultMethod.fromDisplayName(option))
+                info.copy(noResultMethod = option as NoResultMethod?)
             }
         }
 
@@ -171,11 +184,11 @@ private fun updateMethod(info: BoutInfo, option: String?, update: (BoutInfo) -> 
     }
 }
 
-private fun getMethodOptions(winner: Winner?): List<String> = when (winner) {
-    Winner.RED_CORNER, Winner.BLUE_CORNER -> WinMethod.entries.map { it.displayName }
-    Winner.DRAW -> DrawMethod.entries.map { it.displayName }
-    Winner.NO_RESULT -> NoResultMethod.entries.map { it.displayName }
-    null -> emptyList()
+private fun getMethodOptions(winner: Winner?): List<ResultMethod> = when (winner) {
+    Winner.RED_CORNER, Winner.BLUE_CORNER -> WinMethod.entries
+    Winner.DRAW -> DrawMethod.entries
+    Winner.NO_RESULT -> NoResultMethod.entries
+    else -> emptyList()
 }
 
 @Preview(showBackground = true)

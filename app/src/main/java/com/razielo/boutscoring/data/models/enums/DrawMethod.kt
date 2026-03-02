@@ -1,14 +1,14 @@
 package com.razielo.boutscoring.data.models.enums
 
-enum class DrawMethod(val displayName: String, val abbreviation: String) {
-    TECHNICAL_DRAW("Technical Draw", "TD"),
-    DRAW("Draw", "D"),
-    SPLIT_DRAW("Split Draw", "SD"),
-    MAJORITY_DRAW("Majority Draw", "MD");
+import androidx.annotation.StringRes
+import com.razielo.boutscoring.R
 
-    companion object {
-        private val map = DrawMethod.entries.associateBy { it.displayName }
-
-        infix fun fromDisplayName(displayName: String): DrawMethod? = map[displayName]
-    }
+enum class DrawMethod(
+    @get:StringRes override val displayName: Int,
+    @get:StringRes override val abbreviation: Int
+) : ResultMethod {
+    TECHNICAL_DRAW(R.string.technical_draw, R.string.technical_draw_abbr),
+    DRAW(R.string.draw, R.string.draw_abbr),
+    SPLIT_DRAW(R.string.split_draw, R.string.split_draw_abbr),
+    MAJORITY_DRAW(R.string.majority_draw, R.string.majority_draw_abbr);
 }

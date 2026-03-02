@@ -1,29 +1,52 @@
 package com.razielo.boutscoring.data.models.enums
 
-enum class WeightClass(val displayName: String) {
-    MINIMUM("Minimumweight (105 lbs)"),
-    JR_FLY("Junior Flyweight (108 lbs)"),
-    FLY("Flyweight (112 lbs)"),
-    SUPER_FLY("Super Flyweight (115 lbs)"),
-    BANTAM("Bantamweight (118 lbs)"),
-    SUPER_BANTAM("Super Bantamweight (122 lbs)"),
-    FEATHER("Featherweight (126 lbs)"),
-    SUPER_FEATHER("Super Featherweight (130 lbs)"),
-    LIGHT("Lightweight (135 lbs)"),
-    SUPER_LIGHT("Super Lightweight (140 lbs)"),
-    WELTER("Welterweight (147 lbs)"),
-    SUPER_WELTER("Super Welterweight (154 lbs)"),
-    MIDDLE("Middleweight (160 lbs)"),
-    SUPER_MIDDLE("Super Middleweight (168 lbs)"),
-    LIGHT_HEAVY("Light Heavyweight (175 lbs)"),
-    CRUISER("Cruiserweight (200 lbs)"),
-    BRIDGER("Bridgerweight (224 lbs)"),
-    HEAVY("Heavyweight (224+ lbs)"),
-    CATCH("Catchweight");
+import androidx.annotation.StringRes
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
+import com.razielo.boutscoring.R
+
+enum class WeightClass(
+    @param:StringRes val nameRes: Int,
+    val maxPounds: Int?
+) {
+    HEAVY(R.string.weight_heavy, null),
+    BRIDGER(R.string.weight_bridger, 224),
+    CRUISER(R.string.weight_cruiser, 200),
+    LIGHT_HEAVY(R.string.weight_light_heavy, 175),
+    SUPER_MIDDLE(R.string.weight_super_middle, 168),
+    MIDDLE(R.string.weight_middle, 160),
+    SUPER_WELTER(R.string.weight_super_welter, 154),
+    WELTER(R.string.weight_welter, 147),
+    SUPER_LIGHT(R.string.weight_super_light, 140),
+    LIGHT(R.string.weight_light, 135),
+    SUPER_FEATHER(R.string.weight_super_feather, 130),
+    FEATHER(R.string.weight_feather, 126),
+    SUPER_BANTAM(R.string.weight_super_bantam, 122),
+    BANTAM(R.string.weight_bantam, 118),
+    SUPER_FLY(R.string.weight_super_fly, 115),
+    FLY(R.string.weight_fly, 112),
+    JR_FLY(R.string.weight_jr_fly, 108),
+    MINIMUM(R.string.weight_minimum, 105),
+    CATCH(R.string.weight_catch, null);
 
     companion object {
-        private val map = WeightClass.entries.associateBy { it.displayName }
+        @Composable
+        fun WeightClass.displayName(): String {
+            return when (this) {
+                CATCH -> stringResource(nameRes)
 
-        infix fun fromDisplayName(displayName: String): WeightClass? = map[displayName]
+                HEAVY ->
+                    stringResource(
+                        R.string.weight_heavy_format,
+                        stringResource(nameRes), 224
+                    )
+
+                else ->
+                    stringResource(
+                        R.string.weight_format,
+                        stringResource(nameRes), maxPounds!!
+                    )
+            }
+        }
     }
 }

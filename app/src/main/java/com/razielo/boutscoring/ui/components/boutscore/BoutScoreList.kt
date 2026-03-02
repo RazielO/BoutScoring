@@ -58,8 +58,7 @@ fun BoutScoreList(
         items(bout.bout.rounds) { round ->
             val enabled = isRoundEnabled(bout.bout, round)
             val colors: Pair<Color, Color> = scoreColors(
-                bout.bout.scores[round + 1] ?: Pair(0, 0),
-                Color.Gray
+                bout.bout.scores[round + 1] ?: Pair(0, 0)
             )
 
             RoundRow(

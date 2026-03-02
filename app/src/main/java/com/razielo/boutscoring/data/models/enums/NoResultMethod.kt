@@ -1,12 +1,12 @@
 package com.razielo.boutscoring.data.models.enums
 
-enum class NoResultMethod(val displayName: String, val abbreviation: String) {
-    NO_DECISION("No Decision", "ND"),
-    NO_CONTEST("No Contest", "NC");
+import androidx.annotation.StringRes
+import com.razielo.boutscoring.R
 
-    companion object {
-        private val map = NoResultMethod.entries.associateBy { it.displayName }
-
-        infix fun fromDisplayName(displayName: String): NoResultMethod? = map[displayName]
-    }
+enum class NoResultMethod(
+    @get:StringRes override val displayName: Int,
+    @get:StringRes override val abbreviation: Int
+) : ResultMethod {
+    NO_DECISION(R.string.no_decision, R.string.no_decision_abbr),
+    NO_CONTEST(R.string.no_contest, R.string.no_contest_abbr);
 }

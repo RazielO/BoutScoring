@@ -374,7 +374,7 @@ private fun DateSelectorComponent(
         IconButton(onClick = onNext) {
             Icon(
                 Icons.AutoMirrored.Default.KeyboardArrowLeft,
-                contentDescription = "Previous",
+                contentDescription = stringResource(R.string.previous),
                 modifier = Modifier.rotate(-90f)
             )
         }

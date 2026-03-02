@@ -22,16 +22,4 @@ data class BoutInfo(
     val location: String = "",
     val championship: Boolean = false,
     val notes: String = ""
-) {
-    fun resultText(): String {
-        val prefix = winner?.abbreviation ?: ""
-
-        return when {
-            winner == null -> ""
-            winMethod != null -> "$prefix-${winMethod.abbreviation}"
-            drawMethod != null -> drawMethod.abbreviation
-            noResultMethod != null -> noResultMethod.abbreviation
-            else -> prefix
-        }
-    }
-}
+)

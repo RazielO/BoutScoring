@@ -106,12 +106,12 @@ fun AddBoutInputFieldGroup(
                     .wrapContentHeight()
             ) {
                 Text(
-                    "Will be displayed as: ${values[1]}",
+                    stringResource(R.string.will_be_displayed_as, values[1]),
                     style = MaterialTheme.typography.labelLarge,
                     color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
                 )
                 TextButton(onClick = { showDialog = true }) {
-                    Text("Edit")
+                    Text(stringResource(R.string.edit))
                 }
             }
         }

@@ -32,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.razielo.boutscoring.R
 import com.razielo.boutscoring.data.models.enums.WeightClass
+import com.razielo.boutscoring.data.models.enums.WeightClass.Companion.displayName
 import com.razielo.boutscoring.ui.components.boutinfo.DropdownSelection
 import com.razielo.boutscoring.ui.components.common.ChampionshipToggle
 import com.razielo.boutscoring.ui.models.ParsedBout
@@ -54,8 +55,8 @@ fun AddBoutComponent(
     val rounds: List<Int> = listOf(3, 4, 5, 6, 8, 10, 12, 15)
     var championship by remember { mutableStateOf(false) }
 
-    val weights = WeightClass.entries.map { it.displayName }
-    var selectedWeight: String? by remember { mutableStateOf(null) }
+    val weights = WeightClass.entries
+    var selectedWeightIndex: Int? by remember { mutableStateOf(null) }
 
 
     val redCornerUpdate: (Int, String) -> Unit =
@@ -73,7 +74,7 @@ fun AddBoutComponent(
                 snackbarHostState.showSnackbar(selectRoundsFirst)
             }
         } else {
-            val weightClass = selectedWeight?.let { WeightClass.fromDisplayName(it) }
+            val weightClass = selectedWeightIndex?.let { weights[it] }
             val bout = ParsedBout.fromInputData(
                 rounds[selectedRoundsIndex],
                 redCornerValues[0],
@@ -121,7 +122,7 @@ fun AddBoutComponent(
         Spacer(Modifier.height(16.dp))
 
         Text(
-            "BOUT SETTINGS",
+            stringResource(R.string.bout_settings).uppercase(),
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.75f)
@@ -135,10 +136,10 @@ fun AddBoutComponent(
 
         DropdownSelection(
             title = stringResource(R.string.weight_dropdown_label),
-            options = weights,
-            selectedElement = selectedWeight,
+            options = weights.map { it.displayName() },
+            selectedIndex = selectedWeightIndex
         ) {
-            selectedWeight = it
+            selectedWeightIndex = it
         }
 
         Spacer(Modifier.height(8.dp))

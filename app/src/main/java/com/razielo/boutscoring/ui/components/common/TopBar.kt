@@ -29,7 +29,7 @@ import com.razielo.boutscoring.ui.theme.BoutScoringTheme
 fun TopBar(
     titleText: String,
     goBack: () -> Unit,
-    actions: @Composable() (RowScope.() -> Unit) = {}
+    actions: @Composable (RowScope.() -> Unit) = {}
 ) {
     Surface(shadowElevation = 8.dp) {
         Row(

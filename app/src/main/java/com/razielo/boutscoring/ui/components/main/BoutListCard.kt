@@ -117,7 +117,7 @@ fun BoutListCard(
                     // Corners colors row
                     Row {
                         CornerHeader(
-                            stringResource(R.string.red),
+                            stringResource(R.string.red_corner),
                             redContainerDark,
                             Modifier.weight(3f)
                         )
@@ -131,7 +131,7 @@ fun BoutListCard(
                             Spacer(Modifier.weight(1f))
                         }
                         CornerHeader(
-                            stringResource(R.string.blue),
+                            stringResource(R.string.blue_corner),
                             blueContainerDark,
                             Modifier.weight(3f),
                             TextAlign.End
@@ -200,13 +200,13 @@ fun BoutListCard(
  */
 @Composable
 private fun CornerHeader(
-    corner: String,
+    label: String,
     color: Color,
     modifier: Modifier = Modifier,
     textAlign: TextAlign = TextAlign.Start
 ) {
     Text(
-        stringResource(R.string.corner_color, corner).uppercase(),
+        label.uppercase(),
         fontWeight = FontWeight.Bold,
         style = MaterialTheme.typography.labelMedium,
         color = color,

@@ -10,5 +10,5 @@ enum class Winner(
     RED_CORNER(R.string.red_corner, R.string.win_abbr),
     BLUE_CORNER(R.string.blue_corner, R.string.loss_abbr),
     DRAW(R.string.draw, R.string.draw_abbr),
-    NO_RESULT(R.string.no_result, R.string.no_contest_abbr);
+    NO_RESULT(R.string.no_contest, R.string.no_contest_abbr);
 }

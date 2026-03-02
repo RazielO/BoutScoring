@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">BoutScoring</string>
+    <!-- Add Bout -->
+    <!--    <string name="red_corner_full_name">Nombre de la esquina roja</string>-->
+    <!--    <string name="blue_corner_full_name">Nombre de la esquina azul</string>-->
+    <string name="red_corner_full_name">Nombre del peleador (esquina roja)</string>
+    <string name="blue_corner_full_name">Nombre del peleador (esquina azul)</string>
+    <string name="corner_display_name">Nombre a mostrar</string>
+    <string name="continue_text">Continuar</string>
+    <string name="vs">vs</string>
+    <string name="number_of_rounds">Número de rounds</string>
+    <string name="select_rounds_first">Selecciona el número de rounds primero</string>
+    <string name="will_be_displayed_as">Se mostrará como %1$s</string>
+    <string name="edit">Editar</string>
+    <string name="bout_settings">Configuración del combate</string>
+    <!-- Bout Info -->
+    <string name="cancel">Cancelar</string>
+    <string name="choose_date">Elige la fecha</string>
+    <string name="result_dropdown_label">Resultado</string>
+    <string name="select_result">Selecciona el resultado</string>
+    <string name="method_dropdown_label">Método</string>
+    <string name="select_method">Selecciona el método</string>
+    <string name="weight_dropdown_label">Categoría de peso</string>
+    <string name="select_weight_class">Selecciona la categoría de peso</string>
+    <string name="championship_bout">Pelea de campeonato</string>
+    <string name="location_label">Lugar</string>
+    <string name="location">Sede o ciudad</string>
+    <string name="notes_label">Notas</string>
+    <string name="notes">Detalles del combate</string>
+    <string name="previous_month">Mes anterior</string>
+    <string name="next_month">Siguiente mes</string>
+    <string name="select">Elige %1$s</string>
+    <string name="select_fight_date">Selecciona la fecha</string>
+    <string name="confirm_selection">Confirmar selección</string>
+    <string name="previous">Anterior</string>
+    <!-- Bout Score -->
+    <string name="score_round_error">Anota el round anterior primero</string>
+    <string name="round_i">Round %1$s</string>
+    <string name="round">Round</string>
+    <string name="round_abbr">Rd</string>
+    <string name="save">Guardar</string>
+    <string name="add_quick_note">Añadir nota rápida</string>
+    <string name="carousel_view">Vista de carrusel</string>
+    <string name="list_view">Vista de lista</string>
+    <!-- Common -->
+    <string name="go_back">Regresar</string>
+    <!-- Main component -->
+    <string name="search">Buscar</string>
+    <string name="confirm">Confirmar</string>
+    <string name="confirm_bout_deletion">¿Estás seguro de borrar %1$s vs %2$s?</string>
+    <string name="add_new_bout_title">Añadir combate</string>
+    <string name="bout_info_title">Información del combate</string>
+    <string name="score_bout_title">Anotar combate</string>
+    <string name="my_bouts_title">Mis combates</string>
+    <!-- Bout List Card -->
+    <string name="show_notes">Ver notas</string>
+    <string name="hide_notes">Esconder notas</string>
+    <string name="stop_search">Cancelar búsqueda</string>
+    <string name="fill_all_fields">Llena todos los campos primero</string>
+    <string name="enter_name">Ingresa el nombre</string>
+    <string name="edit_display_name">Editar el nombre a mostrar de %1$s</string>
+    <!-- Weight classes -->
+    <string name="weight_minimum">Mínimo</string>
+    <string name="weight_jr_fly">Minimosca</string>
+    <string name="weight_fly">Mosca</string>
+    <string name="weight_super_fly">Supermosca</string>
+    <string name="weight_bantam">Gallo</string>
+    <string name="weight_super_bantam">Supergallo</string>
+    <string name="weight_feather">Pluma</string>
+    <string name="weight_super_feather">Superpluma</string>
+    <string name="weight_light">Ligero</string>
+    <string name="weight_super_light">Superligero</string>
+    <string name="weight_welter">Welter</string>
+    <string name="weight_super_welter">Superwelter</string>
+    <string name="weight_middle">Mediano</string>
+    <string name="weight_super_middle">Supermediano</string>
+    <string name="weight_light_heavy">Semicompleto</string>
+    <string name="weight_cruiser">Crucero</string>
+    <string name="weight_bridger">Bridger</string>
+    <string name="weight_heavy">Pesado</string>
+    <string name="weight_catch">Pactado</string>
+    <!-- Draw methods -->
+    <string name="technical_draw">Empate técnico</string>
+    <string name="draw">Empate</string>
+    <string name="split_draw">Empate dividido</string>
+    <string name="majority_draw">Empate mayoritario</string>
+    <!-- No result methods -->
+    <string name="no_contest">Sin decisión</string>
+    <!-- Win methods -->
+    <string name="unanimous_decision">Decisión unánime</string>
+    <string name="split_decision">Decisión dividida</string>
+    <string name="majority_decision">Decisión mayoritaria</string>
+    <string name="points">Puntos</string>
+    <string name="knockout">Nocaut</string>
+    <string name="technical_knockout">Nocaut técnico</string>
+    <string name="retired">Abandono</string>
+    <string name="technical_decision">Decisión técnica</string>
+    <string name="disqualification">Descalificación</string>
+    <!-- Winner -->
+    <string name="red_corner">Esquina roja</string>
+    <string name="blue_corner">Esquina azul</string>
+</resources>

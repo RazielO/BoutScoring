@@ -1,46 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">BoutScoring</string>
     <!-- Add Bout -->
-    <string name="corner_full_name">%1$s Corner Fighter</string>
-    <string name="corner_display_name">Display Name</string>
+    <string name="red_corner_full_name">Red corner fighter</string>
+    <string name="blue_corner_full_name">Blue corner fighter</string>
+    <string name="corner_display_name">Display name</string>
     <string name="continue_text">Continue</string>
     <string name="vs">vs</string>
-    <string name="red">Red</string>
-    <string name="blue">Blue</string>
     <string name="number_of_rounds">Number of rounds</string>
     <string name="select_rounds_first">Select the number of rounds first</string>
     <string name="will_be_displayed_as">Will be displayed as: %1$s</string>
     <string name="edit">Edit</string>
-    <string name="bout_settings">Bout Settings</string>
+    <string name="bout_settings">Bout settings</string>
     <!-- Bout Info -->
     <string name="cancel">Cancel</string>
     <string name="choose_date">Choose date</string>
-    <string name="winner_dropdown_label">Winner</string>
+    <string name="result_dropdown_label">Result</string>
+    <string name="select_result">Select result</string>
     <string name="method_dropdown_label">Method</string>
-    <string name="weight_dropdown_label">Weight Class</string>
-    <string name="championship_in_play">Championship in play</string>
+    <string name="select_method">Select method</string>
+    <string name="weight_dropdown_label">Weight class</string>
+    <string name="select_weight_class">Select weight class</string>
+    <string name="championship_bout">Championship bout</string>
     <string name="location_label">Location</string>
-    <string name="location">Venue or City</string>
+    <string name="location">Venue or city</string>
     <string name="notes_label">Notes</string>
     <string name="notes">Additional details about the bout…</string>
     <string name="previous_month">Previous month</string>
     <string name="next_month">Next month</string>
     <string name="select">Select %1$s</string>
-    <string name="select_fight_date">Select Fight Date</string>
-    <string name="confirm_selection">Confirm Selection</string>
+    <string name="select_fight_date">Select fight date</string>
+    <string name="confirm_selection">Confirm selection</string>
     <string name="previous">Previous</string>
     <!-- Bout Score -->
     <string name="score_round_error">Score the previous round first</string>
-    <string name="championship_bout">Championship bout</string>
     <string name="round_i">Round %1$s</string>
     <string name="round">Round</string>
     <string name="round_abbr">Rd</string>
     <string name="save">Save</string>
-    <string name="add_quick_note">Add Quick Note</string>
+    <string name="add_quick_note">Add quick note</string>
     <string name="carousel_view">Carousel view</string>
     <string name="list_view">List view</string>
     <!-- Common -->
-    <string name="go_back">Go Back</string>
+    <string name="go_back">Go back</string>
     <!-- Main component -->
     <string name="search">Search</string>
     <string name="confirm">Confirm</string>
@@ -50,16 +52,15 @@
     <string name="score_bout_title">Score bout</string>
     <string name="my_bouts_title">My bouts</string>
     <!-- Bout List Card -->
-    <string name="show_notes">Show Notes</string>
-    <string name="hide_notes">Hide Notes</string>
-    <string name="corner_color">%1$s Corner</string>
+    <string name="show_notes">Show notes</string>
+    <string name="hide_notes">Hide notes</string>
     <string name="stop_search">Stop search</string>
     <string name="fill_all_fields">Fill all fields first</string>
     <string name="enter_name">Enter name</string>
     <string name="edit_display_name">Edit display name for %1$s</string>
     <!-- Weight classes -->
-    <string name="weight_format">%1$s (%2$d lbs)</string>
-    <string name="weight_heavy_format">%1$s (%2$d+ lbs)</string>
+    <string name="weight_format" translatable="false">%1$s (%2$d lbs)</string>
+    <string name="weight_heavy_format" translatable="false">%1$s (%2$d+ lbs)</string>
 
     <string name="weight_minimum">Minimumweight</string>
     <string name="weight_jr_fly">Junior Flyweight</string>
@@ -86,16 +87,14 @@
     <string name="split_draw">Split Draw</string>
     <string name="majority_draw">Majority Draw</string>
 
-    <string name="technical_draw_abbr">TD</string>
-    <string name="draw_abbr">D</string>
-    <string name="split_draw_abbr">SD</string>
-    <string name="majority_draw_abbr">MD</string>
+    <string name="technical_draw_abbr" translatable="false">TD</string>
+    <string name="draw_abbr" translatable="false">D</string>
+    <string name="split_draw_abbr" translatable="false">SD</string>
+    <string name="majority_draw_abbr" translatable="false">MD</string>
     <!-- No result methods -->
-    <string name="no_decision">No Decision</string>
     <string name="no_contest">No Contest</string>
 
-    <string name="no_decision_abbr">ND</string>
-    <string name="no_contest_abbr">NC</string>
+    <string name="no_contest_abbr" translatable="false">NC</string>
     <!-- Win methods -->
     <string name="unanimous_decision">Unanimous Decision</string>
     <string name="split_decision">Split Decision</string>
@@ -107,19 +106,18 @@
     <string name="technical_decision">Technical Decision</string>
     <string name="disqualification">Disqualification</string>
 
-    <string name="unanimous_decision_abbr">UD</string>
-    <string name="split_decision_abbr">SD</string>
-    <string name="majority_decision_abbr">MD</string>
-    <string name="points_abbr">PTS</string>
-    <string name="knockout_abbr">KO</string>
-    <string name="technical_knockout_abbr">TKO</string>
-    <string name="retired_abbr">RTD</string>
-    <string name="technical_decision_abbr">TD</string>
-    <string name="disqualification_abbr">DSQ</string>
+    <string name="unanimous_decision_abbr" translatable="false">UD</string>
+    <string name="split_decision_abbr" translatable="false">SD</string>
+    <string name="majority_decision_abbr" translatable="false">MD</string>
+    <string name="points_abbr" translatable="false">PTS</string>
+    <string name="knockout_abbr" translatable="false">KO</string>
+    <string name="technical_knockout_abbr" translatable="false">TKO</string>
+    <string name="retired_abbr" translatable="false">RTD</string>
+    <string name="technical_decision_abbr" translatable="false">TD</string>
+    <string name="disqualification_abbr" translatable="false">DQ</string>
     <!-- Winner -->
-    <string name="red_corner">Red Corner</string>
-    <string name="blue_corner">Blue Corner</string>
-    <string name="no_result">No Result</string>
-    <string name="win_abbr">W</string>
-    <string name="loss_abbr">L</string>
+    <string name="red_corner">Red corner</string>
+    <string name="blue_corner">Blue corner</string>
+    <string name="win_abbr" translatable="false">W</string>
+    <string name="loss_abbr" translatable="false">L</string>
 </resources>

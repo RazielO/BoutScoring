@@ -42,13 +42,13 @@ import com.razielo.boutscoring.ui.theme.redContainerDark
 @Composable
 fun AddBoutInputFieldGroup(
     values: List<String>,
-    corner: String,
+    label: String,
     color: Color,
     onValueChange: (Int, String) -> Unit
 ) {
     val labels: List<String> = listOf(
-        stringResource(R.string.corner_full_name, corner),
-        stringResource(R.string.corner_display_name, corner)
+        label,
+        stringResource(R.string.corner_display_name)
     )
     var showDialog by remember { mutableStateOf(false) }
 
@@ -209,7 +209,8 @@ private fun EditDisplayDialog(
 private fun AddBoutInputFieldGroupPreview() {
     BoutScoringTheme {
         AddBoutInputFieldGroup(
-            values = listOf("Okesandr Usyk", "USYK"), corner = "Red",
+            values = listOf("Okesandr Usyk", "USYK"),
+            label = stringResource(R.string.red_corner_full_name),
             color = redContainerDark,
             onValueChange = { _, _ -> })
     }

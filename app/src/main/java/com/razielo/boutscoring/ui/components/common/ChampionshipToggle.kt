@@ -47,7 +47,7 @@ fun ChampionshipToggle(championship: Boolean, toggle: (Boolean) -> Unit) {
                     modifier = Modifier.height(16.dp)
                 )
                 Text(
-                    stringResource(R.string.championship_in_play),
+                    stringResource(R.string.championship_bout),
                     Modifier.padding(end = 16.dp),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.bodyMedium

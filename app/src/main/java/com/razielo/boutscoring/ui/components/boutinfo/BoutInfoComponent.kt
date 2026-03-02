@@ -52,7 +52,8 @@ fun BoutInfoComponent(boutInfo: BoutInfo, updateInfo: (BoutInfo) -> Unit) {
         verticalArrangement = Arrangement.spacedBy(20.dp),
     ) {
         DropdownSelection(
-            title = stringResource(R.string.winner_dropdown_label),
+            label = stringResource(R.string.result_dropdown_label),
+            hintText = stringResource(R.string.select_result),
             options = resultOptions.map { stringResource(it.displayName) },
             selectedIndex = selectedIndex(resultOptions, info.winner),
         ) {
@@ -62,7 +63,8 @@ fun BoutInfoComponent(boutInfo: BoutInfo, updateInfo: (BoutInfo) -> Unit) {
         }
 
         DropdownSelection(
-            title = stringResource(R.string.method_dropdown_label),
+            label = stringResource(R.string.method_dropdown_label),
+            hintText = stringResource(R.string.select_method),
             options = methodOptions?.map { stringResource(it.displayName) } ?: emptyList(),
             enabled = methodOptions != null,
             selectedIndex = methodOptions?.let { selectedIndex(it, methodSelected) }
@@ -73,7 +75,8 @@ fun BoutInfoComponent(boutInfo: BoutInfo, updateInfo: (BoutInfo) -> Unit) {
         }
 
         DropdownSelection(
-            title = stringResource(R.string.weight_dropdown_label),
+            label = stringResource(R.string.weight_dropdown_label),
+            hintText = stringResource(R.string.select_weight_class),
             options = weights.map { it.displayName() },
             selectedIndex = selectedIndex(weights, info.weight),
         ) {

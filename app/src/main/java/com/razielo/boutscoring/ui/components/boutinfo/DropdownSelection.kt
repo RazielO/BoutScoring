@@ -61,7 +61,8 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun DropdownSelection(
-    title: String,
+    label: String,
+    hintText: String,
     options: List<String>,
     enabled: Boolean = true,
     selectedIndex: Int?,
@@ -79,7 +80,7 @@ fun DropdownSelection(
         verticalArrangement = Arrangement.spacedBy(6.dp),
     ) {
         Text(
-            text = title,
+            text = label,
             modifier = Modifier.padding(),
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.SemiBold,
@@ -89,14 +90,14 @@ fun DropdownSelection(
             selectedElement = selected?.let { options[it] },
             enabled = enabled,
             onClick = { showDialog = true },
-            labelText = stringResource(R.string.select, title),
+            hintText = hintText,
             modifier = Modifier.fillMaxWidth()
         )
     }
 
     if (showDialog) {
         DialogSelector(
-            title = title,
+            title = label,
             options = options,
             selectedIndex = selected,
             onDismiss = { showDialog = false },
@@ -115,7 +116,7 @@ private fun DropdownSelector(
     selectedElement: String?,
     onClick: () -> Unit,
     enabled: Boolean,
-    labelText: String,
+    hintText: String,
     modifier: Modifier = Modifier
 ) {
     val disabledColors =
@@ -131,7 +132,7 @@ private fun DropdownSelector(
         elevation = CardDefaults.cardElevation(6.dp),
         colors = colors
     ) {
-        DropdownLabel(selectedElement ?: labelText)
+        DropdownLabel(selectedElement ?: hintText)
     }
 }
 
@@ -216,7 +217,7 @@ private fun DialogSelector(
             ) {
                 // Title
                 Text(
-                    stringResource(R.string.select, title),
+                    title,
                     Modifier
                         .padding(bottom = 24.dp)
                         .fillMaxWidth(),
@@ -354,7 +355,8 @@ fun VerticalScrollbar(
 private fun DropdownSelectionPreview() {
     BoutScoringTheme {
         DropdownSelection(
-            title = stringResource(R.string.winner_dropdown_label),
+            label = stringResource(R.string.result_dropdown_label),
+            hintText = stringResource(R.string.select_result),
             options = Winner.entries.map { stringResource(it.displayName) },
             selectedIndex = 0,
             onSelectionChanged = {}
@@ -367,7 +369,7 @@ private fun DropdownSelectionPreview() {
 private fun DialogSelectorPreview() {
     BoutScoringTheme {
         DialogSelector(
-            title = stringResource(R.string.weight_dropdown_label),
+            title = stringResource(R.string.select_weight_class),
             options = WeightClass.entries.map { it.displayName() },
             selectedIndex = 5,
             onDismiss = {},

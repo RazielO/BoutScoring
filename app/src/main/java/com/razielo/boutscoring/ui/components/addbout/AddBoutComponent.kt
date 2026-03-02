@@ -97,7 +97,7 @@ fun AddBoutComponent(
     ) {
         AddBoutInputFieldGroup(
             redCornerValues,
-            stringResource(R.string.red),
+            stringResource(R.string.red_corner_full_name),
             redContainerDark,
             redCornerUpdate
         )
@@ -114,7 +114,7 @@ fun AddBoutComponent(
 
         AddBoutInputFieldGroup(
             blueCornerValues,
-            stringResource(R.string.blue),
+            stringResource(R.string.blue_corner_full_name),
             blueContainerDark,
             blueCornerUpdate
         )
@@ -135,7 +135,8 @@ fun AddBoutComponent(
         Spacer(Modifier.height(8.dp))
 
         DropdownSelection(
-            title = stringResource(R.string.weight_dropdown_label),
+            label = stringResource(R.string.weight_dropdown_label),
+            hintText = stringResource(R.string.select_weight_class),
             options = weights.map { it.displayName() },
             selectedIndex = selectedWeightIndex
         ) {

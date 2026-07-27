@@ -4,6 +4,12 @@
 
 **BoutScoring** is an Android app designed to score combat sports bouts using the 10-point scoring system. The app provides a user-friendly interface to manage and score bouts effectively.
 
+## Download
+
+<a href="https://f-droid.org/app/com.razielo.boutscoring">
+    <img alt="Get it on F-Droid" src="https://gadgetbridge.org/assets/static/get-it-on-fdroid.png" height="60">
+</a>
+
 ## Features
 
 1. **Add Bouts**: Quickly create new bouts with customizable details.
